@@ -17,11 +17,15 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        <!-- Bootstrap Icon -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
         <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+5qGx9W5ePz4UlNq9mG1FIFHkUciE" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-qENXc65s28lUm3ISuRAA75uH1SvHceU2mTI4zRrk+vJmQgkWcCmj2cT8Kys4Quop" crossorigin="anonymous"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 d-flex flex-column">
+            <!-- Navbar -->
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -34,9 +38,13 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
-                @yield('content') <!-- Tempat untuk konten halaman -->
+            <main class="flex-grow">
+                @yield('content') 
             </main>
+
+            <!-- Footer -->
+            @include('layouts.footer')
         </div>
+
     </body>
 </html>

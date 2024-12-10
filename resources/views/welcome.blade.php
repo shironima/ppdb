@@ -22,19 +22,59 @@
 <!-- Tentang Kami -->
 <section id="tentang-kami" class="about py-5">
     <div class="container">
-        <h2 class="text-center mb-5">Tentang SMAK Santo Bonaventura</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Visi dan Misi</h3>
+        <div class="row text-center">
+            <!-- Visi dan Misi Sekolah -->
+            <div class="col-md-4">
+                <h3 class="mb-4"><strong>Visi dan Misi Sekolah</strong></h3>
                 <p>
-                    Visi SMAK Santo Bonaventura adalah "Menjadi lembaga pendidikan yang unggul dalam pembentukan karakter dan intelektualitas siswa, dengan berlandaskan pada nilai-nilai Kristiani."
+                    <b>Visi SMAK Santo Bonaventura</b> adalah "Menjadi lembaga pendidikan yang unggul dalam pembentukan karakter dan intelektualitas siswa, dengan berlandaskan pada nilai-nilai Kristiani."
                 </p>
                 <p>
-                    Misi kami adalah menyediakan pendidikan yang berkualitas, membangun karakter moral, dan mengembangkan potensi siswa secara maksimal.
+                    <b>Misi SMAK Santo Bonaventura</b> adalah menyediakan pendidikan yang berkualitas, membangun karakter moral, dan mengembangkan potensi siswa secara maksimal.
                 </p>
             </div>
-            <div class="col-md-6">
-                <h3>Fasilitas Kami</h3>
+
+            <!-- Galeri Sekolah -->
+            <div class="col-md-4">
+                <h3 class="mb-4"><strong>Galeri Sekolah</strong></h3>
+                <div id="schoolGalleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/images/galery-web/1.png" class="d-block w-100" alt="Galeri Sekolah 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/2.png" class="d-block w-100" alt="Galeri Sekolah 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/3.png" class="d-block w-100" alt="Galeri Sekolah 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/4.png" class="d-block w-100" alt="Galeri Sekolah 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/5.png" class="d-block w-100" alt="Galeri Sekolah 5">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/6.png" class="d-block w-100" alt="Galeri Sekolah 6">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/galery-web/7.png" class="d-block w-100" alt="Galeri Sekolah 7">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#schoolGalleryCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#schoolGalleryCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fasilitas yang Tersedia -->
+            <div class="col-md-4">
+                <h3 class="mb-4"><strong>Fasilitas yang Tersedia</strong></h3>
                 <p>
                     Kami memiliki berbagai fasilitas yang mendukung proses belajar mengajar, seperti ruang kelas yang nyaman, laboratorium, dan fasilitas olahraga yang memadai.
                 </p>
@@ -49,25 +89,19 @@
 <!-- Proses Pendaftaran -->
 <section class="registration-process bg-light py-5">
     <div class="container">
-        <h2 class="text-center mb-4">Proses Pendaftaran</h2>
-        <p class="text-center">
-            Pendaftaran peserta didik baru SMAK Santo Bonaventura dapat dilakukan secara online melalui situs ini. Pastikan Anda memenuhi semua persyaratan yang telah ditentukan untuk mengikuti seleksi.
-        </p>
-    </div>
-</section>
-
-<!-- Contact Information -->
-<section class="contact py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Kontak Kami</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <p>Untuk pertanyaan lebih lanjut, Anda bisa menghubungi kami melalui:</p>
-                <ul class="list-unstyled">
-                    <li><strong>Email:</strong> <a href="mailto:info@smabona.sch.id">info@smabona.sch.id</a></li>
-                    <li><strong>WhatsApp:</strong> <a href="https://wa.me/6285159932501">+62 851-5993-2501</a></li>
-                    <li><strong>Alamat:</strong> Jl. Diponegoro No. 45, Kota Madiun</li>
-                </ul>
+        <div class="row">
+            <!-- Bagian Kiri -->
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+                <h2 class="text-center mb-4"><strong>Proses Pendaftaran</strong></h2>
+                <p class="text-center">
+                    Pendaftaran peserta didik baru SMAK Santo Bonaventura dapat dilakukan secara online melalui situs ini. 
+                    Pastikan Anda mempersiapkan semua persyaratan yang telah ditentukan untuk mengikuti pendaftaran.
+                </p>
+                <a href="{{ route('nav-page.alurpendaftaran') }}" class="btn btn-primary mt-3">Lihat Syarat & Alur Pendaftaran</a>
+            </div>
+            <!-- Bagian Kanan -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <img src="/images/smabona1-removebg.png" class="img-fluid" alt="Ilustrasi Pendaftaran">
             </div>
         </div>
     </div>
