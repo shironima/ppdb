@@ -25,25 +25,25 @@
             </a>
             <ul id="info-ppdb-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
+                    <a href="{{ route('siswa.informasi-ppdb.info-pendaftaran') }}">
                         <i class="bi bi-circle"></i>
                         <span>Info Pendaftaran</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('siswa.informasi-ppdb.alur-pendaftaran') }}">
                         <i class="bi bi-circle"></i>
                         <span>Alur Pendaftaran</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('siswa.informasi-ppdb.biaya-pendidikan')}} ">
                         <i class="bi bi-circle"></i>
                         <span>Biaya Pendidikan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('siswa.informasi-ppdb.tanya-admin-ppdb') }}">
                         <i class="bi bi-circle"></i>
                         <span>Tanya pada Admin PPDB</span>
                     </a>

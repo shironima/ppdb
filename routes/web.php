@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\AlamatController;
+use App\Http\Controllers\PertanyaanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,7 +25,7 @@ Route::get('/biaya-pendidikan', function () {
     return view('nav-page.biayapendidikan');
 })->name('nav-page.biayapendidikan');
 
-// Dashboard untuk pelamar
+// Dashboard untuk calon siswa
 Route::get('dashboard', function () {
     return view('siswa.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -36,6 +37,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Informasi PPDB
+    Route::view('/info-ppdb/alur-pendaftaran', 'siswa.informasi-ppdb.alur-pendaftaran')->name('siswa.informasi-ppdb.alur-pendaftaran');
+    Route::view('/info-ppdb/info-ppdb', 'siswa.informasi-ppdb.info-pendaftaran')->name('siswa.informasi-ppdb.info-pendaftaran');
+    Route::view('/info-ppdb/biaya-pendidikan', 'siswa.informasi-ppdb.biaya-pendidikan')->name('siswa.informasi-ppdb.biaya-pendidikan');
+
+    // Tanya Admin PPDB
+    Route::get('/informasi-ppdb/tanya-admin-ppdb', [PertanyaanController::class, 'index'])->name('siswa.informasi-ppdb.tanya-admin-ppdb');
+    Route::post('/informasi-ppdb/tanya-admin-ppdb', [PertanyaanController::class, 'store'])->name('siswa.informasi-ppdb.tanya-admin-ppdb.store');
+    
     // Data Diri Calon Siswa
     Route::get('/data-diri', [CalonSiswaController::class, 'show'])->name('calon-siswa.show');
     Route::get('/data-diri/create', [CalonSiswaController::class, 'create'])->name('calon-siswa.create');
@@ -49,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/alamat/edit', [AlamatController::class, 'edit'])->name('alamat.edit');
     Route::post('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
     Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
+    
 });
 
 
