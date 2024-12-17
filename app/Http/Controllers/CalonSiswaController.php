@@ -4,21 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\CalonSiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class CalonSiswaController extends Controller
 {
     // Menampilkan data calon siswa yang terkait dengan user yang login
-    public function show()
+    public function index()
     {
         // Mengambil data diri calon siswa yang terkait dengan user yang sedang login
-        $dataDiri = auth()->user()->calonSiswa;
-        
-        // Pastikan $dataDiri tidak kosong
-        if (!$dataDiri) {
-            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
-        }
-        
-        return view('siswa.form-pendaftaran.data-diri.index', compact('dataDiri'));
+        $calonSiswa = auth()->user()->calonSiswa()->get();
+
+        // tampilkan halaman index dengan data calon siswa
+        return view('siswa.form-pendaftaran.data-diri.index', compact('calonSiswa'));
     }
 
     // Form untuk mengedit data calon siswa
@@ -60,7 +58,7 @@ class CalonSiswaController extends Controller
         ]);
 
         // Redirect ke halaman profil dengan pesan sukses
-        return redirect()->route('calon-siswa.show')->with('success', 'Data berhasil diperbarui!');
+        return redirect()->route('calon-siswa.index')->with('success', 'Data berhasil diperbarui!');
     }
 
     // Form untuk membuat data calon siswa pertama kali (jika belum ada)
@@ -73,7 +71,7 @@ class CalonSiswaController extends Controller
     public function store(Request $request)
     {
         // Validasi inputan
-        $request->validate([
+        $validatedData = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
@@ -85,22 +83,14 @@ class CalonSiswaController extends Controller
             'no_hp' => 'required|string|regex:/^[0-9]+$/|max:15',
         ]);
 
-        // Simpan data calon siswa yang terkait dengan user
-        CalonSiswa::create([
-            'user_id' => auth()->user()->id, 
-            'nama_lengkap' => $request->nama_lengkap,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'agama' => $request->agama,
-            'nisn' => $request->nisn,
-            'no_kk' => $request->no_kk,  
-            'nik' => $request->nik,  
-            'no_hp' => $request->no_hp,  
-        ]);
+        // Tambahkan user_id ke data yang divalidasi
+        $validatedData['user_id'] = auth()->id();
+
+        // Simpan data ke database
+        CalonSiswa::create($validatedData);
 
         // Redirect ke halaman profil dengan pesan sukses
-        return redirect()->route('calon-siswa.show')->with('success', 'Data calon siswa berhasil disimpan!');
+        return redirect()->route('calon-siswa.index')->with('success', 'Data calon siswa berhasil disimpan!');
     }
 
     // Hapus data calon siswa yang terkait dengan user yang login

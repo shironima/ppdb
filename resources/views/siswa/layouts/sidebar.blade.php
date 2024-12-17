@@ -60,7 +60,7 @@
 
         <!-- Data Diri -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('calon-siswa.show') }}">
+            <a class="nav-link collapsed" href="{{ route('calon-siswa.index') }}">
                 <i class="bi bi-person"></i>
                 <span>Data Diri</span>
             </a>
@@ -68,7 +68,7 @@
 
         <!-- Alamat -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('alamat.index') }}">
                 <i class="bi bi-geo-alt"></i>
                 <span>Alamat</span>
             </a>

@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\Alamat; 
+use App\Models\Alamat;
+use App\Models\CalonSiswa;
 
 class AlamatController extends Controller
 {
-    // Menampilkan data alamat
-    public function show()
+    // Menampilkan daftar alamat
+    public function index()
     {
-        // Mengambil data alamat calon siswa terkait dengan user yang sedang login
-        $alamat = auth()->user()->calonSiswa->alamat;
-
-        // Menampilkan view dengan data alamat
-        return view('alamat.show', compact('alamat'));
+        $alamatCalonSiswa = auth()->user()->calonSiswa->alamat()->get();
+        return view('siswa.form-pendaftaran.alamat.index', compact('alamatCalonSiswa'));
     }
 
-    // Form untuk mengedit data alamat calon siswa
+    public function create()
+    {
+        return view('siswa.form-pendaftaran.alamat.create');
+    }
+
     public function edit()
     {
-        // Mengambil data alamat calon siswa
         $alamat = auth()->user()->calonSiswa->alamat;
-
-        // Menampilkan form edit alamat
-        return view('alamat.edit', compact('alamat'));
+        return view('siswa.form-pendaftaran.alamat.edit', compact('alamat'));
     }
 
     // Menyimpan atau memperbarui data alamat calon siswa
@@ -41,8 +38,8 @@ class AlamatController extends Controller
             'kecamatan' => 'required|string|max:100',
             'kota_kabupaten' => 'required|string|max:100',
             'provinsi' => 'required|string|max:100',
-            'kode_pos' => 'nullable|string|max:10',
-            'tinggal_dengan' => 'required|in:Orang tua,Wali/famili,Asrama/panti,Lainnya',
+            'kode_pos' => 'required|string|digits:5',
+            'tinggal_dengan' => 'required|in:orang_tua,wali-famili,panti-asrama',
         ]);
 
         // Mengambil data alamat calon siswa
@@ -62,10 +59,9 @@ class AlamatController extends Controller
         ]);
 
         // Redirect ke halaman alamat dengan pesan sukses
-        return redirect()->route('alamat.show')->with('success', 'Alamat berhasil diperbarui!');
+        return redirect()->route('alamat.index')->with('success', 'Alamat berhasil diperbarui!');
     }
 
-    // Menyimpan data alamat calon siswa (jika belum ada)
     public function store(Request $request)
     {
         // Validasi inputan
@@ -78,23 +74,37 @@ class AlamatController extends Controller
             'kota_kabupaten' => 'required|string|max:100',
             'provinsi' => 'required|string|max:100',
             'kode_pos' => 'nullable|string|max:10',
-            'tinggal_dengan' => 'required|in:Orang tua,Wali/famili,Asrama/panti,Lainnya',
+            'tinggal_dengan' => 'required|in:orang_tua,wali-famili,panti-asrama,lainnya',
         ]);
+
+        // Periksa apakah data diri sudah diisi
+        $calonSiswa = CalonSiswa::where('user_id', auth()->id())->first();
+
+        if (!$calonSiswa) {
+            return redirect()->route('data-diri.create')->with('warning', 'Silakan isi form data diri terlebih dahulu!');
+        }
+
+        // Ambil user_id dari autentikasi
+        $validatedData = $request->only([
+            'alamat_lengkap',
+            'rt',
+            'rw',
+            'kelurahan',
+            'kecamatan',
+            'kota_kabupaten',
+            'provinsi',
+            'kode_pos',
+            'tinggal_dengan',
+        ]);
+
+        // Set `user_id` dan `calon_siswa_id` yang terkait dengan pengguna yang sedang login
+        $validatedData['user_id'] = auth()->id();
+        $validatedData['calon_siswa_id'] = $calonSiswa->id;
 
         // Simpan data alamat terkait dengan calon siswa
-        auth()->user()->calonSiswa->alamat()->create([
-            'alamat_lengkap' => $request->alamat_lengkap,
-            'rt' => $request->rt,
-            'rw' => $request->rw,
-            'kelurahan' => $request->kelurahan,
-            'kecamatan' => $request->kecamatan,
-            'kota_kabupaten' => $request->kota_kabupaten,
-            'provinsi' => $request->provinsi,
-            'kode_pos' => $request->kode_pos,
-            'tinggal_dengan' => $request->tinggal_dengan,
-        ]);
+        Alamat::create($validatedData);
 
         // Redirect ke halaman alamat dengan pesan sukses
-        return redirect()->route('alamat.show')->with('success', 'Alamat berhasil disimpan!');
+        return redirect()->route('alamat.index')->with('success', 'Alamat berhasil disimpan!');
     }
 }

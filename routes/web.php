@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/informasi-ppdb/tanya-admin-ppdb', [PertanyaanController::class, 'store'])->name('siswa.informasi-ppdb.tanya-admin-ppdb.store');
     
     // Data Diri Calon Siswa
-    Route::get('/data-diri', [CalonSiswaController::class, 'show'])->name('calon-siswa.show');
+    Route::get('/data-diri', [CalonSiswaController::class, 'index'])->name('calon-siswa.index');
     Route::get('/data-diri/create', [CalonSiswaController::class, 'create'])->name('calon-siswa.create');
     Route::post('/data-diri', [CalonSiswaController::class, 'store'])->name('calon-siswa.store');
     Route::get('/data-diri/edit', [CalonSiswaController::class, 'edit'])->name('calon-siswa.edit');
@@ -56,10 +56,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/data-diri', [CalonSiswaController::class, 'destroy'])->name('calon-siswa.destroy');  
 
     // Alamat
-    Route::get('/alamat', [AlamatController::class, 'show'])->name('alamat.show');
+    Route::get('/alamat', [AlamatController::class, 'index'])->name('alamat.index');
+    Route::get('/alamat/create', [AlamatController::class, 'create'])->name('alamat.create');
+    Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
     Route::get('/alamat/edit', [AlamatController::class, 'edit'])->name('alamat.edit');
     Route::post('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
-    Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
     
 });
 

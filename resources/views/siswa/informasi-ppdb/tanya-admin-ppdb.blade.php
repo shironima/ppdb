@@ -24,7 +24,7 @@
                     <form action="{{ route('siswa.informasi-ppdb.tanya-admin-ppdb.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="pertanyaan" class="form-label">Pertanyaan Anda</label>
+                            <label for="pertanyaan" class="form-label">Silahkan tulis pertanyaan Anda</label>
                             <textarea class="form-control @error('pertanyaan') is-invalid @enderror" id="pertanyaan" name="pertanyaan" rows="3" required></textarea>
                             @error('pertanyaan')
                                 <div class="invalid-feedback">{{ $message }}</div>

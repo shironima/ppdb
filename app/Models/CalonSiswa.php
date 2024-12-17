@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class CalonSiswa extends Model
 {
@@ -23,7 +24,12 @@ class CalonSiswa extends Model
         'no_kk',
         'nik',
         'no_hp',
+        'status'
     ];
+    public function getTanggalLahirAttribute($value)
+    {
+        return Carbon::parse($value)->format('d M Y');
+    }
 
     // Tentukan relasi dengan model User (One to One)
     public function user()

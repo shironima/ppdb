@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -47,13 +46,38 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Determine if the user is an admin.
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
+    /**
+     * Determine if the user is a siswa.
+     *
+     * @return bool
+     */
     public function isSiswa()
     {
         return $this->role === 'siswa';
+    }
+
+    /**
+     * Get the calon siswa associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function calonSiswa()
+    {
+        return $this->hasOne(CalonSiswa::class, 'user_id');
+    }
+
+    public function alamat()
+    {
+        return $this->hasOne(Alamat::class, 'user_id');
     }
 }
