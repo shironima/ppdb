@@ -7,6 +7,7 @@ use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\PertanyaanController;
+use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -68,6 +69,11 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     // Rute dashboard untuk admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
+    // Tanya Admin - Jawaban
+    Route::get('/admin/hubungi-admin', [JawabanController::class, 'index'])->name('admin.hubungi-admin.index');
+    Route::post('/admin/hubungi-admin/{id}', [JawabanController::class, 'store'])->name('admin.hubungi-admin.store');
+    Route::get('/admin/hubungi-admin/menunggu', [JawabanController::class, 'menungguJawaban'])->name('admin.hubungi-admin.menunggu');
+    
     // Rute profile untuk admin
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('admin.profile.update');

@@ -109,8 +109,8 @@
         </a>
         <div id="collapsePertanyaan" class="collapse" aria-labelledby="headingPertanyaan" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Belum Dijawab</a>
-                <a class="collapse-item" href="#">Semua Pertanyaan</a>
+                <a class="collapse-item" href="{{ route('admin.hubungi-admin.menunggu') }}">Belum Dijawab</a>
+                <a class="collapse-item" href="{{ route('admin.hubungi-admin.index') }}">Semua Pertanyaan</a>
             </div>
         </div>
     </li>

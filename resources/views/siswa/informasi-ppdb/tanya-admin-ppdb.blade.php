@@ -64,7 +64,7 @@
                                         <td>{{ $pertanyaan->pertanyaan }}</td>
                                         <td>{{ $pertanyaan->jawaban ?? 'Belum dijawab' }}</td>
                                         <td>
-                                            @if($pertanyaan->status == 'Dijawab')
+                                            @if($pertanyaan->status == 'terjawab')
                                                 <span class="badge bg-success">Dijawab</span>
                                             @else
                                                 <span class="badge bg-warning text-dark">Belum dijawab</span>

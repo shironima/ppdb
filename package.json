@@ -11,7 +11,7 @@
         "autoprefixer": "^10.4.2",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",
-        "datatables.net": "^1.11.5",
+        "datatables.net": "^1.13.11",
         "datatables.net-buttons": "^2.2.3",
         "datatables.net-dt": "^1.13.11",
         "datatables.net-responsive": "^2.2.9",
@@ -21,6 +21,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "bootstrap": "^5.3.3"
+        "bootstrap": "^5.3.3",
+        "datatables.net-bs5": "^2.1.8"
     }
 }
