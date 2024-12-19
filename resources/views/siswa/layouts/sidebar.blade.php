@@ -76,7 +76,7 @@
 
         <!-- Data Orang Tua -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('data-orang-tua.index') }}">
                 <i class="bi bi-people"></i>
                 <span>Data Orang Tua</span>
             </a>

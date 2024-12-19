@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alamat extends Model
 {
-    protected $table = 'alamat'; // Nama tabel dalam database
+    protected $table = 'alamat';
 
     protected $fillable = [
         'user_id',           
@@ -25,12 +25,12 @@ class Alamat extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class); // Relasi satu alamat dengan satu user
+        return $this->belongsTo(User::class);
     }
 
     // Relasi ke model CalonSiswa (One to Many)
     public function calonSiswa()
     {
-        return $this->belongsTo(CalonSiswa::class); // Relasi satu alamat dengan satu CalonSiswa
+        return $this->belongsTo(CalonSiswa::class);
     }
 }

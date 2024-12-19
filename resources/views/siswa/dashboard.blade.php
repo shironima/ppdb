@@ -37,9 +37,9 @@
                         <p>Data diri kamu sudah lengkap!</p>
                         <div class="status-section">
                             <p>Status Saat Ini :
-                            @if ($calonSiswa->status === 'verifikasi')
+                            @if ($calonSiswa->status === 'Terverifikasi')
                                 <span class="badge bg-success">Terverifikasi</span>
-                            @elseif ($calonSiswa->status === 'perbaikan')
+                            @elseif ($calonSiswa->status === 'Perlu Perbaikan')
                                 <span class="badge bg-warning">Perlu Perbaikan</span>
                             @else
                                 <span class="badge bg-secondary">Belum Terverifikasi</span>
@@ -90,6 +90,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- Card Data Orang Tua -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card info-card">
+                <div class="card-body">
+                    <h5 class="card-title">Data Orang Tua</h5>
+                    @php
+                        $dataOrangTua = auth()->user()->calonSiswa->dataOrangTua;
+                    @endphp
+                    @if ($dataOrangTua)
+                        <p>Data orang tua kamu sudah diisi!</p>
+                        <div class="status-section">
+                            <p>Status Saat Ini :
+                            @if ($dataOrangTua->status === 'verifikasi')
+                                <span class="badge bg-success">Terverifikasi</span>
+                            @elseif ($dataOrangTua->status === 'perbaikan')
+                                <span class="badge bg-warning">Perlu Perbaikan</span>
+                            @else
+                                <span class="badge bg-secondary">Belum Terverifikasi</span>
+                            @endif
+                            </p>
+                        </div>
+                        <a href="{{ route('data-orang-tua.index') }}" class="btn btn-primary mt-2">Lihat Data Orang Tua</a>
+                    @else
+                        <p>Data orang tua belum diisi.</p>
+                        <div class="status-section">
+                            <span class="badge bg-warning">Perlu Perbaikan</span>
+                        </div>
+                        <a href="{{ route('data-orang-tua.create') }}" class="btn btn-warning mt-2">Lengkapi Sekarang</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 @endsection

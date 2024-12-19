@@ -4,7 +4,7 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalonSiswaController;
-use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\DataOrangTuaController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
@@ -61,6 +61,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
     Route::get('/alamat/edit', [AlamatController::class, 'edit'])->name('alamat.edit');
     Route::post('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
+
+    // Data Orang Tua
+    Route::get('/data-orang-tua', [DataOrangTuaController::class, 'index'])->name('data-orang-tua.index');
+    Route::get('/data-orang-tua/create', [DataOrangTuaController::class, 'create'])->name('data-orang-tua.create');
+    Route::post('/data-orang-tua/store', [DataOrangTuaController::class, 'store'])->name('data-orang-tua.store');
+    Route::get('/data-orang-tua/edit', [DataOrangTuaController::class, 'edit'])->name('data-orang-tua.edit');
+    Route::post('/data-orang-tua/update', [DataOrangTuaController::class, 'update'])->name('data-orang-tua.update');
     
 });
 

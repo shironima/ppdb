@@ -8,10 +8,16 @@ use App\Models\CalonSiswa;
 
 class AlamatController extends Controller
 {
-    // Menampilkan daftar alamat
     public function index()
     {
+        $calonSiswa = auth()->user()->calonSiswa;
+
+        if (!$calonSiswa) {
+            return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
+
         $alamatCalonSiswa = auth()->user()->calonSiswa->alamat()->get();
+        
         return view('siswa.form-pendaftaran.alamat.index', compact('alamatCalonSiswa'));
     }
 
