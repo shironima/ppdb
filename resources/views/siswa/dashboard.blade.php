@@ -74,8 +74,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Alamat</h5>
                     @php
-                        $alamat = Auth::user()->calonSiswa->alamat; // Pastikan ini menggunakan relasi yang tepat
-                        $status = $alamat ? $alamat->status : null;
+                        $alamat = Auth::user()->calonSiswa->alamat ?? null;
                     @endphp
                     @if ($alamat)
                         <p>Alamat kamu sudah diisi!</p>
@@ -115,8 +114,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Data Orang Tua</h5>
                     @php
-                        $dataOrangTua = Auth::user()->calonSiswa->dataOrangTua; // Pastikan ini menggunakan relasi yang tepat
-                        $status = $dataOrangTua ? $dataOrangTua->status : null;
+                        $dataOrangTua = Auth::user()->calonSiswa->dataOrangTua ?? null;
                     @endphp
                     @if ($dataOrangTua)
                         <p>Data Orang Tua kamu sudah diisi!</p>
@@ -156,8 +154,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Data Rinci</h5>
                     @php
-                        $dataRinci = Auth::user()->calonSiswa->dataRinci; // Pastikan ini menggunakan relasi yang tepat
-                        $status = $dataRinci ? $dataRinci->status : null;
+                        $dataRinci = Auth::user()->calonSiswa->dataRinci ?? null;
                     @endphp
                     @if ($dataRinci)
                         <p>Data Rinci kamu sudah diisi!</p>

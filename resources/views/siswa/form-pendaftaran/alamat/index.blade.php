@@ -19,7 +19,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="card-title">Alamat Calon Siswa #{{ $index + 1 }}</h5>
+                    <h5 class="card-title">Alamat Calon Siswa</h5>
                     <p><strong>Alamat:</strong> {{ $alamat->alamat_lengkap }}</p>
                     <p><strong>RT/RW:</strong> {{ $alamat->rt }} / {{ $alamat->rw }}</p>
                     <p><strong>Kelurahan:</strong> {{ $alamat->kelurahan }}</p>

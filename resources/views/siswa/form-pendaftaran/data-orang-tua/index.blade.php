@@ -19,7 +19,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Orang Tua #{{ $index + 1 }}</h5>
+                    <h5 class="card-title">Data Orang Tua</h5>
                     <p><strong>Nama Ayah:</strong> {{ $orangTua->nama_ayah }}</p>
                     <p><strong>NIK Ayah:</strong> {{ $orangTua->nik_ayah }}</p>
                     <p><strong>Tahun Lahir Ayah:</strong> {{ $orangTua->tahun_lahir_ayah }}</p>

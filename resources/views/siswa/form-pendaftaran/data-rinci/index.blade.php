@@ -19,7 +19,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Rinci Calon Siswa #{{ $index + 1 }}</h5>
+                    <h5 class="card-title">Data Rinci Calon Siswa</h5>
                     <p><strong>Tinggi Badan:</strong> {{ $data->tinggi_badan }} cm</p>
                     <p><strong>Berat Badan:</strong> {{ $data->berat_badan }} kg</p>
                     <p><strong>Anak Ke:</strong> {{ $data->anak_ke }}</p>

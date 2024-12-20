@@ -19,7 +19,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Diri Calon Siswa #{{ $index + 1 }}</h5>
+                    <h5 class="card-title">Data Diri Calon Siswa</h5>
                     <p><strong>Nama Lengkap:</strong> {{ $siswa->nama_lengkap ?? 'N/A' }}</p>
                     <p><strong>Tempat Lahir:</strong> {{ $siswa->tempat_lahir ?? 'N/A' }}</p>
                     <p><strong>Tanggal Lahir:</strong> {{ isset($siswa->tanggal_lahir) ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('d M Y') : 'N/A' }}</p>

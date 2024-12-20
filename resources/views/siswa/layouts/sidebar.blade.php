@@ -92,7 +92,7 @@
 
         <!-- Berkas Pendidikan -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('berkas-pendidikan.index') }}">
                 <i class="bi bi-folder"></i>
                 <span>Berkas Pendidikan</span>
             </a>

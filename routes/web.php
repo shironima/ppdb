@@ -7,6 +7,7 @@ use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DataOrangTuaController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\DataRinciController;
+use App\Http\Controllers\BerkasPendidikanController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +28,13 @@ Route::get('/biaya-pendidikan', function () {
     return view('nav-page.biayapendidikan');
 })->name('nav-page.biayapendidikan');
 
+// Dashboard untuk calon siswa
+Route::get('/dashboard', function () {
+    return view('siswa.dashboard');
+})->middleware('verified','auth')->name('dashboard');
+
 // Rute untuk pengguna yang sudah login
 Route::middleware('auth')->group(function () {
-
-    // Dashboard untuk calon siswa
-    Route::get('/dashboard', function () {
-        return view('siswa.dashboard');
-    })->middleware('verified')->name('dashboard');
 
     // Rute profile untuk pengguna (siswa atau admin)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -77,6 +78,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/data-rinci/store', [DataRinciController::class, 'store'])->name('data-rinci.store');
     Route::get('/data-rinci/edit', [DataRinciController::class, 'edit'])->name('data-rinci.edit');
     Route::post('/data-rinci/update', [DataRinciController::class, 'update'])->name('data-rinci.update');
+
+    // Berkas Pendidikan
+    Route::get('/berkas-pendidikan', [BerkasPendidikanController::class, 'index'])->name('berkas-pendidikan.index');
+    Route::get('/berkas-pendidikan/create', [BerkasPendidikanController::class, 'create'])->name('berkas-pendidikan.create');
+    Route::post('/berkas-pendidikan/store', [BerkasPendidikanController::class, 'store'])->name('berkas-pendidikan.store');
+    Route::get('/berkas-pendidikan/edit', [BerkasPendidikanController::class, 'edit'])->name('berkas-pendidikan.edit');
+    Route::post('/berkas-pendidikan/update', [BerkasPendidikanController::class, 'update'])->name('berkas-pendidikan.update');
     
 });
 
