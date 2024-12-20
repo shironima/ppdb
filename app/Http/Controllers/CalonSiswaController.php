@@ -12,10 +12,12 @@ class CalonSiswaController extends Controller
     // Menampilkan data calon siswa yang terkait dengan user yang login
     public function index()
     {
-        // Mengambil data diri calon siswa yang terkait dengan user yang sedang login
-        $calonSiswa = auth()->user()->calonSiswa()->get();
+        $calonSiswa = Auth::user()->calonSiswa()->get();
 
-        // tampilkan halaman index dengan data calon siswa
+        if (!$calonSiswa) {
+            return view('siswa.form-pendaftaran.data-diri.index', ['calonSiswa' => null]);
+        }
+
         return view('siswa.form-pendaftaran.data-diri.index', compact('calonSiswa'));
     }
 

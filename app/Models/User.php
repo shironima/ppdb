@@ -80,4 +80,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Alamat::class, 'user_id');
     }
+
+    public function dataRinci()
+    {
+        return $this->hasOne(DataRinci::class, 'user_id');
+    }
+
+    public function dataOrangTua()
+    {
+        return $this->hasOne(DataOrangTua::class, 'user_id');
+    }
 }
