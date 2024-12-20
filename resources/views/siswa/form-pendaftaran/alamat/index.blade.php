@@ -29,12 +29,14 @@
                     <p><strong>Kode Pos:</strong> {{ $alamat->kode_pos }}</p>
                     <p><strong>Tinggal Dengan:</strong> {{ ucfirst($alamat->tinggal_dengan) }}</p>
                     <p><strong>Status:</strong>
-                        @if ($alamat->status === 'Belum Diverifikasi')
-                            <span class="badge bg-info text-dark"><i class="bi bi-info-circle me-1"></i> Belum Diverifikasi</span>
-                        @elseif ($alamat->status === 'Perlu Perbaikan')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Perlu Perbaikan</span>
-                        @elseif ($alamat->status === 'Terverifikasi')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Terverifikasi</span>
+                        @if ($alamat->status === 'Submitted')
+                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                        @elseif ($alamat->status === 'In Progress')
+                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                        @elseif ($alamat->status === 'Requires Revision')
+                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                        @elseif ($alamat->status === 'Verified')
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
                         @endif
                     </p>
 
