@@ -123,4 +123,19 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Facades
+    |--------------------------------------------------------------------------
+    |
+    | Here we register the Facades that we want to use in our application.
+    | The 'Auth' facade should be aliased to Laravel's Authentication
+    | service provider.
+    |
+    */
+
+    'aliases' => [
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+    ],
+
 ];

@@ -84,7 +84,7 @@
 
         <!-- Data Rinci -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('data-rinci.index') }}">
                 <i class="bi bi-list-ul"></i>
                 <span>Data Rinci</span>
             </a>

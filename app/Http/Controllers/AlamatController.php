@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Alamat;
 use App\Models\CalonSiswa;
 
@@ -13,7 +14,7 @@ class AlamatController extends Controller
         $calonSiswa = auth()->user()->calonSiswa;
 
         if (!$calonSiswa) {
-            return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
         $alamatCalonSiswa = auth()->user()->calonSiswa->alamat()->get();
@@ -21,6 +22,7 @@ class AlamatController extends Controller
         return view('siswa.form-pendaftaran.alamat.index', compact('alamatCalonSiswa'));
     }
 
+    // Menampilkan halaman untuk mengisi formulir Alamat
     public function create()
     {
         return view('siswa.form-pendaftaran.alamat.create');

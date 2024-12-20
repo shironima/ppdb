@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DataOrangTuaController;
 use App\Http\Controllers\AlamatController;
+use App\Http\Controllers\DataRinciController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -26,13 +27,14 @@ Route::get('/biaya-pendidikan', function () {
     return view('nav-page.biayapendidikan');
 })->name('nav-page.biayapendidikan');
 
-// Dashboard untuk calon siswa
-Route::get('dashboard', function () {
-    return view('siswa.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 // Rute untuk pengguna yang sudah login
 Route::middleware('auth')->group(function () {
+
+    // Dashboard untuk calon siswa
+    Route::get('/dashboard', function () {
+        return view('siswa.dashboard');
+    })->middleware('verified')->name('dashboard');
+
     // Rute profile untuk pengguna (siswa atau admin)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -68,6 +70,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/data-orang-tua/store', [DataOrangTuaController::class, 'store'])->name('data-orang-tua.store');
     Route::get('/data-orang-tua/edit', [DataOrangTuaController::class, 'edit'])->name('data-orang-tua.edit');
     Route::post('/data-orang-tua/update', [DataOrangTuaController::class, 'update'])->name('data-orang-tua.update');
+
+    // Data Rinci Calon Siswa
+    Route::get('/data-rinci', [DataRinciController::class, 'index'])->name('data-rinci.index');
+    Route::get('/data-rinci/create', [DataRinciController::class, 'create'])->name('data-rinci.create');
+    Route::post('/data-rinci/store', [DataRinciController::class, 'store'])->name('data-rinci.store');
+    Route::get('/data-rinci/edit', [DataRinciController::class, 'edit'])->name('data-rinci.edit');
+    Route::post('/data-rinci/update', [DataRinciController::class, 'update'])->name('data-rinci.update');
     
 });
 

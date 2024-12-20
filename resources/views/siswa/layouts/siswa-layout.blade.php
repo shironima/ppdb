@@ -23,12 +23,14 @@
     <link href="{{ asset('siswa/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('siswa/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
+    <!-- Bootstrap CSS terbaru -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    
     <!-- Template Main CSS File -->
     <link href="{{ asset('siswa/assets/css/style.css') }}" rel="stylesheet">
 
@@ -99,6 +101,9 @@
 
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap JS Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
 

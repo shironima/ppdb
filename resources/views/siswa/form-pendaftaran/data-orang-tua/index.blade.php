@@ -36,16 +36,18 @@
                     <p><strong>Penghasilan Ibu:</strong> {{ $orangTua->penghasilan_ibu }}</p>
                     <p><strong>Nomor HP Ibu:</strong> {{ $orangTua->nomor_hp_ibu }}</p>
                     <p><strong>Status:</strong>
-                        @if ($orangTua->status === 'Belum Diverifikasi')
-                            <span class="badge bg-info text-dark"><i class="bi bi-info-circle me-1"></i> Belum Diverifikasi</span>
-                        @elseif ($orangTua->status === 'Perlu Perbaikan')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Perlu Perbaikan</span>
-                        @elseif ($orangTua->status === 'Terverifikasi')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Terverifikasi</span>
+                        @if ($orangTua->status === 'Submitted')
+                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                        @elseif ($orangTua->status === 'In Progress')
+                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                        @elseif ($orangTua->status === 'Requires Revision')
+                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                        @elseif ($orangTua->status === 'Verified')
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
                         @endif
                     </p>
 
-                    @if($orangTua->status === 'Perlu Perbaikan')
+                    @if($orangTua->status === 'Requires Revision')
                         <a href="{{ route('data-orang-tua.edit', $orangTua->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     @endif
                 </div>

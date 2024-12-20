@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\CalonSiswa;
 use App\Models\DataOrangTua;
 
@@ -13,14 +14,13 @@ class DataOrangTuaController extends Controller
         $calonSiswa = auth()->user()->calonSiswa;
 
         if (!$calonSiswa) {
-            return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
-        $dataOrangTua = auth()->user()->calonSiswa->dataOrangTua()->get(); // Pastikan untuk mengambil data orang tua yang terhubung dengan calon siswa
+        $dataOrangTua = auth()->user()->calonSiswa->dataOrangTua()->get();
 
         return view('siswa.form-pendaftaran.data-orang-tua.index', compact('dataOrangTua'));
     }
-
 
     // Menampilkan halaman untuk mengisi formulir data orang tua
     public function create()
@@ -34,19 +34,19 @@ class DataOrangTuaController extends Controller
         // Validasi inputan
         $request->validate([
             'nama_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|string|max:255',
-            'tahun_lahir_ayah' => 'required|integer',
+            'nik_ayah' => 'required|string|max:16',
+            'tahun_lahir_ayah' => 'required|integer|min:1900|max:' . date('Y'), // batas tahun minimal 1900
             'pendidikan_ayah' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
             'pekerjaan_ayah' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-            'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,diatas 5jt',
-            'nomor_hp_ayah' => 'required|string|regex:/^[0-9]+$/|max:15',
+            'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
+            'nomor_hp_ayah' => 'required|string|regex:/^[0-9]{10,15}$/', // panjang nomor HP 10-15 digit
             'nama_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|string|max:255',
-            'tahun_lahir_ibu' => 'required|integer',
+            'nik_ibu' => 'required|string|max:16', 
+            'tahun_lahir_ibu' => 'required|integer|min:1900|max:' . date('Y'), // batas tahun minimal 1900
             'pendidikan_ibu' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
             'pekerjaan_ibu' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-            'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,diatas 5jt',
-            'nomor_hp_ibu' => 'required|string|regex:/^[0-9]+$/|max:15',
+            'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
+            'nomor_hp_ibu' => 'required|string|regex:/^[0-9]{10,15}$/', // panjang nomor HP 10-15 digit
         ]);
 
         // Periksa apakah data calon siswa sudah diisi
@@ -110,14 +110,14 @@ class DataOrangTuaController extends Controller
                 'tahun_lahir_ayah' => 'required|integer',
                 'pendidikan_ayah' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
                 'pekerjaan_ayah' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-                'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,diatas 5jt',
+                'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
                 'nomor_hp_ayah' => 'required|string|regex:/^[0-9]+$/|max:15',
                 'nama_ibu' => 'required|string|max:255',
                 'nik_ibu' => 'required|string|max:255',
                 'tahun_lahir_ibu' => 'required|integer',
                 'pendidikan_ibu' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
                 'pekerjaan_ibu' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-                'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,diatas 5jt',
+                'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
                 'nomor_hp_ibu' => 'required|string|regex:/^[0-9]+$/|max:15',
             ]);
 

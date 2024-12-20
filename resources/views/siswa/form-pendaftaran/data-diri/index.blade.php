@@ -30,16 +30,18 @@
                     <p><strong>NIK:</strong> {{ ucfirst($siswa->nik) }}</p>
                     <p><strong>Nomor HP:</strong> {{ $siswa->no_hp }}</p>
                     <p><strong>Status:</strong>
-                        @if ($siswa->status === 'belum diverifikasi')
-                            <span class="badge bg-info text-dark"><i class="bi bi-info-circle me-1"></i> Belum Diverifikasi</span>
-                        @elseif ($siswa->status === 'perlu perbaikan')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Perlu Perbaikan</span>
-                        @elseif ($siswa->status === 'terverifikasi')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Terverifikasi</span>
+                        @if ($calonSiswa->status === 'Submitted')
+                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                        @elseif ($calonSiswa->status === 'In Progress')
+                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                        @elseif ($calonSiswa->status === 'Requires Revision')
+                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                        @elseif ($calonSiswa->status === 'Verified')
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
                         @endif
                     </p>
                     
-                    @if($siswa->status === 'perlu perbaikan')
+                    @if($siswa->status === 'Requires Revision')
                         <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     @endif
                 </div>
