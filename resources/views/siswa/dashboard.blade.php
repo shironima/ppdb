@@ -187,6 +187,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- Card Berkas Pendidikan -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card info-card">
+                <div class="card-body">
+                    <h5 class="card-title">Berkas Data</h5>
+                    @php
+                        $berkasPendidikan = Auth::user()->calonSiswa->berkasPendidikan ?? null;
+                    @endphp
+                    @if ($berkasPendidikan)
+                        <p>Berkas kamu sudah diunggah!</p>
+                        <div class="status-section">
+                            <p>Status Saat Ini :
+                                @switch($status)
+                                    @case('Submitted')
+                                        <span class="badge bg-success">Submitted</span>
+                                        @break
+                                    @case('In Verified')
+                                        <span class="badge bg-success">Verified</span>
+                                        @break
+                                    @case('In Progress')
+                                        <span class="badge bg-success">In Progress</span>
+                                        @break
+                                    @case('Requires Revision')
+                                        <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @default
+                                        <span class="badge bg-secondary">{{ $status }}</span>
+                                @endswitch
+                            </p>
+                        </div>
+                        <a href="{{ route('berkas-pendidikan.index') }}" class="btn btn-primary mt-2">Lihat Berkas</a>
+                    @else
+                        <p>Berkas belum diunggah.</p>
+                        <div class="status-section"></div>
+                        <a href="{{ route('berkas-pendidikan.create') }}" class="btn btn-warning mt-2">Unggah Berkas</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </section>
 @endsection

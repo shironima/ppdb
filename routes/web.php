@@ -8,6 +8,7 @@ use App\Http\Controllers\DataOrangTuaController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\DataRinciController;
 use App\Http\Controllers\BerkasPendidikanController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -86,6 +87,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/berkas-pendidikan/edit', [BerkasPendidikanController::class, 'edit'])->name('berkas-pendidikan.edit');
     Route::post('/berkas-pendidikan/update', [BerkasPendidikanController::class, 'update'])->name('berkas-pendidikan.update');
     
+    // Pembayaran
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/paymentPage', [PaymentController::class, 'paymentPage'])->name('payments.paymentPage');
+    Route::post('/payments/notification', [PaymentController::class, 'notification'])->name('payments.notification');
 });
 
 

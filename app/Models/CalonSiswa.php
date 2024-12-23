@@ -56,4 +56,15 @@ class CalonSiswa extends Model
     {
         return $this->hasOne(BerkasPendidikan::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function isCompleted()
+    {
+        return $this->alamat && $this->dataOrangTua && $this->dataRinci && $this->berkasPendidikan;
+    }
+
 }
