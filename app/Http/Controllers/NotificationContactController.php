@@ -19,15 +19,15 @@ class NotificationContactController extends Controller
     {
         // Validasi data input
         $validated = $request->validate([
-            'email' => 'required|email', // Email boleh kosong, jika ada harus valid
-            'whatsapp' => 'required|string|regex:/^[0-9]+$/|max:15', // Validasi nomor WhatsApp
+            'email' => 'required|email', 
+            'whatsapp' => 'required|string|regex:/^[0-9]+$/|max:15', 
         ]);
 
         // Ambil user yang sedang login
         $user = Auth::user();
 
         // Pastikan ada relasi calon_siswa yang terkait dengan user
-        $calonSiswa = $user->calonSiswa; // Menggunakan relasi untuk mengambil calon siswa yang terkait dengan user
+        $calonSiswa = $user->calonSiswa;
 
         if (!$calonSiswa) {
             return redirect()->back()->with('error', 'Data calon siswa tidak ditemukan.');
@@ -36,10 +36,10 @@ class NotificationContactController extends Controller
         // Simpan data kontak notifikasi
         $notificationContact = new NotificationContact();
         $notificationContact->user_id = $user->id;
-        $notificationContact->calon_siswa_id = $calonSiswa->id; // Ambil id calon siswa
-        $notificationContact->email = $validated['email']; // Jika ada email, simpan
-        $notificationContact->whatsapp = $validated['whatsapp']; // Simpan nomor WhatsApp
-        $notificationContact->save(); // Simpan data ke database
+        $notificationContact->calon_siswa_id = $calonSiswa->id;
+        $notificationContact->email = $validated['email']; 
+        $notificationContact->whatsapp = $validated['whatsapp']; 
+        $notificationContact->save();
 
         // Kembalikan response dengan pesan sukses
         return redirect()->back()->with('success', 'Kontak notifikasi berhasil disimpan!');

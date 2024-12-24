@@ -100,4 +100,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Registration::class, 'calon_siswa_id', 'id');
     }
+
+    public function notificationContact()
+    {
+        return $this->hasOne(NotificationContact::class);
+    }
 }

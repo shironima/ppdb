@@ -30,7 +30,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-lg-4"><strong>Nomor Telepon</strong></div>
-                        <div class="col-lg-8">{{ $user->notificationContact->no_hp ?? 'Belum ada nomor telepon' }}</div>
+                        <div class="col-lg-8">{{ $user->notificationContact->whatsapp ?? 'Belum ada nomor telepon' }}</div>
                     </div>
                     <div class="alert alert-info mt-4">
                         <strong>Perhatian:</strong> Pastikan Anda melengkapi informasi kontak agar kami dapat menghubungi Anda.
