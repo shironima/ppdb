@@ -9,6 +9,8 @@ use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\DataRinciController;
 use App\Http\Controllers\BerkasPendidikanController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\NotificationContactController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -91,6 +93,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments/paymentPage', [PaymentController::class, 'paymentPage'])->name('payments.paymentPage');
     Route::post('/payments/notification', [PaymentController::class, 'notification'])->name('payments.notification');
+
+    // Status Pendaftaran
+    Route::get('/status-pendaftaran', [RegistrationController::class, 'index'])->name('status-pendaftaran.index');
+
+    // Notification Contact
+    Route::get('/notification-contact', [NotificationContactController::class, 'index'])->name('notification.index'); 
+    Route::post('/notification-contact', [NotificationContactController::class, 'store'])->name('notification.store'); 
+    Route::put('/notification-contact/update/{id}', [NotificationContactController::class, 'update'])->name('notification.update');
+    Route::delete('/notification-contact/{id}', [NotificationContactController::class, 'destroy'])->name('notification.destroy');
 });
 
 

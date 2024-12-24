@@ -115,9 +115,17 @@
 
         <!-- Status Pendaftaran -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('status-pendaftaran.index') }}">
                 <i class="bi bi-check-circle"></i>
                 <span>Status</span>
+            </a>
+        </li>
+
+        <!-- Kontak Notifikasi -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('notification.index') }}">
+                <i class="bi bi-bell"></i>
+                <span>Notifikasi</span>
             </a>
         </li>
     </ul>

@@ -19,8 +19,7 @@ class PaymentController extends Controller
         $user = Auth::user();
         $calonSiswa = $user->calonSiswa;
 
-        // Cek jika calon siswa belum melengkapi data diri
-        if (!$calonSiswa->isCompleted()) {
+        if (!$calonSiswa) {
             return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 

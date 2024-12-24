@@ -95,4 +95,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class, 'calon_siswa_id', 'id');
     }
+
+    public function registration()
+    {
+        return $this->hasOne(Registration::class, 'calon_siswa_id', 'id');
+    }
 }

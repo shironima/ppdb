@@ -23,7 +23,7 @@ class ProfileController extends Controller
             return view('profile.admin.edit', ['user' => $user]);
         }
 
-        // Jika pengguna bukan admin (misalnya siswa), arahkan ke halaman profile biasa
+        // Jika pengguna bukan admin (role : siswa), arahkan ke halaman profile biasa
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
