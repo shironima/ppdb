@@ -44,7 +44,7 @@
     </div>
 
     <div class="row">
-        <!-- Status Pendaftaran Saya (Left) -->
+        <!-- Status Pendaftaran Saya -->
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
@@ -62,12 +62,17 @@
                             <tbody>
                                 @php
                                 $formulir = [
-                                    ['nama' => 'Data Diri', 'status' => $user->calonSiswa->status ?? null, 'route' => 'data-diri.edit'],
-                                    ['nama' => 'Alamat', 'status' => $user->calonSiswa->alamat->status ?? null, 'route' => 'alamat.edit'],
-                                    ['nama' => 'Data Orang Tua', 'status' => $user->calonSiswa->dataOrangTua->status ?? null, 'route' => 'data-orang-tua.edit'],
-                                    ['nama' => 'Data Rinci', 'status' => $user->calonSiswa->dataRinci->status ?? null, 'route' => 'data-rinci.edit'],
-                                    ['nama' => 'Berkas Pendidikan', 'status' => $user->calonSiswa->berkasPendidikan->status ?? null, 'route' => 'berkas-pendidikan.edit'],
-                                    ['nama' => 'Pembayaran Formulir', 'status' => $user->calonSiswa->payments->first()?->status ?? null, 'route' => 'payments.edit']
+                                    ['nama' => 'Data Diri', 'status' => $user->calonSiswa->status ?? null, 'route' => 'data-diri.create'],
+                                    ['nama' => 'Alamat', 'status' => $user->calonSiswa->alamat->status ?? null, 'route' => 'alamat.create'],
+                                    ['nama' => 'Data Orang Tua', 'status' => $user->calonSiswa->dataOrangTua->status ?? null, 'route' => 'data-orang-tua.create'],
+                                    ['nama' => 'Data Rinci', 'status' => $user->calonSiswa->dataRinci->status ?? null, 'route' => 'data-rinci.create'],
+                                    ['nama' => 'Berkas Pendidikan', 'status' => $user->calonSiswa->berkasPendidikan->status ?? null, 'route' => 'berkas-pendidikan.create'],
+                                    [
+                                        'nama' => 'Pembayaran Formulir',
+                                        'status' => $user->calonSiswa->payments->isNotEmpty() ? 'Submitted' : 'Belum Diisi',
+                                        'route' => 'payments.edit',
+                                        'payment' => $user->calonSiswa->payments->first()
+                                    ]
                                 ];
                                 @endphp
                                 @foreach($formulir as $key => $data)
@@ -83,15 +88,30 @@
                                                 <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
                                             @elseif ($data['status'] === 'Verified')
                                                 <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                                            @elseif (isset($data['payment']) && $data['payment'] && $data['payment']->count() > 0)
+                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Pembayaran Diterima</span>
                                             @else
                                                 <span class="badge bg-light text-dark"><i class="bi bi-x-circle me-1"></i>Belum Diisi</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($data['status'] === 'Requires Revision')
-                                                <a href="{{ route($data['route']) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            @if (isset($data['payment']) && $data['payment'] && $data['payment']->count() > 0)  
+                                                <!-- Tidak ada tombol aksi jika pembayaran sudah diterima -->
+                                                <span class="text-muted">-</span>  
+                                            @elseif ($data['status'] === 'Submitted')
+                                                <!-- Tidak ada tombol aksi jika formulir sudah disubmit -->
+                                                <span class="text-muted">-</span>  
+                                            @elseif ($data['status'] === 'Requires Revision')
+                                                <!-- Tombol Edit jika formulir sudah disubmit dan memerlukan revisi -->
+                                                <a href="{{ route($data['route']) }}" class="btn btn-warning btn-sm">Edit</a>  
+                                            @elseif ($data['status'] === null)
+                                                <!-- Tombol Lengkapi jika formulir belum diisi (status null) -->
+                                                <a href="{{ route($data['route']) }}" class="btn btn-primary btn-sm">Lengkapi Sekarang</a>  
+                                            @elseif (!isset($data['payment']) || (isset($data['payment']) && $data['payment']->count() === 0))
+                                                <!-- Tombol Bayar Sekarang jika belum ada pembayaran -->
+                                                <a href="{{ route('payments.paymentPage') }}" class="btn btn-primary btn-sm">Bayar Sekarang</a>  
                                             @else
-                                                <span class="text-muted">-</span>
+                                                <span class="text-muted">-</span>  <!-- Tidak ada tombol aksi lainnya -->
                                             @endif
                                         </td>
                                     </tr>
@@ -103,7 +123,7 @@
             </div>
         </div>
 
-        <!-- Keterangan Status (Right) -->
+        <!-- Keterangan Status -->
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -120,5 +140,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Tombol Kirim Notifikasi -->
+    <div class="row mt-3">
+        <div class="col-lg-12">
+        @if ($allFormSubmitted && $isContactComplete)
+            <form action="{{ route('registration.submit') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success btn-sm">Kirim Pendaftaran Saya</button>
+            </form>
+        @else
+            <button class="btn btn-muted btn-sm" disabled>Kirim Pendaftaran Saya</button>
+        @endif
+        </div>
+    </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+    // Cek apakah session flash ada
+    @if (session('success'))
+        Swal.fire({
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    @elseif (session('already_submitted'))
+        Swal.fire({
+            title: 'Peringatan!',
+            text: '{{ session('already_submitted') }}',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+    @elseif (session('error'))
+        Swal.fire({
+            title: 'Kesalahan!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    @endif
+</script>
+@endpush

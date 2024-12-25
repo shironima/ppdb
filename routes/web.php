@@ -103,6 +103,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/notification-contact', [NotificationContactController::class, 'store'])->name('notification.store'); 
     Route::put('/notification-contact/update/{id}', [NotificationContactController::class, 'update'])->name('notification.update');
     Route::delete('/notification-contact/{id}', [NotificationContactController::class, 'destroy'])->name('notification.destroy');
+
+    // Kirim Notifikasi - kirim pendaftaran ke admin
+    Route::get('/send-notification', [RegistrationController::class, 'sendNotification'])->name('send-notification');
+    Route::post('/registration/submit', [RegistrationController::class, 'submit'])->name('registration.submit');
+
+
 });
 
 

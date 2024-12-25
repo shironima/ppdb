@@ -22,7 +22,7 @@ class Registration extends Model
         'data_orang_tua_id',
         'data_rinci_id',
         'berkas_pendidikan_id',
-        'payment_id',
+        'payments_id',
     ];
 
     protected static function boot()

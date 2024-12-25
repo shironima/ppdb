@@ -23,7 +23,7 @@ class Payment extends Model
     // Relasi dengan model CalonSiswa
     public function calonSiswa()
     {
-        return $this->belongsTo(CalonSiswa::class);
+        return $this->belongsTo(CalonSiswa::class, 'calon_siswa_id');
     }
 
     // Fungsi untuk memeriksa apakah pembayaran telah diverifikasi
