@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KelolaAkunController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalonSiswaController;
 use App\Http\Controllers\DataOrangTuaController;
@@ -107,7 +108,7 @@ Route::middleware('auth')->group(function () {
 
 // Rute untuk Admin
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
-    // Rute dashboard untuk admin
+    // Dashboard admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // Tanya Admin - Jawaban
@@ -115,10 +116,26 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::post('/admin/hubungi-admin/{id}', [JawabanController::class, 'store'])->name('admin.hubungi-admin.store');
     Route::get('/admin/hubungi-admin/menunggu', [JawabanController::class, 'menungguJawaban'])->name('admin.hubungi-admin.menunggu');
     
-    // Rute profile untuk admin
+    // profile untuk admin
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+
+    // Kelola Akun - Akun role : Admin
+    Route::get('/admin/kelola-akun', [KelolaAkunController::class, 'indexAdmin'])->name('admin.kelola-akun.admin');
+    Route::get('/admin/kelola-akun/create', [KelolaAkunController::class, 'createAkunAdmin'])->name('admin.kelola-akun.admin.create');
+    Route::post('/admin/kelola-akun/store', [KelolaAkunController::class, 'storeAkunAdmin'])->name('admin.kelola-akun.admin.store');
+    Route::get('/admin/kelola-akun/edit/{id}', [KelolaAkunController::class, 'editAkunAdmin'])->name('admin.kelola-akun.admin.edit');
+    Route::put('/admin/kelola-akun/update/{id}', [KelolaAkunController::class, 'updateAkunAdmin'])->name('admin.kelola-akun.admin.update');
+    Route::delete('/admin/kelola-akun', [KelolaAkunController::class, 'destroyAkunAdmin'])->name('admin.kelola-akun.admin.destroy');
+
+    // Kelola Akun - Akun role : Siswa
+    Route::get('/admin/kelola-akun/siswa', [KelolaAkunController::class, 'indexSiswa'])->name('admin.kelola-akun.siswa');
+    Route::get('/admin/kelola-akun/siswa/create', [KelolaAkunController::class, 'createAkunSiswa'])->name('admin.kelola-akun.siswa.create');
+    Route::post('/admin/kelola-akun/siswa/store', [KelolaAkunController::class, 'storeAkunSiswa'])->name('admin.kelola-akun.siswa.store');
+    Route::get('/admin/kelola-akun/siswa/edit/{id}', [KelolaAkunController::class, 'editAkunSiswa'])->name('admin.kelola-akun.siswa.edit');
+    Route::put('/admin/kelola-akun/siswa/update/{id}', [KelolaAkunController::class, 'updateAkunSiswa'])->name('admin.kelola-akun.siswa.update');
+    Route::delete('/admin/kelola-akun/siswa', [KelolaAkunController::class, 'destroyAkunSiswa'])->name('admin.kelola-akun.siswa.destroy');
 });
 
 require __DIR__.'/auth.php';

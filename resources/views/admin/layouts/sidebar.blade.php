@@ -86,8 +86,8 @@
         </a>
         <div id="collapseAkun" class="collapse" aria-labelledby="headingAkun" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Admin</a>
-                <a class="collapse-item" href="#">Calon Siswa</a>
+                <a class="collapse-item" href="{{ route('admin.kelola-akun.admin') }}">Admin</a>
+                <a class="collapse-item" href="{{ route('admin.kelola-akun.siswa') }}">Calon Siswa</a>
             </div>
         </div>
     </li>
