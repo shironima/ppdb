@@ -15,10 +15,9 @@ class PertanyaanController extends Controller
      */
     public function index()
     {
-        // Ambil semua pertanyaan yang menunggu jawaban
+        // Ambil pertanyaan hanya untuk user yang sedang login
         $pertanyaans = Pertanyaan::with('user')
-                                ->where('status', 'menunggu jawaban')
-                                ->orWhere('status', 'terjawab')
+                                ->where('user_id', auth()->id())
                                 ->get();
 
         // Tampilkan pesan jika belum ada pertanyaan
