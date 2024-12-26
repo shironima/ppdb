@@ -16,10 +16,10 @@
 <section class="section">
     <div class="row">
         <!-- Informasi Calon Siswa dan Kontak -->
-        <div class="col-lg-12">
+        <div class="col-lg-7">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Informasi Calon Siswa</h5>
+                    <h5 class="card-title">Rincian Informasi Calon Siswa</h5>
                     <div class="row mb-3">
                         <div class="col-lg-4"><strong>Nama Calon Siswa</strong></div>
                         <div class="col-lg-8">{{ $user->calonSiswa->nama_lengkap ?? '-' }}</div>
@@ -41,11 +41,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Card untuk Kirim Pendaftaran Saya -->
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Kirim Pendaftaran Saya</h5>
+                    <ul>
+                        <li>Setelah Anda mengisi semua formulir dengan lengkap, Anda dapat mengirimkan pendaftaran Anda untuk diproses lebih lanjut.</li>
+                        <li>Tombol <badge>Kirim Pendaftaran Saya</badge> akan aktif ketika semua formulir telah diisi dengan benar dan informasi kontak lengkap.</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <strong>Perhatian:</strong> Anda hanya dapat mengirimkan pendaftaran sekali. Pastikan semua data sudah benar sebelum mengirim.
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row">
         <!-- Status Pendaftaran Saya -->
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Status Pendaftaran Saya</h5>
@@ -119,12 +136,21 @@
                             </tbody>
                         </table>
                     </div>
+                    <!-- Tombol Kirim Pendaftaran Saya dipindahkan di sini -->
+                    @if ($allFormSubmitted && $isContactComplete)
+                        <form action="{{ route('registration.submit') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success btn-sm w-100">Kirim Pendaftaran Saya</button>
+                        </form>
+                    @else
+                        <button class="btn btn-muted btn-sm w-100" disabled>Kirim Pendaftaran Saya</button>
+                    @endif
                 </div>
             </div>
         </div>
 
         <!-- Keterangan Status -->
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Keterangan Status</h5>
@@ -141,19 +167,6 @@
         </div>
     </div>
 
-    <!-- Tombol Kirim Notifikasi -->
-    <div class="row mt-3">
-        <div class="col-lg-12">
-        @if ($allFormSubmitted && $isContactComplete)
-            <form action="{{ route('registration.submit') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-success btn-sm">Kirim Pendaftaran Saya</button>
-            </form>
-        @else
-            <button class="btn btn-muted btn-sm" disabled>Kirim Pendaftaran Saya</button>
-        @endif
-        </div>
-    </div>
 </section>
 @endsection
 
