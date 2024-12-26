@@ -23,7 +23,7 @@ class RegistrationController extends Controller
             'calonSiswa.payments',
             'notificationContact',
         ]);
-    
+
         // Tentukan status untuk setiap formulir
         $formulir = [
             $user->calonSiswa->status ?? null,
@@ -31,7 +31,7 @@ class RegistrationController extends Controller
             $user->calonSiswa->dataOrangTua->status ?? null,
             $user->calonSiswa->dataRinci->status ?? null,
             $user->calonSiswa->berkasPendidikan->status ?? null,
-            $user->calonSiswa->payments->isNotEmpty() ? 'Submitted' : null, // Jika data pembayaran ada, anggap "Submitted"
+            $user->calonSiswa->payments->isNotEmpty() ? 'Submitted' : null,
         ];
 
         // Cek jika semua formulir sudah disubmit
@@ -46,27 +46,6 @@ class RegistrationController extends Controller
         return view('siswa.registration.index', compact('user', 'allFormSubmitted', 'isContactComplete'));
     }
 
-    public function sendNotification()
-    {
-        $user = Auth::user();
-
-        // Pastikan kelengkapan data
-        if (!$user->notificationContact || !$user->notificationContact->email) {
-            return back()->withErrors('Data kontak belum lengkap.');
-        }
-
-        $userEmail = $user->notificationContact->email;
-        $adminEmail = 'gabrielahensky.dev@gmail.com'; // email admin sistem.
-
-        // Kirim email ke User
-        Mail::to($userEmail)->send(new SiswaNotificationMail($user));
-
-        // Kirim email ke Admin
-        Mail::to($adminEmail)->send(new AdminNotificationMail($user));
-
-        return back()->with('success', 'Notifikasi berhasil dikirim.');
-    }
-
     public function submit()
     {
         $user = Auth::user()->load([
@@ -76,6 +55,7 @@ class RegistrationController extends Controller
             'calonSiswa.dataRinci',
             'calonSiswa.berkasPendidikan',
             'calonSiswa.payments',
+            'notificationContact',
         ]);
 
         $calonSiswa = $user->calonSiswa;
@@ -118,8 +98,20 @@ class RegistrationController extends Controller
                 'data_rinci_id' => $calonSiswa->dataRinci->id,
             ]);
 
+            // Email tujuan
+            $userEmail = $user->notificationContact->email ?? null;
+            $adminEmail = 'gabrielahensky.dev@gmail.com';
+
+            // Kirim email ke user (calon siswa) jika email tersedia
+            if ($userEmail) {
+                Mail::to($userEmail)->send(new SiswaNotificationMail($user));
+            }
+
+            // Kirim email ke admin
+            Mail::to($adminEmail)->send(new AdminNotificationMail($user));
+
             // Redirect dengan pesan sukses
-            return back()->with('success', 'Pendaftaran Anda telah berhasil dikirim!');
+            return back()->with('success', 'Pendaftaran Anda telah berhasil dikirim dan notifikasi email telah dikirim!');
         } catch (\Exception $e) {
             // Tangani kesalahan jika terjadi
             return back()->with('error', 'Terjadi kesalahan saat mengirim pendaftaran: ' . $e->getMessage());
