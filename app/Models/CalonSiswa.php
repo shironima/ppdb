@@ -59,7 +59,7 @@ class CalonSiswa extends Model
 
     public function payments()
     {
-        return $this->hasMany(Payment::class, 'calon_siswa_id', 'id');
+        return $this->hasOne(Payment::class, 'calon_siswa_id', 'id');
     }
 
     public function isCompleted()

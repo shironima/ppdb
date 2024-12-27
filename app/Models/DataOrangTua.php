@@ -25,6 +25,7 @@ class DataOrangTua extends Model
         'pekerjaan_ibu',
         'penghasilan_ibu',
         'nomor_hp_ibu',
+        'status',
     ];
 
     /**
@@ -41,5 +42,10 @@ class DataOrangTua extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class);
     }
 }
