@@ -15,6 +15,10 @@ class RegistrationController extends Controller
 {
     public function index()
     {
+        // Ambil data calon siswa terkait dengan user yang login
+        $calonSiswa = auth()->user()->calonSiswa;
+
+        // Ambil data lengkap user dan relasi calon siswa
         $user = Auth::user()->load([
             'calonSiswa.alamat',
             'calonSiswa.dataOrangTua',
@@ -31,7 +35,8 @@ class RegistrationController extends Controller
             $user->calonSiswa->dataOrangTua->status ?? null,
             $user->calonSiswa->dataRinci->status ?? null,
             $user->calonSiswa->berkasPendidikan->status ?? null,
-            $user->calonSiswa->payments->isNotEmpty() ? 'Submitted' : null,
+            // Cek status pembayaran
+            $user->calonSiswa->payments->where('transaction_status', 'settlement')->count() > 0 ? 'Submitted' : 'Belum Diisi',
         ];
 
         // Cek jika semua formulir sudah disubmit
@@ -42,8 +47,8 @@ class RegistrationController extends Controller
             && !empty($user->notificationContact->email) 
             && !empty($user->notificationContact->whatsapp);
 
-        // Kirim ke view
-        return view('siswa.registration.index', compact('user', 'allFormSubmitted', 'isContactComplete'));
+        // Kirim data ke view
+        return view('siswa.registration.index', compact('user', 'allFormSubmitted', 'isContactComplete', 'calonSiswa'));
     }
 
     public function submit()
@@ -78,13 +83,13 @@ class RegistrationController extends Controller
             return back()->with('already_submitted', 'Anda sudah mengirim pendaftaran sebelumnya.');
         }
 
-        // Ambil pembayaran pertama (jika ada)
+        // Cek apakah calon siswa memiliki pembayaran yang terkait
+        // Mengambil pembayaran pertama
         $payment = $calonSiswa->payments->first();
 
-        // Pastikan pembayaran ditemukan
-        if (!$payment) {
-            return back()->with('error', 'Data pembayaran tidak ditemukan. Silakan selesaikan pembayaran terlebih dahulu.');
-        }
+        if (!$payment || $payment->transaction_status !== 'settlement') {
+            return back()->with('error', 'Pembayaran belum diterima atau belum selesai. Silakan selesaikan pembayaran terlebih dahulu.');
+        }        
 
         try {
             // Buat entri baru di tabel registrations
@@ -98,7 +103,7 @@ class RegistrationController extends Controller
                 'data_rinci_id' => $calonSiswa->dataRinci->id,
             ]);
 
-            // Email tujuan
+            // Kirim notifikasi email
             $userEmail = $user->notificationContact->email ?? null;
             $adminEmail = 'gabrielahensky.dev@gmail.com';
 

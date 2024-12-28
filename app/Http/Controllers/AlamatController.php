@@ -28,16 +28,15 @@ class AlamatController extends Controller
         return view('siswa.form-pendaftaran.alamat.create');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        $alamat = auth()->user()->calonSiswa->alamat;
+        $alamat = Alamat::where('id', $id)->firstOrFail();
+        
         return view('siswa.form-pendaftaran.alamat.edit', compact('alamat'));
     }
 
-    // Menyimpan atau memperbarui data alamat calon siswa
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        // Validasi inputan
         $request->validate([
             'alamat_lengkap' => 'required|string|max:255',
             'rt' => 'required|string|max:5',
@@ -50,10 +49,8 @@ class AlamatController extends Controller
             'tinggal_dengan' => 'required|in:orang_tua,wali-famili,panti-asrama',
         ]);
 
-        // Mengambil data alamat calon siswa
-        $alamat = auth()->user()->calonSiswa->alamat;
+        $alamat = Alamat::findOrFail($id);  // Temukan alamat berdasarkan ID yang diberikan
 
-        // Memperbarui data alamat
         $alamat->update([
             'alamat_lengkap' => $request->alamat_lengkap,
             'rt' => $request->rt,
@@ -66,7 +63,6 @@ class AlamatController extends Controller
             'tinggal_dengan' => $request->tinggal_dengan,
         ]);
 
-        // Redirect ke halaman alamat dengan pesan sukses
         return redirect()->route('alamat.index')->with('success', 'Alamat berhasil diperbarui!');
     }
 

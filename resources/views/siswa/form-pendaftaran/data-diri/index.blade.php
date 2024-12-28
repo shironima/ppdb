@@ -42,7 +42,7 @@
                     </p>
                     
                     @if($siswa->status === 'Requires Revision')
-                        <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning">Edit</a>
                     @endif
                 </div>
             </div>

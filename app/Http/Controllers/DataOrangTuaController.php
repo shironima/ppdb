@@ -86,21 +86,28 @@ class DataOrangTuaController extends Controller
     }
 
     // Menampilkan halaman edit
-    public function edit()
+    public function edit($id)
     {
+        // Mendapatkan calon siswa yang sedang login
         $calonSiswa = auth()->user()->calonSiswa;
 
         if (!$calonSiswa) {
             return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
-        $dataOrangTua = $calonSiswa->dataOrangTua;
+        // Ambil data orang tua berdasarkan ID
+        $dataOrangTua = $calonSiswa->dataOrangTua->find($id);
 
+        if (!$dataOrangTua) {
+            return redirect()->route('data-orang-tua.index')->with('warning', 'Data orang tua tidak ditemukan.');
+        }
+
+        // Menampilkan halaman edit dengan data orang tua
         return view('siswa.form-pendaftaran.data-orang-tua.edit', compact('dataOrangTua'));
     }
 
     // Memperbarui data orang tua
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         try {
             // Validasi input
@@ -121,16 +128,21 @@ class DataOrangTuaController extends Controller
                 'nomor_hp_ibu' => 'required|string|regex:/^[0-9]+$/|max:15',
             ]);
 
-            // Periksa apakah calon siswa ada
+            // Mendapatkan calon siswa yang sedang login
             $calonSiswa = auth()->user()->calonSiswa;
 
             if (!$calonSiswa) {
                 return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
             }
 
-            // Perbarui data
-            $dataOrangTua = $calonSiswa->dataOrangTua;
+            // Mendapatkan data orang tua berdasarkan ID
+            $dataOrangTua = $calonSiswa->dataOrangTua->find($id);
 
+            if (!$dataOrangTua) {
+                return redirect()->route('data-orang-tua.index')->with('warning', 'Data orang tua tidak ditemukan.');
+            }
+
+            // Perbarui data orang tua
             $dataOrangTua->update($validatedData);
 
             return redirect()->route('data-orang-tua.index')->with('success', 'Data orang tua berhasil diperbarui.');
@@ -138,4 +150,5 @@ class DataOrangTuaController extends Controller
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }
     }
+
 }

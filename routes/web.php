@@ -59,30 +59,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/data-diri', [CalonSiswaController::class, 'index'])->name('calon-siswa.index');
     Route::get('/data-diri/create', [CalonSiswaController::class, 'create'])->name('calon-siswa.create');
     Route::post('/data-diri', [CalonSiswaController::class, 'store'])->name('calon-siswa.store');
-    Route::get('/data-diri/edit', [CalonSiswaController::class, 'edit'])->name('calon-siswa.edit');
-    Route::put('/data-diri', [CalonSiswaController::class, 'update'])->name('calon-siswa.update');
+    Route::get('/data-diri/{id}/edit', [CalonSiswaController::class, 'edit'])->name('calon-siswa.edit');
+    Route::put('/data-diri/{id}', [CalonSiswaController::class, 'update'])->name('calon-siswa.update');
     Route::delete('/data-diri', [CalonSiswaController::class, 'destroy'])->name('calon-siswa.destroy');  
 
     // Alamat
     Route::get('/alamat', [AlamatController::class, 'index'])->name('alamat.index');
     Route::get('/alamat/create', [AlamatController::class, 'create'])->name('alamat.create');
     Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
-    Route::get('/alamat/edit', [AlamatController::class, 'edit'])->name('alamat.edit');
-    Route::post('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
+    Route::get('/alamat/edit/{id}', [AlamatController::class, 'edit'])->name('alamat.edit');  
+    Route::put('/alamat/update/{id}', [AlamatController::class, 'update'])->name('alamat.update'); 
 
     // Data Orang Tua
     Route::get('/data-orang-tua', [DataOrangTuaController::class, 'index'])->name('data-orang-tua.index');
     Route::get('/data-orang-tua/create', [DataOrangTuaController::class, 'create'])->name('data-orang-tua.create');
     Route::post('/data-orang-tua/store', [DataOrangTuaController::class, 'store'])->name('data-orang-tua.store');
-    Route::get('/data-orang-tua/edit', [DataOrangTuaController::class, 'edit'])->name('data-orang-tua.edit');
-    Route::post('/data-orang-tua/update', [DataOrangTuaController::class, 'update'])->name('data-orang-tua.update');
+    Route::get('/data-orang-tua/edit/{id}', [DataOrangTuaController::class, 'edit'])->name('data-orang-tua.edit');
+    Route::put('/data-orang-tua/update/{id}', [DataOrangTuaController::class, 'update'])->name('data-orang-tua.update');
 
     // Data Rinci Calon Siswa
     Route::get('/data-rinci', [DataRinciController::class, 'index'])->name('data-rinci.index');
     Route::get('/data-rinci/create', [DataRinciController::class, 'create'])->name('data-rinci.create');
     Route::post('/data-rinci/store', [DataRinciController::class, 'store'])->name('data-rinci.store');
-    Route::get('/data-rinci/edit', [DataRinciController::class, 'edit'])->name('data-rinci.edit');
-    Route::post('/data-rinci/update', [DataRinciController::class, 'update'])->name('data-rinci.update');
+    Route::get('/data-rinci/{id}/edit', [DataRinciController::class, 'edit'])->name('data-rinci.edit');
+    Route::put('/data-rinci/{id}', [DataRinciController::class, 'update'])->name('data-rinci.update');
 
     // Berkas Pendidikan
     Route::get('/berkas-pendidikan', [BerkasPendidikanController::class, 'index'])->name('berkas-pendidikan.index');

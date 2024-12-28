@@ -22,14 +22,17 @@ class CalonSiswaController extends Controller
     }
 
     // Form untuk mengedit data calon siswa
-    public function edit()
+    public function edit($id)
     {
-        $calonSiswa = auth()->user()->calonSiswa;
+        // Ambil data calon siswa berdasarkan id
+        $calonSiswa = CalonSiswa::findOrFail($id);
+
+        // Kembalikan view dengan data calon siswa
         return view('siswa.form-pendaftaran.data-diri.edit', compact('calonSiswa'));
     }
 
     // Update data calon siswa
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
@@ -37,15 +40,20 @@ class CalonSiswaController extends Controller
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'agama' => 'required|in:katholik,kristen,islam,hindu,budha,lainnya',
-            'nisn' => 'required|string|unique:calon_siswa,nisn,' . auth()->user()->calonSiswa->id, 
+            'nisn' => 'required|string|unique:calon_siswa,nisn,' . $id,
             'no_kk' => 'required|string|max:100',
             'nik' => 'required|string|max:50',
             'no_hp' => 'required|string|regex:/^[0-9]+$/|max:15', // Validasi nomor HP dengan format yang benar
         ]);
 
-        // Ambil data calon siswa terkait dengan user yang sedang login
-        $calonSiswa = auth()->user()->calonSiswa;
-        
+        // Ambil data calon siswa yang ingin diupdate
+        $calonSiswa = CalonSiswa::findOrFail($id);
+
+        // Pastikan hanya calon siswa yang dimiliki oleh user yang sedang login yang dapat diupdate
+        if ($calonSiswa->user_id !== Auth::id()) {
+            return redirect()->route('calon-siswa.index')->with('error', 'Anda tidak memiliki akses untuk memperbarui data ini.');
+        }
+
         // Update data calon siswa
         $calonSiswa->update([
             'nama_lengkap' => $request->nama_lengkap,

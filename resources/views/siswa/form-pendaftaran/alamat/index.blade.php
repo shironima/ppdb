@@ -40,7 +40,7 @@
                         @endif
                     </p>
 
-                    @if($alamat->status === 'perlu perbaikan')
+                    @if($alamat->status === 'Requires Revision')
                         <a href="{{ route('alamat.edit', $alamat->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     @endif
                 </div>
