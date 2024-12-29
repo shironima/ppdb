@@ -28,19 +28,12 @@
                             <td>{{ $siswa->name }}</td>
                             <td>{{ $siswa->email }}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning editBtn" 
-                                    data-id="{{ $siswa->id }}" 
-                                    data-name="{{ $siswa->name }}" 
-                                    data-email="{{ $siswa->email }}">
+                                <button class="btn btn-sm btn-warning editBtn" data-id="{{ $siswa->id }}" data-name="{{ $siswa->name }}" data-email="{{ $siswa->email }}">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-                                <form action="{{ route('admin.kelola-akun.siswa.destroy', $siswa->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger deleteBtn" onclick="return confirm('Yakin ingin menghapus akun ini?')">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </form>
+                                <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $siswa->id }}">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -173,6 +166,39 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire('Berhasil!', 'Akun berhasil diperbarui.', 'success').then(() => location.reload());
+                }
+            });
+        });
+
+        // SweetAlert for Delete
+        $(document).on('click', '.deleteBtn', function() {
+            const id = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin ingin menghapus akun ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                preConfirm: () => {
+                    return fetch(`{{ route('admin.kelola-akun.admin.destroy', ':id') }}`.replace(':id', id), {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }).then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => { throw new Error(err.message || 'Gagal menghapus akun.') });
+                        }
+                        return response.json();
+                    }).catch(error => {
+                        Swal.showValidationMessage(`Terjadi kesalahan: ${error.message}`);
+                        return false;
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Berhasil!', 'Akun berhasil dihapus.', 'success').then(() => {
+                        location.reload();
+                    });
                 }
             });
         });

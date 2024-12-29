@@ -139,12 +139,12 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 
     // Kelola Akun - Akun role : Admin
-    Route::get('/admin/kelola-akun', [KelolaAkunController::class, 'indexAdmin'])->name('admin.kelola-akun.admin');
-    Route::get('/admin/kelola-akun/create', [KelolaAkunController::class, 'createAkunAdmin'])->name('admin.kelola-akun.admin.create');
-    Route::post('/admin/kelola-akun/store', [KelolaAkunController::class, 'storeAkunAdmin'])->name('admin.kelola-akun.admin.store');
-    Route::get('/admin/kelola-akun/edit/{id}', [KelolaAkunController::class, 'editAkunAdmin'])->name('admin.kelola-akun.admin.edit');
-    Route::put('/admin/kelola-akun/update/{id}', [KelolaAkunController::class, 'updateAkunAdmin'])->name('admin.kelola-akun.admin.update');
-    Route::delete('/admin/kelola-akun', [KelolaAkunController::class, 'destroyAkunAdmin'])->name('admin.kelola-akun.admin.destroy');
+    Route::get('/admin/kelola-akun/admin', [KelolaAkunController::class, 'indexAdmin'])->name('admin.kelola-akun.admin');
+    Route::get('/admin/kelola-akun/admin/create', [KelolaAkunController::class, 'createAkunAdmin'])->name('admin.kelola-akun.admin.create');
+    Route::post('/admin/kelola-akun/admin/store', [KelolaAkunController::class, 'storeAkunAdmin'])->name('admin.kelola-akun.admin.store');
+    Route::get('/admin/kelola-akun/admin/edit/{id}', [KelolaAkunController::class, 'editAkunAdmin'])->name('admin.kelola-akun.admin.edit');
+    Route::put('/admin/kelola-akun/admin/update/{id}', [KelolaAkunController::class, 'updateAkunAdmin'])->name('admin.kelola-akun.admin.update');
+    Route::delete('/admin/kelola-akun/admin/{id}', [KelolaAkunController::class, 'destroyAkunAdmin'])->name('admin.kelola-akun.admin.destroy');
 
     // Kelola Akun - Akun role : Siswa
     Route::get('/admin/kelola-akun/siswa', [KelolaAkunController::class, 'indexSiswa'])->name('admin.kelola-akun.siswa');
@@ -152,7 +152,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::post('/admin/kelola-akun/siswa/store', [KelolaAkunController::class, 'storeAkunSiswa'])->name('admin.kelola-akun.siswa.store');
     Route::get('/admin/kelola-akun/siswa/edit/{id}', [KelolaAkunController::class, 'editAkunSiswa'])->name('admin.kelola-akun.siswa.edit');
     Route::put('/admin/kelola-akun/siswa/update/{id}', [KelolaAkunController::class, 'updateAkunSiswa'])->name('admin.kelola-akun.siswa.update');
-    Route::delete('/admin/kelola-akun/siswa', [KelolaAkunController::class, 'destroyAkunSiswa'])->name('admin.kelola-akun.siswa.destroy');
+    Route::delete('/admin/kelola-akun/siswa/{id}', [KelolaAkunController::class, 'destroyAkunSiswa'])->name('admin.kelola-akun.siswa.destroy');
 });
 
 require __DIR__.'/auth.php';

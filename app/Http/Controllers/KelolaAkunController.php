@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class KelolaAkunController extends Controller
 {
@@ -12,6 +13,7 @@ class KelolaAkunController extends Controller
     public function indexAdmin()
     {
         $admins = User::where('role', 'admin')->get();
+
         return view('admin.kelola-akun.admin.index', compact('admins'));
     }
 
@@ -25,7 +27,7 @@ class KelolaAkunController extends Controller
         // Validasi data input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email', // Perbaiki di sini
+            'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
     
@@ -35,7 +37,7 @@ class KelolaAkunController extends Controller
             $admin->name = $validated['name'];
             $admin->email = $validated['email'];
             $admin->password = bcrypt($validated['password']);
-            $admin->role = 'admin'; // Pastikan role diatur sebagai admin
+            $admin->role = 'admin';
             $admin->save();
     
             return response()->json(['success' => true, 'message' => 'Akun berhasil ditambahkan.']);
@@ -77,7 +79,7 @@ class KelolaAkunController extends Controller
         $admin = User::findOrFail($id);
         $admin->delete();
 
-        return redirect()->route('admin.kelola-akun.admin')->with('success', 'Akun admin berhasil dihapus.');
+        return response()->json(['message' => 'Akun admin berhasil dihapus.']);
     }
 
     // Akun role: Siswa
@@ -94,22 +96,27 @@ class KelolaAkunController extends Controller
 
     public function storeAkunSiswa(Request $request)
     {
-        // Validasi data input untuk siswa
-        $request->validate([
+        /// Validasi data input
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
         ]);
-
-        // Simpan akun siswa
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'siswa',
-        ]);
-
-        return redirect()->route('admin.kelola-akun.siswa')->with('success', 'Akun siswa berhasil dibuat.');
+    
+        try {
+            // Simpan data admin baru
+            $siswas = new User();
+            $siswas->name = $validated['name'];
+            $siswas->email = $validated['email'];
+            $siswas->password = bcrypt($validated['password']);
+            $siswas->role = 'siswa';
+            $siswas->save();
+    
+            return response()->json(['success' => true, 'message' => 'Akun berhasil ditambahkan.']);
+        } catch (\Exception $e) {
+            // Menangani kesalahan jika terjadi
+            return response()->json(['error' => 'Gagal menambahkan akun. ' . $e->getMessage()], 500);
+        }
     }
 
     public function editAkunSiswa($id)
@@ -120,7 +127,7 @@ class KelolaAkunController extends Controller
 
     public function updateAkunSiswa(Request $request, $id)
     {
-        $siswa = User::findOrFail($id);
+        $siswas = User::findOrFail($id);
 
         // Validasi data untuk update
         $request->validate([
@@ -130,20 +137,20 @@ class KelolaAkunController extends Controller
         ]);
 
         // Update data
-        $siswa->update([
+        $siswas->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $siswa->password,
+            'password' => $request->password ? Hash::make($request->password) : $siswas->password,
         ]);
 
-        return redirect()->route('admin.kelola-akun.siswa')->with('success', 'Akun siswa berhasil diperbarui.');
+        return response()->json(['success' => 'Akun admin berhasil diperbarui.']);
     }
 
     public function destroyAkunSiswa($id)
     {
-        $siswa = User::findOrFail($id);
-        $siswa->delete();
+        $siswas = User::findOrFail($id);
+        $siswas->delete();
 
-        return redirect()->route('admin.kelola-akun.siswa')->with('success', 'Akun siswa berhasil dihapus.');
+        return response()->json(['message' => 'Akun siswa berhasil dihapus.']);
     }
 }

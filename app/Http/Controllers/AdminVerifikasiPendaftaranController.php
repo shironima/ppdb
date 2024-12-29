@@ -71,8 +71,8 @@ class AdminVerifikasiPendaftaranController extends Controller
         // Menghapus data pendaftar
         $pendaftar->delete();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('admin.verifikasi-pendaftaran.index')->with('success', 'Pendaftar berhasil dihapus.');
+        // Mengembalikan response JSON agar dapat diproses oleh SweetAlert
+        return response()->json(['message' => 'Pendaftar berhasil dihapus.']);
     }
 
     public function updateStatus(Request $request, $type, $id)
