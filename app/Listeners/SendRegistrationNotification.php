@@ -26,10 +26,16 @@ class SendRegistrationNotification
      */
     public function handle(RegistrationSubmitted $event)
     {
-        // Mengirim email ke user
-        Mail::to($event->registration->calonSiswa->email)->send(new SiswaNotificationMail($event->registration));
+        $registration = $event->registration;
+        $user = $registration->calonSiswa->user;
 
-        // Mengirim email ke admin
-        Mail::to('admin@example.com')->send(new AdminNotificationMail($event->registration));
+        // Kirim email ke calon siswa
+        if ($user->notificationContact->email) {
+            Mail::to($user->notificationContact->email)->send(new SiswaNotificationMail($user));
+        }
+
+        // Kirim email ke admin
+        $adminEmail = 'gabrielahensky.dev@gmail.com'; // email admin
+        Mail::to($adminEmail)->send(new AdminNotificationMail($user));
     }
 }

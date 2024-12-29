@@ -23,6 +23,8 @@ class Registration extends Model
         'data_rinci_id',
         'berkas_pendidikan_id',
         'payments_id',
+        'notification_contact_id',
+        'komentar',
     ];
 
     protected static function boot()

@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
     // Kirim Notifikasi - kirim pendaftaran ke admin
     Route::get('/send-notification', [RegistrationController::class, 'sendNotification'])->name('send-notification');
     Route::post('/registration/submit', [RegistrationController::class, 'submit'])->name('registration.submit');
-
+    Route::post('/registration/update', [RegistrationController::class, 'update'])->name('registration.update');
 
 });
 

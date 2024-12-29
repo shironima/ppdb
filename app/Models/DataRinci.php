@@ -19,6 +19,7 @@ class DataRinci extends Model
         'tahun_lulus',         
         'alamat_sekolah_asal', 
         'status',
+        'komentar',
     ];
 
     public function calonSiswa()

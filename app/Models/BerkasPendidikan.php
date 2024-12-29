@@ -17,7 +17,8 @@ class BerkasPendidikan extends Model
         'skhun',
         'raport',
         'kartu_keluarga',
-        'status'
+        'status',
+        'komentar',
     ];
 
     public function getFileUrl($field)

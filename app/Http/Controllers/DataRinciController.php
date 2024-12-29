@@ -95,11 +95,12 @@ class DataRinciController extends Controller
         // Update data rinci dengan data yang telah divalidasi
         $dataRinci->update($validatedData);
 
+        // Perbarui status menjadi "updated"
+        $dataRinci->status = 'Updated';
+        $dataRinci->save();
+
         // Redirect ke halaman data rinci dengan pesan sukses
-        return redirect()->route('data-rinci.index')->with('success', 'Data Rinci berhasil diperbarui!');
+        return redirect()->route('data-rinci.index')->with('success', 'Data Rinci berhasil diperbarui !');
     }
-
-
-    
 
 }

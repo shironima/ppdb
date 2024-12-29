@@ -26,6 +26,7 @@ class DataOrangTua extends Model
         'penghasilan_ibu',
         'nomor_hp_ibu',
         'status',
+        'komentar',
     ];
 
     /**

@@ -28,14 +28,27 @@
                         text: 'Terdapat beberapa kesalahan pada pengisian form.',
                     });
                 </script>
+            @elseif(session('warning'))
+                <script>
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Perhatian!',
+                        text: '{{ session('warning') }}',
+                    });
+                </script>
             @endif
+
+            <!-- Informasi Status -->
+            <div class="alert alert-info">
+                Status Data: <strong>{{ ucfirst($dataRinci->status) }}</strong>
+            </div>
 
             <form action="{{ route('data-rinci.update', $dataRinci->id) }}" method="POST">
                 @csrf
                 @method('PUT') <!-- Laravel directive untuk PUT request -->
                 
-                <input type="hidden" name="calon_siswa_id" value="{{ Auth::user()->id }}"> <!-- Kirimkan ID pengguna yang sedang login -->
-                
+                <input type="hidden" name="calon_siswa_id" value="{{ Auth::user()->id }}">
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="card mb-3">

@@ -5,7 +5,7 @@
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Pendaftar</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Semua Pendaftaran</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -16,7 +16,6 @@
                         <th>Nama Lengkap</th>
                         <th>Asal Sekolah</th>
                         <th>Tanggal Pendaftaran</th>
-                        <th>Komentar</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -27,13 +26,6 @@
                             <td>{{ $p->calonSiswa->nama_lengkap ?? '-' }}</td>
                             <td>{{ $p->dataRinci->asal_sekolah ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($p->created_at)->format('d M Y, H:i') }}</td>
-                            <td>
-                                @if($p->komentar)
-                                    <span class="badge bg-info" data-toggle="tooltip" title="{{ $p->komentar }}">{{ substr($p->komentar, 0, 30) }}</span>
-                                @else
-                                    <span class="badge bg-secondary">Belum ada komentar</span>
-                                @endif
-                            </td>
                             <td>
                                 <a href="{{ route('admin.verifikasi-pendaftaran.show', $p->id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Detail">
                                     <i class="fas fa-eye"></i> Detail

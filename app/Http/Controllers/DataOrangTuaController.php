@@ -109,46 +109,41 @@ class DataOrangTuaController extends Controller
     // Memperbarui data orang tua
     public function update(Request $request, $id)
     {
-        try {
-            // Validasi input
-            $validatedData = $request->validate([
-                'nama_ayah' => 'required|string|max:255',
-                'nik_ayah' => 'required|string|max:255',
-                'tahun_lahir_ayah' => 'required|integer',
-                'pendidikan_ayah' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
-                'pekerjaan_ayah' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-                'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
-                'nomor_hp_ayah' => 'required|string|regex:/^[0-9]+$/|max:15',
-                'nama_ibu' => 'required|string|max:255',
-                'nik_ibu' => 'required|string|max:255',
-                'tahun_lahir_ibu' => 'required|integer',
-                'pendidikan_ibu' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
-                'pekerjaan_ibu' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
-                'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
-                'nomor_hp_ibu' => 'required|string|regex:/^[0-9]+$/|max:15',
-            ]);
+        // Validasi input
+        $validatedData = $request->validate([
+            'nama_ayah' => 'required|string|max:255',
+            'nik_ayah' => 'required|string|max:255',
+            'tahun_lahir_ayah' => 'required|integer',
+            'pendidikan_ayah' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
+            'pekerjaan_ayah' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
+            'penghasilan_ayah' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
+            'nomor_hp_ayah' => 'required|string|regex:/^[0-9]+$/|max:15',
+            'nama_ibu' => 'required|string|max:255',
+            'nik_ibu' => 'required|string|max:255',
+            'tahun_lahir_ibu' => 'required|integer',
+            'pendidikan_ibu' => 'required|in:SD,SMP,SMA,Diploma,S-1,S-2,Lainnya',
+            'pekerjaan_ibu' => 'required|in:ASN-TNI-POLRI,Guru-Dosen-Pengajar,Pengusaha,Pedagang,Wiraswasta,Wirausaha,Petani-Peternak,Lainnya',
+            'penghasilan_ibu' => 'required|in:Dibawah 1jt,1jt-2jt,2jt-4jt,Diatas 5jt',
+            'nomor_hp_ibu' => 'required|string|regex:/^[0-9]+$/|max:15',
+        ]);
 
-            // Mendapatkan calon siswa yang sedang login
-            $calonSiswa = auth()->user()->calonSiswa;
+        // Mencari data orang tua berdasarkan ID
+        $dataOrangTua = DataOrangTua::findOrFail($id);
 
-            if (!$calonSiswa) {
-                return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
-            }
-
-            // Mendapatkan data orang tua berdasarkan ID
-            $dataOrangTua = $calonSiswa->dataOrangTua->find($id);
-
-            if (!$dataOrangTua) {
-                return redirect()->route('data-orang-tua.index')->with('warning', 'Data orang tua tidak ditemukan.');
-            }
-
-            // Perbarui data orang tua
-            $dataOrangTua->update($validatedData);
-
-            return redirect()->route('data-orang-tua.index')->with('success', 'Data orang tua berhasil diperbarui.');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        // Memastikan data orang tua milik calon siswa yang sedang login
+        if ($dataOrangTua->calon_siswa_id !== auth()->user()->calonSiswa->id) {
+            return redirect()->route('data-orang-tua.index')->with('warning', 'Data ini tidak ditemukan.');
         }
+
+        // Update data orang tua dengan data yang telah divalidasi
+        $dataOrangTua->update($validatedData);
+
+        // Perbarui status calon siswa menjadi "updated"
+        $dataOrangTua->status = 'Updated';
+        $dataOrangTua->save();
+
+        // Redirect ke halaman data orang tua dengan pesan sukses
+        return redirect()->route('data-orang-tua.index')->with('success', 'Data orang tua berhasil diperbarui !');
     }
 
 }

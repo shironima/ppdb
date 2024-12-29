@@ -30,14 +30,27 @@ class AlamatController extends Controller
 
     public function edit($id)
     {
-        $alamat = Alamat::where('id', $id)->firstOrFail();
-        
+        // Mendapatkan calon siswa yang sedang login
+        $calonSiswa = auth()->user()->calonSiswa;
+
+        if (!$calonSiswa) {
+            return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
+
+        $alamat = $calonSiswa->alamat->find($id);
+
+        // Memastikan hanya data calon siswa milik user yang sedang login yang bisa diubah
+        if ($alamat->user_id !== Auth::id()) {
+            return redirect()->route('calon-siswa.index')->with('error', 'Anda tidak memiliki akses untuk mengedit data ini.');
+        }
+
         return view('siswa.form-pendaftaran.alamat.edit', compact('alamat'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        // Validasi inputan
+        $validatedData = $request->validate([
             'alamat_lengkap' => 'required|string|max:255',
             'rt' => 'required|string|max:5',
             'rw' => 'required|string|max:5',
@@ -49,21 +62,23 @@ class AlamatController extends Controller
             'tinggal_dengan' => 'required|in:orang_tua,wali-famili,panti-asrama',
         ]);
 
-        $alamat = Alamat::findOrFail($id);  // Temukan alamat berdasarkan ID yang diberikan
+        // Mencari alamat berdasarkan ID
+        $alamat = Alamat::findOrFail($id);
 
-        $alamat->update([
-            'alamat_lengkap' => $request->alamat_lengkap,
-            'rt' => $request->rt,
-            'rw' => $request->rw,
-            'kelurahan' => $request->kelurahan,
-            'kecamatan' => $request->kecamatan,
-            'kota_kabupaten' => $request->kota_kabupaten,
-            'provinsi' => $request->provinsi,
-            'kode_pos' => $request->kode_pos,
-            'tinggal_dengan' => $request->tinggal_dengan,
-        ]);
+        // Memastikan alamat milik calon siswa yang sedang login
+        if ($alamat->calon_siswa_id !== auth()->user()->calonSiswa->id) {
+            return redirect()->route('alamat.index')->with('warning', 'Data alamat ini tidak ditemukan.');
+        }
 
-        return redirect()->route('alamat.index')->with('success', 'Alamat berhasil diperbarui!');
+        // Update alamat dengan data yang telah divalidasi
+        $alamat->update($validatedData);
+
+        // Perbarui status menjadi "updated"
+        $alamat->status = 'Updated';
+        $alamat->save();
+
+        // Redirect ke halaman alamat dengan pesan sukses
+        return redirect()->route('alamat.index')->with('success', 'Alamat berhasil diperbarui !');
     }
 
     public function store(Request $request)

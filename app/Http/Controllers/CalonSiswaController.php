@@ -27,6 +27,11 @@ class CalonSiswaController extends Controller
         // Ambil data calon siswa berdasarkan id
         $calonSiswa = CalonSiswa::findOrFail($id);
 
+        // Memastikan hanya data calon siswa milik user yang sedang login yang bisa diubah
+        if ($calonSiswa->user_id !== Auth::id()) {
+            return redirect()->route('calon-siswa.index')->with('error', 'Anda tidak memiliki akses untuk mengedit data ini.');
+        }
+
         // Kembalikan view dengan data calon siswa
         return view('siswa.form-pendaftaran.data-diri.edit', compact('calonSiswa'));
     }
@@ -34,7 +39,8 @@ class CalonSiswaController extends Controller
     // Update data calon siswa
     public function update(Request $request, $id)
     {
-        $request->validate([
+        // Validasi inputan
+        $validatedData = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
@@ -43,32 +49,26 @@ class CalonSiswaController extends Controller
             'nisn' => 'required|string|unique:calon_siswa,nisn,' . $id,
             'no_kk' => 'required|string|max:100',
             'nik' => 'required|string|max:50',
-            'no_hp' => 'required|string|regex:/^[0-9]+$/|max:15', // Validasi nomor HP dengan format yang benar
+            'no_hp' => 'required|string|regex:/^[0-9]+$/|max:15',
         ]);
 
-        // Ambil data calon siswa yang ingin diupdate
+        // Mencari data calon siswa berdasarkan ID
         $calonSiswa = CalonSiswa::findOrFail($id);
 
-        // Pastikan hanya calon siswa yang dimiliki oleh user yang sedang login yang dapat diupdate
-        if ($calonSiswa->user_id !== Auth::id()) {
-            return redirect()->route('calon-siswa.index')->with('error', 'Anda tidak memiliki akses untuk memperbarui data ini.');
+        // Memastikan data calon siswa milik user yang sedang login
+        if ($calonSiswa->user_id !== auth()->id()) {
+            return redirect()->route('calon-siswa.index')->with('warning', 'Data ini tidak ditemukan.');
         }
 
-        // Update data calon siswa
-        $calonSiswa->update([
-            'nama_lengkap' => $request->nama_lengkap,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'agama' => $request->agama,
-            'nisn' => $request->nisn,
-            'no_kk' => $request->no_kk,
-            'nik' => $request->nik,
-            'no_hp' => $request->no_hp,
-        ]);
+        // Update data calon siswa dengan data yang telah divalidasi
+        $calonSiswa->update($validatedData);
 
-        // Redirect ke halaman profil dengan pesan sukses
-        return redirect()->route('calon-siswa.index')->with('success', 'Data berhasil diperbarui!');
+        // Perbarui status menjadi "updated"
+        $calonSiswa->status = 'Updated';
+        $calonSiswa->save();
+
+        // Redirect ke halaman data diri dengan pesan sukses
+        return redirect()->route('calon-siswa.index')->with('success', 'Data Diri berhasil diperbarui !');
     }
 
     // Form untuk membuat data calon siswa pertama kali (jika belum ada)

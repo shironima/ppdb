@@ -30,11 +30,11 @@
                 </script>
             @endif
 
-            <form action="{{ route('data-orang-tua.update', $dataOrangTua->id) }}" method="POST">
+            <form id="form-edit-orang-tua" action="{{ route('data-orang-tua.update', $dataOrangTua->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
-                <input type="hidden" name="calon_siswa_id" value="{{ Auth::user()->id }}"> <!-- ID pengguna yang sedang login -->
+                <input type="hidden" name="calon_siswa_id" value="{{ Auth::user()->id }}">
                 
                 <!-- Data Ayah -->
                 <div class="row mb-3">
@@ -225,4 +225,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Animasi tombol submit
+    document.getElementById('form-edit-orang-tua').addEventListener('submit', function() {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Memproses...';
+    });
+</script>
 @endsection

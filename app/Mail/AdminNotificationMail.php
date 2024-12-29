@@ -20,7 +20,7 @@ class AdminNotificationMail extends Mailable
      */
     public function __construct($user)
     {
-        $this->user = $user; // Pastikan menerima data user dari controller
+        $this->user = $user;
     }
 
     /**
@@ -39,7 +39,7 @@ class AdminNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.admin-notification',
+            view: 'emails.admin.notification',
             with: ['user' => $this->user]
         );
     }

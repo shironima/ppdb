@@ -9,11 +9,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SiswaNotificationMail extends Mailable
+class AdminUpdateNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $user;
+    
     /**
      * Create a new message instance.
      */
@@ -28,7 +29,7 @@ class SiswaNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pendaftaran Diterima - PPDB',
+            subject: 'Admin Update Notification Mail',
         );
     }
 
@@ -38,7 +39,8 @@ class SiswaNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.siswa.notification',
+            view: 'emails.admin.update-notification',
+            with: ['user' => $this->user]
         );
     }
 

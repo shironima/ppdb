@@ -24,7 +24,8 @@ class CalonSiswa extends Model
         'no_kk',
         'nik',
         'no_hp',
-        'status'
+        'status',
+        'komentar',
     ];
     public function getTanggalLahirAttribute($value)
     {

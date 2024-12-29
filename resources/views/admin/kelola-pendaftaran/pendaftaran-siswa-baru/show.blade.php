@@ -36,9 +36,6 @@
                         <li class="nav-item">
                             <a class="nav-link" id="dataRinciTab" data-bs-toggle="pill" href="#dataRinci" role="tab">Data Rinci</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="komentarTab" data-bs-toggle="pill" href="#komentar" role="tab">Komentar</a>
-                        </li>
                     </ul>
 
                     <div class="tab-content" id="infoPendaftarTabContent">
@@ -127,18 +124,6 @@
                             ])
                         </div>
 
-                        <!-- Komentar -->
-                        <div class="tab-pane fade" id="komentar" role="tabpanel">
-                            <h6>Komentar</h6>
-                            <form action="{{ route('admin.verifikasi-pendaftaran.updateKomentar', $pendaftar->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <textarea name="komentar" class="form-control" rows="4">{{ old('komentar', $pendaftar->komentar) }}</textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Simpan Komentar</button>
-                            </form>
-                        </div>
                     </div>
 
                 </div>

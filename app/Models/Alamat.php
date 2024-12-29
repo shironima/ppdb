@@ -20,7 +20,8 @@ class Alamat extends Model
         'provinsi',          
         'kode_pos',          
         'tinggal_dengan',    
-        'status',           
+        'status',    
+        'komentar',       
     ];
 
     public function user()

@@ -10,6 +10,9 @@ use App\Mail\AdminNotificationMail;
 use App\Mail\SiswaNotificationMail;
 use Illuminate\Support\Str;
 use App\Models\Registration;
+use App\Events\RegistrationUpdated;
+use App\Events\RegistrationSubmitted;
+
 
 class RegistrationController extends Controller
 {
@@ -53,6 +56,7 @@ class RegistrationController extends Controller
 
     public function submit()
     {
+        // Mengambil data user dan relasi calon siswa yang terkait
         $user = Auth::user()->load([
             'calonSiswa',
             'calonSiswa.alamat',
@@ -87,39 +91,65 @@ class RegistrationController extends Controller
         // Mengambil pembayaran pertama
         $payment = $calonSiswa->payments->first();
 
-        if (!$payment || $payment->transaction_status !== 'settlement') {
-            return back()->with('error', 'Pembayaran belum diterima atau belum selesai. Silakan selesaikan pembayaran terlebih dahulu.');
-        }        
+        // Tentukan status pendaftaran "submitted" jika tidak ada pembayaran
+        $registrationStatus = 'submitted';
 
         try {
-            // Buat entri baru di tabel registrations
-            Registration::create([
+            // Buat entri baru di tabel registrations dengan status "submitted"
+            $registration = Registration::create([
                 'id' => Str::uuid()->toString(),
                 'calon_siswa_id' => $calonSiswa->id,
                 'berkas_pendidikan_id' => $calonSiswa->berkasPendidikan->id,
-                'payments_id' => $payment->id,
+                'payments_id' => $payment ? $payment->id : null, // Jika pembayaran ada, simpan ID pembayaran
                 'alamat_id' => $calonSiswa->alamat->id,
                 'data_orang_tua_id' => $calonSiswa->dataOrangTua->id,
                 'data_rinci_id' => $calonSiswa->dataRinci->id,
+                'notification_contact_id' => $user->notificationContact->id,
+                'status' => $registrationStatus, // Status default untuk pendaftaran adalah "submitted"
             ]);
 
-            // Kirim notifikasi email
-            $userEmail = $user->notificationContact->email ?? null;
-            $adminEmail = 'gabrielahensky.dev@gmail.com';
+        // Memicu event RegistrationSubmitted
+        event(new RegistrationSubmitted($registration));
 
-            // Kirim email ke user (calon siswa) jika email tersedia
-            if ($userEmail) {
-                Mail::to($userEmail)->send(new SiswaNotificationMail($user));
-            }
-
-            // Kirim email ke admin
-            Mail::to($adminEmail)->send(new AdminNotificationMail($user));
-
-            // Redirect dengan pesan sukses
-            return back()->with('success', 'Pendaftaran Anda telah berhasil dikirim dan notifikasi email telah dikirim!');
+        return back()->with('success', 'Pendaftaran berhasil dikirim!');
         } catch (\Exception $e) {
-            // Tangani kesalahan jika terjadi
-            return back()->with('error', 'Terjadi kesalahan saat mengirim pendaftaran: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function update(Request $request)
+    {
+        // Ambil data calon siswa terkait dengan user yang login
+        $calonSiswa = Auth::user()->calonSiswa;
+
+        // Ambil pendaftaran terkait dengan calon siswa
+        $registration = Registration::where('calon_siswa_id', $calonSiswa->id)->firstOrFail();
+
+        // Update data hanya jika ada input yang diberikan
+        if ($request->has('alamat')) {
+            $registration->calonSiswa->alamat->update($request->input('alamat'));
+        }
+
+        if ($request->has('data_orang_tua')) {
+            $registration->calonSiswa->dataOrangTua->update($request->input('data_orang_tua'));
+        }
+
+        if ($request->has('data_rinci')) {
+            $registration->calonSiswa->dataRinci->update($request->input('data_rinci'));
+        }
+
+        if ($request->has('berkas_pendidikan')) {
+            $registration->calonSiswa->berkasPendidikan->update($request->input('berkas_pendidikan'));
+        }
+
+        // Ubah status pendaftaran menjadi 'updated'
+        $registration->status = 'Updated';
+        $registration->save();
+
+        // Memicu event RegistrationSubmitted
+        event(new RegistrationUpdated($registration));
+
+        return back()->with('success', 'Data berhasil diperbarui!');
+    }
+
 }
