@@ -114,4 +114,24 @@
             </div>
         </div>
     </li>
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Notifikasi
+    </div>
+
+    <!-- Menu Pertanyaan -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNotifikasi"
+            aria-expanded="true" aria-controls="collapseNotifikasi">
+            <i class="fas fa-fw fa-envelope"></i>
+            <span>Atur Notifikasi</span>
+        </a>
+        <div id="collapseNotifikasi" class="collapse" aria-labelledby="headingNotifikasi" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="#">Email</a>
+                <a class="collapse-item" href="#">Whatsapp</a>
+            </div>
+        </div>
+    </li>
 </ul>
