@@ -137,5 +137,4 @@ class AdminVerifikasiPendaftaranController extends Controller
         return redirect()->route('admin.verifikasi-pendaftaran.show', $id)->with('success', 'Komentar berhasil diperbarui');
     }
 
-
 }

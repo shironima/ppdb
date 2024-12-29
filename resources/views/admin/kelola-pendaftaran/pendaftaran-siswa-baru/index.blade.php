@@ -38,8 +38,8 @@
                                 <a href="{{ route('admin.verifikasi-pendaftaran.show', $p->id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Detail">
                                     <i class="fas fa-eye"></i> Detail
                                 </a>
-                                <!-- Perbaikan di sini untuk menghindari masalah dengan karakter khusus -->
-                                <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Hapus Data" onclick="confirmDelete({{ $p->id }}, '{{ addslashes($p->calonSiswa->nama_lengkap) }}')">
+                                <!-- Tombol Hapus -->
+                                <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $p->id }}" data-name="{{ $p->calonSiswa->nama_lengkap ?? 'Pendaftar' }}">
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
                             </td>
@@ -56,62 +56,11 @@
 @endsection
 
 @push('scripts')
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Fungsi konfirmasi hapus data menggunakan SweetAlert
-        function confirmDelete(id, name) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data pendaftar " + name + " akan dihapus!",
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'Batal',
-                confirmButtonText: 'Hapus',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Menjalankan aksi penghapusan
-                    fetch(`/admin/verifikasi-pendaftaran/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            Swal.fire(
-                                'Hapus Berhasil!',
-                                'Data pendaftar telah dihapus.',
-                                'success'
-                            ).then(() => {
-                                location.reload(); // Reload halaman setelah berhasil
-                            });
-                        } else {
-                            Swal.fire(
-                                'Terjadi Kesalahan!',
-                                'Data pendaftar gagal dihapus.',
-                                'error'
-                            );
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire(
-                            'Terjadi Kesalahan!',
-                            'Gagal menghubungi server.',
-                            'error'
-                        );
-                    });
-                }
-            });
-        }
-
-        // Inisialisasi DataTables
         $(document).ready(function() {
+            // Inisialisasi DataTables
             $('#pendaftarTable').DataTable({
                 language: {
                     search: "Cari:",
@@ -128,9 +77,67 @@
                     }
                 },
                 columnDefs: [
-                    { orderable: false, targets: [5, 6] }  // Nonaktifkan urutan untuk kolom Komentar dan Aksi
+                    { orderable: false, targets: [5, 6] }
                 ],
                 responsive: true
+            });
+
+            // Menambahkan event listener untuk tombol hapus
+            $('.deleteBtn').click(function(e) {
+                e.preventDefault();  // Mencegah form di-submit langsung
+
+                var id = $(this).data('id');
+                var name = $(this).data('name');  // Nama pendaftar diambil dari data-name
+
+                // Menampilkan SweetAlert konfirmasi
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data pendaftar " + name + " akan dihapus!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'Batal', 
+                    confirmButtonText: 'Hapus',  
+                    confirmButtonColor: '#3085d6',  
+                    cancelButtonColor: '#d33',  
+                    reverseButtons: false,  
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        // Melakukan penghapusan menggunakan fetch API
+                        fetch(`{{ route('admin.verifikasi-pendaftaran.destroy', ':id') }}`.replace(':id', id), {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                Swal.fire(
+                                    'Hapus Berhasil!',
+                                    'Data pendaftar telah dihapus.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload();  // Reload halaman setelah berhasil menghapus
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Terjadi Kesalahan!',
+                                    'Data pendaftar gagal dihapus.',
+                                    'error'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Terjadi Kesalahan!',
+                                'Gagal menghubungi server.',
+                                'error'
+                            );
+                        });
+                    }
+                });
+
             });
 
             // Aktivasi tooltips untuk tombol
