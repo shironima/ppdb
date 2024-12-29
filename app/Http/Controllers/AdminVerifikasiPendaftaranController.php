@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Contact;
 use App\Models\Registration;
+use App\Enums\EnumVerifyRegistration;
 
 
 class AdminVerifikasiPendaftaranController extends Controller
@@ -44,23 +45,16 @@ class AdminVerifikasiPendaftaranController extends Controller
     /**
      * Melakukan verifikasi pendaftaran.
      */
-    public function verify(Request $request, $id)
+    public function needVerify()
     {
-        $pendaftar = Registration::findOrFail($id);
+        // Ambil data dengan status 'submitted' dan 'updated'
+        $pendaftar = Registration::whereIn('status', [
+            EnumVerifyRegistration::Submitted->value,
+            EnumVerifyRegistration::Updated->value,
+        ])->paginate(10);
 
-        $request->validate([
-            'status' => 'required|in:diterima,ditolak',
-            'catatan' => 'nullable|string|max:255',
-        ]);
-
-        $pendaftar->update([
-            'status' => $request->status,
-            'catatan' => $request->catatan,
-        ]);
-
-        return redirect()
-            ->route('admin.kelola-pendaftaran.pendaftaran-siswa-baru.index')
-            ->with('success', 'Verifikasi pendaftaran berhasil.');
+        // Kirim data ke view
+        return view('admin.kelola-pendaftaran.pendaftaran-siswa-baru.verifikasi', compact('pendaftar'));
     }
 
     public function destroy($id)

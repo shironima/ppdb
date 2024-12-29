@@ -121,7 +121,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     // Verifikasi Pendaftaran
     Route::get('/admin/verifikasi-pendaftaran', [AdminVerifikasiPendaftaranController::class, 'index'])->name('admin.verifikasi-pendaftaran.index');
     Route::get('/admin/verifikasi-pendaftaran/{id}', [AdminVerifikasiPendaftaranController::class, 'show'])->name('admin.verifikasi-pendaftaran.show');
-    Route::put('/admin/verifikasi-pendaftaran/{id}/verify', [AdminVerifikasiPendaftaranController::class, 'verify'])->name('admin.verifikasi-pendaftaran.verify');
+    Route::get('admin/kelola-pendaftaran/pendaftaran-siswa-baru/verifikasi', [AdminVerifikasiPendaftaranController::class, 'needVerify'])->name('admin.verifikasi-pendaftaran.verify');
     Route::put('/admin/verifikasi-pendaftaran/{id}/reject', [AdminVerifikasiPendaftaranController::class, 'reject'])->name('admin.verifikasi-pendaftaran.reject');
     Route::delete('/admin/verifikasi-pendaftaran/{id}', [AdminVerifikasiPendaftaranController::class, 'destroy'])->name('admin.verifikasi-pendaftaran.destroy');
     Route::put('/admin/verifikasi-pendaftaran/update-status/{type}/{id}', [AdminVerifikasiPendaftaranController::class, 'updateStatus'])->name('admin.verifikasi-pendaftaran.updateStatus');

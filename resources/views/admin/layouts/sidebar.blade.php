@@ -33,7 +33,7 @@
         <div id="collapsePendaftar" class="collapse" aria-labelledby="headingPendaftar" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.verifikasi-pendaftaran.index') }}">Semua Pendaftaran</a>
-                <a class="collapse-item" href="#">Verifikasi Pendaftaran</a>
+                <a class="collapse-item" href="{{ route('admin.verifikasi-pendaftaran.verify') }}">Verifikasi Pendaftaran</a>
             </div>
         </div>
     </li>
