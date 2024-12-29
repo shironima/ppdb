@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationContactController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AdminVerifikasiPendaftaranController;
+use App\Http\Controllers\AdminVerifikasiBerkasPendidikanController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -127,7 +128,15 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::put('/admin/verifikasi-pendaftaran/update-status/{type}/{id}', [AdminVerifikasiPendaftaranController::class, 'updateStatus'])->name('admin.verifikasi-pendaftaran.updateStatus');
     Route::put('/admin/verifikasi-pendaftaran/update-comment/{id}', [AdminVerifikasiPendaftaranController::class, 'updateComment'])->name('admin.verifikasi-pendaftaran.updateComment');
 
-
+    // Verifikasi Berkas Pendidikan
+    Route::get('/admin/verifikasi-berkas-pendidikan', [AdminVerifikasiBerkasPendidikanController::class, 'index'])->name('admin.verifikasi-berkas-pendidikan.index');
+    Route::get('/admin/verifikasi-berkas-pendidikan/{id}', [AdminVerifikasiBerkasPendidikanController::class, 'show'])->name('admin.verifikasi-berkas-pendidikan.show');
+    Route::get('/admin/verifikasi-berkas-pendidikan/verifikasi', [AdminVerifikasiBerkasPendidikanController::class, 'needVerify'])->name('admin.verifikasi-berkas-pendidikan.verify');
+    Route::put('/admin/verifikasi-berkas-pendidikan/{id}/reject', [AdminVerifikasiBerkasPendidikanController::class, 'reject'])->name('admin.verifikasi-berkas-pendidikan.reject');
+    Route::delete('/admin/verifikasi-berkas-pendidikan/{id}', [AdminVerifikasiBerkasPendidikanController::class, 'destroy'])->name('admin.verifikasi-berkas-pendidikan.destroy');
+    Route::put('/admin/verifikasi-berkas-pendidikan/update-status/{id}', [AdminVerifikasiBerkasPendidikanController::class, 'updateStatus'])->name('admin.verifikasi-berkas-pendidikan.updateStatus');
+    Route::put('/admin/verifikasi-berkas-pendidikan/update-comment/{id}', [AdminVerifikasiBerkasPendidikanController::class, 'updateComment'])->name('admin.verifikasi-berkas-pendidikan.updateComment');
+    
     // Tanya Admin - Jawaban
     Route::get('/admin/hubungi-admin', [JawabanController::class, 'index'])->name('admin.hubungi-admin.index');
     Route::post('/admin/hubungi-admin/{id}', [JawabanController::class, 'store'])->name('admin.hubungi-admin.store');

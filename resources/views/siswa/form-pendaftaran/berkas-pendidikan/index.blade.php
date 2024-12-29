@@ -36,7 +36,7 @@
                         @endif
                     </p>
 
-                    @if($berkas->status === 'perlu perbaikan')
+                    @if($berkas->status === 'Requires Revision')
                         <a href="{{ route('berkas-pendidikan.edit', $berkas->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     @endif
                 </div>

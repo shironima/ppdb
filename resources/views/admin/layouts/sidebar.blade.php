@@ -47,8 +47,8 @@
         </a>
         <div id="collapseBerkas" class="collapse" aria-labelledby="headingBerkas" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Semua Berkas Pendidikan</a>
-                <a class="collapse-item" href="#">Verifikasi Berkas</a>
+                <a class="collapse-item" href="{{ route('admin.verifikasi-berkas-pendidikan.index') }}">Semua Berkas</a>
+                <a class="collapse-item" href="{{ route('admin.verifikasi-berkas-pendidikan.verify') }}">Verifikasi Berkas</a>
             </div>
         </div>
     </li>
