@@ -36,6 +36,10 @@
                         <li class="nav-item">
                             <a class="nav-link" id="dataRinciTab" data-bs-toggle="pill" href="#dataRinci" role="tab">Data Rinci</a>
                         </li>
+                        <!-- Tab untuk Komentar -->
+                        <li class="nav-item">
+                            <a class="nav-link" id="komentarTab" data-bs-toggle="pill" href="#komentar" role="tab">Komentar</a>
+                        </li>
                     </ul>
 
                     <div class="tab-content" id="infoPendaftarTabContent">
@@ -111,11 +115,11 @@
                             <table class="table table-bordered">
                                 <tr><th>Tinggi Badan</th><td>{{ $pendaftar->dataRinci->tinggi_badan ?? '-' }} cm</td></tr>
                                 <tr><th>Berat Badan</th><td>{{ $pendaftar->dataRinci->berat_badan ?? '-' }} kg</td></tr>
-                                <tr><th>Anak ke-</th><td>{{ $pendaftar->dataRinci->anak_ke ?? '-' }}</td></tr>
+                                <tr><th>Anak ke</th><td>{{ $pendaftar->dataRinci->anak_ke ?? '-' }}</td></tr>
                                 <tr><th>Jumlah Saudara</th><td>{{ $pendaftar->dataRinci->jumlah_saudara ?? '-' }}</td></tr>
-                                <tr><th>Asal Sekolah</th><td>{{ $pendaftar->dataRinci->asal_sekolah ?? '-' }}</td></tr>
-                                <tr><th>Tahun Lulus</th><td>{{ $pendaftar->dataRinci->tahun_lulus ?? '-' }}</td></tr>
-                                <tr><th>Alamat Sekolah Asal</th><td>{{ $pendaftar->dataRinci->alamat_sekolah_asal ?? '-' }}</td></tr>
+                                <tr><th>Asal Sekolah</th><td>{{ $pendaftar->dataRinci->asal_sekolah ?? '-' }} </td></tr> 
+                                <tr><th>Tahun Lulus</th><td>{{ $pendaftar->dataRinci->tahun_lulus ?? '-' }} </td></tr>
+                                <tr><th>Alamat Sekolah Asal</th><td>{{ $pendaftar->dataRinci->alamat_sekolah_asal ?? '-' }} </td></tr>
                             </table>
                             @include('admin.components.update-status', [
                                 'action' => route('admin.verifikasi-pendaftaran.updateStatus', ['type' => 'data_rinci', 'id' => $pendaftar->id]),
@@ -124,8 +128,38 @@
                             ])
                         </div>
 
-                    </div>
+                        <!-- Komentar -->
+                        <div class="tab-pane fade" id="komentar" role="tabpanel">
+                            <h6 class="mb-4">Tambahkan Komentar jika perlu memberikan catatan kepada Calon Siswa</h6>
+                            <form action="{{ route('admin.verifikasi-pendaftaran.updateComment', $pendaftar->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
 
+                                <div class="mb-3">
+                                    <label for="komentar" class="form-label">Komentar</label>
+                                    <textarea class="form-control" id="komentar" name="komentar" rows="4" placeholder="Masukkan komentar Anda di sini...">{{ old('komentar', $pendaftar->komentar) }}</textarea>
+                                    @error('komentar')
+                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Simpan Komentar</button>
+                            </form>
+
+                            <hr class="my-4">
+
+                            <!-- Menampilkan Komentar -->
+                            <h6 class="mb-3">Komentar Saat Ini</h6>
+                            <div class="border p-3 rounded" style="background-color: #f9f9f9;">
+                                @if($pendaftar->komentar)
+                                    <p class="mb-0">{{ $pendaftar->komentar }}</p>
+                                @else
+                                    <p class="text-muted mb-0">Belum ada komentar.</p>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

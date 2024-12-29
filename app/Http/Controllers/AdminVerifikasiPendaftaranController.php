@@ -119,7 +119,7 @@ class AdminVerifikasiPendaftaranController extends Controller
         return redirect()->back()->with('success', 'Status berhasil diperbarui.');
     }
 
-    public function updateKomentar(Request $request, $id)
+    public function updateComment(Request $request, $id)
     {
         // Validasi komentar
         $request->validate([
@@ -130,11 +130,12 @@ class AdminVerifikasiPendaftaranController extends Controller
         $pendaftar = Registration::findOrFail($id);
 
         // Update komentar di tabel registration
-        $pendaftar->komentar = $request->input('komentar');
+        $pendaftar->komentar = $request->komentar;
         $pendaftar->save();
 
         // Redirect kembali ke halaman show dengan pesan sukses
         return redirect()->route('admin.verifikasi-pendaftaran.show', $id)->with('success', 'Komentar berhasil diperbarui');
     }
+
 
 }

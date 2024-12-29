@@ -125,7 +125,8 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::put('/admin/verifikasi-pendaftaran/{id}/reject', [AdminVerifikasiPendaftaranController::class, 'reject'])->name('admin.verifikasi-pendaftaran.reject');
     Route::delete('/admin/verifikasi-pendaftaran/{id}', [AdminVerifikasiPendaftaranController::class, 'destroy'])->name('admin.verifikasi-pendaftaran.destroy');
     Route::put('/admin/verifikasi-pendaftaran/update-status/{type}/{id}', [AdminVerifikasiPendaftaranController::class, 'updateStatus'])->name('admin.verifikasi-pendaftaran.updateStatus');
-    Route::put('admin/verifikasi-pendaftaran/{id}/komentar', [AdminVerifikasiPendaftaranController::class, 'updateKomentar'])->name('admin.verifikasi-pendaftaran.updateKomentar');
+    Route::put('/admin/verifikasi-pendaftaran/update-comment/{id}', [AdminVerifikasiPendaftaranController::class, 'updateComment'])->name('admin.verifikasi-pendaftaran.updateComment');
+
 
     // Tanya Admin - Jawaban
     Route::get('/admin/hubungi-admin', [JawabanController::class, 'index'])->name('admin.hubungi-admin.index');

@@ -43,11 +43,11 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBerkas"
             aria-expanded="true" aria-controls="collapseBerkas">
             <i class="fas fa-fw fa-file-alt"></i>
-            <span>Berkas Pendaftaran</span>
+            <span>Berkas Pendidikan</span>
         </a>
         <div id="collapseBerkas" class="collapse" aria-labelledby="headingBerkas" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Lihat Berkas</a>
+                <a class="collapse-item" href="#">Semua Berkas Pendidikan</a>
                 <a class="collapse-item" href="#">Verifikasi Berkas</a>
             </div>
         </div>
