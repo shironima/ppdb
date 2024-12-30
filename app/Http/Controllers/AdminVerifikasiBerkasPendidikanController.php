@@ -15,15 +15,44 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
     /**
      * Menampilkan daftar berkas pendidikan yang diupload.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data pendaftar beserta berkas pendidikan, pembayaran, dan relasi lainnya
-        $pendaftar = Registration::with([
-            'calonSiswa',
-            'berkasPendidikan',
-        ])
-        ->paginate(10);
+        // Ambil status filter dari request jika ada
+        $status = $request->get('status');
 
+        // Ambil data pendaftar dengan filter status jika ada
+        $query = Registration::with(['berkasPendidikan', 'calonSiswa'])
+            ->when($status, function($query) use ($status) {
+                return $query->whereHas('berkasPendidikan', function($q) use ($status) {
+                    $q->where('status', $status);
+                });
+            });
+
+        // Ambil total records tanpa filter
+        $totalRecords = $query->count();
+
+        // Ambil data pendaftar dengan filter status jika ada
+        $pendaftar = $query->get();
+
+        // Jika request menggunakan AJAX, kembalikan data dalam format JSON yang sesuai untuk DataTables
+        if ($request->ajax()) {
+            return response()->json([
+                'draw' => $request->get('draw'),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $totalRecords,  // Menggunakan total tanpa filter
+                'data' => $pendaftar->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'nama_lengkap' => $item->calonSiswa->nama_lengkap ?? '-',
+                        'status' => ucfirst($item->berkasPendidikan->status),
+                        'created_at' => $item->berkasPendidikan->created_at->format('d M Y, H:i'),
+                        'komentar' => $item->berkasPendidikan->komentar ?? 'Belum ada komentar.'
+                    ];
+                })
+            ]);
+        }
+
+        // Jika bukan AJAX request, tampilkan halaman view biasa
         return view('admin.kelola-pendaftaran.berkas-pendidikan.index', compact('pendaftar'));
     }
 
@@ -54,7 +83,6 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
     {
         // Ambil data dengan status 'Submitted' dan 'Updated' pada berkas pendidikan
         $pendaftar = Registration::with([
-            'calonSiswa',
             'berkasPendidikan',
         ])
         ->whereHas('berkasPendidikan', function ($query) {

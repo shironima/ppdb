@@ -12,18 +12,48 @@ use App\Enums\EnumVerifyRegistration;
 
 class AdminVerifikasiPendaftaranController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pendaftar = Registration::with([
-            'calonSiswa',
-            'berkasPendidikan',
-            'dataOrangTua',
-            'dataRinci',
-            'alamat',
-            'pembayaran'
-        ])
-        ->paginate(10);
+        // Ambil status filter dari request jika ada
+        $status = $request->get('status');
 
+        // Ambil data pendaftar dengan filter status jika ada
+        $query = Registration::with([
+            'calonSiswa', 
+            'dataOrangTua', 
+            'dataRinci', 
+            'alamat'
+        ])
+        ->when($status, function ($query) use ($status) {
+            return $query->where('status', $status);
+        });
+
+        // Ambil total records tanpa filter
+        $totalRecords = $query->count();
+
+        // Ambil data pendaftar dengan filter status jika ada
+        $pendaftar = $query->get();
+
+        // Jika request menggunakan AJAX, kembalikan data dalam format JSON yang sesuai untuk DataTables
+        if ($request->ajax()) {
+            return response()->json([
+                'draw' => $request->get('draw'),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $totalRecords,  // Menggunakan total tanpa filter
+                'data' => $pendaftar->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'nama_lengkap' => $item->calonSiswa->nama_lengkap ?? '-',
+                        'asal_sekolah' => $item->dataRinci->asal_sekolah ?? '-',
+                        'status' => ucfirst($item->status),
+                        'created_at' => $item->created_at->format('d M Y, H:i'),
+                        'komentar' => $item->komentar ?? 'Belum ada komentar.'
+                    ];
+                })
+            ]);
+        }
+
+        // Jika bukan AJAX request, tampilkan halaman view biasa
         return view('admin.kelola-pendaftaran.pendaftaran-siswa-baru.index', compact('pendaftar'));
     }
 
@@ -40,21 +70,6 @@ class AdminVerifikasiPendaftaranController extends Controller
         ])->findOrFail($id);
 
         return view('admin.kelola-pendaftaran.pendaftaran-siswa-baru.show', compact('pendaftar'));
-    }
-
-    /**
-     * Melakukan verifikasi pendaftaran.
-     */
-    public function needVerify()
-    {
-        // Ambil data dengan status 'submitted' dan 'updated'
-        $pendaftar = Registration::whereIn('status', [
-            EnumVerifyRegistration::Submitted->value,
-            EnumVerifyRegistration::Updated->value,
-        ])->paginate(10);
-
-        // Kirim data ke view
-        return view('admin.kelola-pendaftaran.pendaftaran-siswa-baru.verifikasi', compact('pendaftar'));
     }
 
     public function destroy($id)
@@ -113,7 +128,7 @@ class AdminVerifikasiPendaftaranController extends Controller
         return redirect()->back()->with('success', 'Status berhasil diperbarui.');
     }
 
-    public function updateComment(Request $request, $id)
+    public function updateComment(Request $request, $type, $id)
     {
         // Validasi komentar
         $request->validate([
@@ -121,14 +136,41 @@ class AdminVerifikasiPendaftaranController extends Controller
         ]);
 
         // Temukan pendaftar berdasarkan ID
-        $pendaftar = Registration::findOrFail($id);
+        $pendaftar = Registration::with([
+            'calonSiswa',
+            'alamat',
+            'dataOrangTua',
+            'dataRinci'
+        ])->findOrFail($id);
 
-        // Update komentar di tabel registration
-        $pendaftar->komentar = $request->komentar;
-        $pendaftar->save();
+        // Proses update komentar berdasarkan tipe
+        switch ($type) {
+            case 'calon_siswa':
+                // Update komentar di tabel calon_siswa
+                $pendaftar->calonSiswa->komentar = $request->komentar;
+                $pendaftar->calonSiswa->save();
+                break;
+            case 'alamat':
+                // Update komentar di tabel alamat
+                $pendaftar->alamat->komentar = $request->komentar;
+                $pendaftar->alamat->save();
+                break;
+            case 'data_orang_tua':
+                // Update komentar di tabel data_orang_tua
+                $pendaftar->dataOrangTua->komentar = $request->komentar;
+                $pendaftar->dataOrangTua->save();
+                break;
+            case 'data_rinci':
+                // Update komentar di tabel data_rinci
+                $pendaftar->dataRinci->komentar = $request->komentar;
+                $pendaftar->dataRinci->save();
+                break;
+            default:
+                return redirect()->back()->with('error', 'Jenis data tidak valid.');
+        }
 
-        // Redirect kembali ke halaman show dengan pesan sukses
-        return redirect()->route('admin.verifikasi-pendaftaran.show', $id)->with('success', 'Komentar berhasil diperbarui');
+        return redirect()->back()->with('success', 'Komentar berhasil diperbarui.');
     }
+
 
 }

@@ -62,7 +62,7 @@
             <p>Halo {{ $user->calonSiswa->nama_lengkap }},</p>
             <p>Data pendaftaran Anda telah berhasil diperbarui.</p>
             <p>Tim PPDB akan segera memverifikasi ulang data Anda. Harap pantau status pendaftaran Anda secara berkala.</p>
-            <p>Salam hangat,<br>Tim PPDB</p>
+            <p>Salam hangat,<br>Tim PPDB SMAK Santo Bonaventura</p>
         </div>
 
         <!-- Footer -->

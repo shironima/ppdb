@@ -25,48 +25,18 @@
 
     <!-- Pendaftaran Siswa Baru -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePendaftar"
-            aria-expanded="true" aria-controls="collapsePendaftar">
+        <a class="nav-link" href="{{ route('admin.verifikasi-pendaftaran.index') }}">
             <i class="fas fa-fw fa-user-graduate"></i>
             <span>Pendaftaran Siswa Baru</span>
         </a>
-        <div id="collapsePendaftar" class="collapse" aria-labelledby="headingPendaftar" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.verifikasi-pendaftaran.index') }}">Semua Pendaftaran</a>
-                <a class="collapse-item" href="{{ route('admin.verifikasi-pendaftaran.verify') }}">Verifikasi Pendaftaran</a>
-            </div>
-        </div>
     </li>
 
-    <!-- Kelola Berkas Pendaftaran -->
+    <!-- Kelola Berkas Pendidikan -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBerkas"
-            aria-expanded="true" aria-controls="collapseBerkas">
+        <a class="nav-link" href="{{ route('admin.verifikasi-berkas-pendidikan.index') }}">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Berkas Pendidikan</span>
         </a>
-        <div id="collapseBerkas" class="collapse" aria-labelledby="headingBerkas" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.verifikasi-berkas-pendidikan.index') }}">Semua Berkas</a>
-                <a class="collapse-item" href="{{ route('admin.verifikasi-berkas-pendidikan.verify') }}">Verifikasi Berkas</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Kelola Pembayaran -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBayar"
-            aria-expanded="true" aria-controls="collapseBayar">
-            <i class="fas fa-fw fa-credit-card"></i>
-            <span>Pembayaran</span>
-        </a>
-        <div id="collapseBayar" class="collapse" aria-labelledby="headingBayar" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Transaksi Pembayaran</a>
-                <a class="collapse-item" href="#">Verifikasi Pembayaran</a>
-                <a class="collapse-item" href="#">Riwayat Pembayaran</a>
-            </div>
-        </div>
     </li>
 
     <!-- Divider -->
@@ -115,6 +85,9 @@
         </div>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    
     <!-- Heading -->
     <div class="sidebar-heading">
         Notifikasi

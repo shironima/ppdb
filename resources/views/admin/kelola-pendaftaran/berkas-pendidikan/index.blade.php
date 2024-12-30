@@ -5,13 +5,25 @@
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h5 class="m-0 font-weight-bold text-primary">Semua Berkas Pendidikan</h5>
+        <h5 class="m-0 font-weight-bold text-primary">Berkas Pendidikan</h5>
         <p class="mt-2 text-muted" style="font-size: 1rem;">
             Di sini Anda dapat melihat semua berkas pendidikan yang telah diunggah oleh pendaftar, serta menambahkan komentar atau melakukan aksi lainnya.
             Termasuk melihat detail berkas pendidikan yang perlu diverifikasi atau menghapus berkas jika diperlukan.
         </p>
     </div>
     <div class="card-body">
+        <!-- Filter Status -->
+        <div class="form-group">
+            <label for="status">Filter Status</label>
+            <select id="status" name="status" class="form-control">
+                <option value="">Semua</option>
+                <option value="submitted">Submitted</option>
+                <option value="updated">Updated</option>
+                <option value="verified">Verified</option>
+                <option value="requires_revision">Requires Revision</option>
+            </select>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped table-bordered" id="berkasPendidikanTable" width="100%" cellspacing="0">
                 <thead>
@@ -25,29 +37,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pendaftar as $p)
-                        <tr>
-                            <td>{{ $p->id }}</td>
-                            <td>{{ $p->calonSiswa->nama_lengkap ?? '-' }}</td>
-                            <td>{{ ucfirst($p->berkasPendidikan->status) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($p->berkasPendidikan->created_at)->format('d M Y, H:i') }}</td>
-                            <td>{{ $p->berkasPendidikan->komentar ?? 'Belum ada komentar.' }}</td>
-                            <td>
-                                <a href="{{ route('admin.verifikasi-berkas-pendidikan.show', $p->id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Detail">
-                                    <i class="fas fa-eye"></i> Detail
-                                </a>
-                                <!-- Tombol Hapus -->
-                                <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $p->id }}" data-name="{{ $p->calonSiswa->nama_lengkap ?? 'Pendaftar' }}">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
+                    <!-- Data akan dimuat lewat AJAX -->
                 </tbody>
             </table>
         </div>
-        <div class="mt-3">
-            {{ $pendaftar->links() }}
+        <div class="mt-3" id="paginationLinks">
+            <!-- Pagination Links will be handled by DataTables -->
         </div>
     </div>
 </div>
@@ -59,7 +54,33 @@
     <script>
         $(document).ready(function() {
             // Inisialisasi DataTables
-            $('#berkasPendidikanTable').DataTable({
+            var table = $('#berkasPendidikanTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ route('admin.verifikasi-berkas-pendidikan.index') }}',
+                    data: function(d) {
+                        d.status = $('#status').val();  // Mengirimkan filter status ke server
+                    }
+                },
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'nama_lengkap', name: 'calonSiswa.nama_lengkap' },
+                    { data: 'status', name: 'berkasPendidikan.status' },
+                    { data: 'created_at', name: 'berkasPendidikan.created_at' },
+                    { data: 'komentar', name: 'berkasPendidikan.komentar' },
+                    {
+                        data: null,
+                        render: function(data) {
+                            return `<a href="{{ url('admin/verifikasi-berkas-pendidikan') }}/${data.id}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Detail">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
+                                    <button class="btn btn-sm btn-danger deleteBtn" data-id="${data.id}" data-name="${data.nama_lengkap}">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>`;
+                        }
+                    }
+                ],
                 language: {
                     search: "Cari:",
                     lengthMenu: "Tampilkan _MENU_ data per halaman",
@@ -80,8 +101,13 @@
                 responsive: true
             });
 
+            // Ketika status filter berubah, reload tabel
+            $('#status').change(function() {
+                table.ajax.reload();
+            });
+
             // Menambahkan event listener untuk tombol hapus
-            $('.deleteBtn').click(function(e) {
+            $(document).on('click', '.deleteBtn', function(e) {
                 e.preventDefault();  // Mencegah form di-submit langsung
 
                 var id = $(this).data('id');
@@ -116,7 +142,7 @@
                                     'Data berkas pendidikan telah dihapus.',
                                     'success'
                                 ).then(() => {
-                                    location.reload();  // Reload halaman setelah berhasil menghapus
+                                    table.ajax.reload(); 
                                 });
                             } else {
                                 Swal.fire(
@@ -135,7 +161,6 @@
                         });
                     }
                 });
-
             });
 
             // Aktivasi tooltips untuk tombol

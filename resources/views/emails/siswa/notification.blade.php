@@ -65,10 +65,10 @@
         <!-- Body -->
         <div class="email-body">
             <p>Halo {{ $user->calonSiswa->nama_lengkap }},</p>
-            <p>Terima kasih telah mendaftar di PPDB kami. Pendaftaran Anda telah berhasil kami terima dan sedang dalam proses verifikasi.</p>
+            <p>Terima kasih telah mendaftar di SMAK Santo Bonaventura. Pendaftaran Anda telah berhasil kami terima dan sedang dalam proses verifikasi.</p>
             <p>Anda dapat memantau status pendaftaran Anda melalui tautan berikut:</p>
             <p><a href="{{ route('status-pendaftaran.index') }}">Lihat Status Pendaftaran</a></p>
-            <p>Jika ada pertanyaan, jangan ragu untuk menghubungi kami melalui email atau WhatsApp yang tersedia.</p>
+            <p>Jika ada pertanyaan, jangan ragu untuk menghubungi kami melalui <a href="{{ route('siswa.informasi-ppdb.tanya-admin-ppdb') }}">Tanya Admin</a>, Email atau WhatsApp yang tersedia.</p>
             <p>Salam hangat,<br>Tim PPDB</p>
         </div>
 
