@@ -242,45 +242,7 @@
             </div>
         </div>
 
-        <!-- Card Pembayaran -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Pembayaran Formulir Pendaftaran</h5>
-                    @php
-                        $user = Auth::user();
-                        $calonSiswa = $user->calonSiswa ?? null;
-                        $payment = $calonSiswa ? \App\Models\Payment::where('calon_siswa_id', $calonSiswa->id)->first() : null;
-                    @endphp
 
-                    @if ($payment)
-                        <p>Pembayaran kamu sudah tercatat!</p>
-                        <div class="status-section">
-                            <p>Status Saat Ini:
-                                @switch($payment->status)
-                                    @case('pending')
-                                        <span class="badge bg-warning">Menunggu Verifikasi Admin</span>
-                                        @break
-                                    @case('Lunas')
-                                        <span class="badge bg-success">Lunas</span>
-                                        @break
-                                    @case('Failed')
-                                        <span class="badge bg-danger">Gagal</span>
-                                        @break
-                                    @default
-                                        <span class="badge bg-secondary">{{ $payment->status }}</span>
-                                @endswitch
-                            </p>
-                        </div>
-                        <a href="{{ route('payments.index') }}" class="btn btn-primary mt-2">Lihat Rincian</a>
-                    @else
-                        <p>Belum ada data pembayaran.</p>
-                        <div class="status-section"></div>
-                        <a href="{{ route('payments.paymentPage') }}" class="btn btn-warning mt-2">Bayar Sekarang</a>
-                    @endif
-                </div>
-            </div>
-        </div>
 
     </div>
 </section>
