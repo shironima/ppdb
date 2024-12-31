@@ -27,7 +27,6 @@ class RegistrationController extends Controller
             'calonSiswa.dataOrangTua',
             'calonSiswa.dataRinci',
             'calonSiswa.berkasPendidikan',
-            'calonSiswa.payments',
             'notificationContact',
         ]);
 
@@ -38,8 +37,6 @@ class RegistrationController extends Controller
             $user->calonSiswa->dataOrangTua->status ?? null,
             $user->calonSiswa->dataRinci->status ?? null,
             $user->calonSiswa->berkasPendidikan->status ?? null,
-            // Cek status pembayaran
-            $user->calonSiswa->payments->where('transaction_status', 'settlement')->count() > 0 ? 'Submitted' : 'Belum Diisi',
         ];
 
         // Cek jika semua formulir sudah disubmit
@@ -63,7 +60,6 @@ class RegistrationController extends Controller
             'calonSiswa.dataOrangTua',
             'calonSiswa.dataRinci',
             'calonSiswa.berkasPendidikan',
-            'calonSiswa.payments',
             'notificationContact',
         ]);
 
@@ -87,10 +83,6 @@ class RegistrationController extends Controller
             return back()->with('already_submitted', 'Anda sudah mengirim pendaftaran sebelumnya.');
         }
 
-        // Cek apakah calon siswa memiliki pembayaran yang terkait
-        // Mengambil pembayaran pertama
-        $payment = $calonSiswa->payments->first();
-
         // Tentukan status pendaftaran "submitted" jika tidak ada pembayaran
         $registrationStatus = 'submitted';
 
@@ -100,7 +92,6 @@ class RegistrationController extends Controller
                 'id' => Str::uuid()->toString(),
                 'calon_siswa_id' => $calonSiswa->id,
                 'berkas_pendidikan_id' => $calonSiswa->berkasPendidikan->id,
-                'payments_id' => $payment ? $payment->id : null, // Jika pembayaran ada, simpan ID pembayaran
                 'alamat_id' => $calonSiswa->alamat->id,
                 'data_orang_tua_id' => $calonSiswa->dataOrangTua->id,
                 'data_rinci_id' => $calonSiswa->dataRinci->id,

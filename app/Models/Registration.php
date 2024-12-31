@@ -74,12 +74,6 @@ class Registration extends Model
         return $this->belongsTo(BerkasPendidikan::class, 'berkas_pendidikan_id');
     }
 
-    // Relasi dengan model Pembayaran (One to One)
-    public function pembayaran()
-    {
-        return $this->belongsTo(Payment::class, 'payment_id');
-    }
-
     public function notificationContact()
     {
         return $this->belongsTo(NotificationContact::class, 'notification_contact_id');

@@ -90,12 +90,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(DataOrangTua::class, 'user_id');
     }
-
-    public function payment()
-    {
-        return $this->hasMany(Payment::class, 'calon_siswa_id', 'id');
-    }
-
+    
     public function registration()
     {
         return $this->hasOne(Registration::class, 'calon_siswa_id', 'id');

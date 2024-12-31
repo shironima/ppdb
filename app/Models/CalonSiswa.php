@@ -58,11 +58,6 @@ class CalonSiswa extends Model
         return $this->hasOne(BerkasPendidikan::class);
     }
 
-    public function payments()
-    {
-        return $this->hasOne(Payment::class, 'calon_siswa_id', 'id');
-    }
-
     public function isCompleted()
     {
         return $this->alamat && $this->dataOrangTua && $this->dataRinci && $this->berkasPendidikan;

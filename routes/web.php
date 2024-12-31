@@ -92,11 +92,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/berkas-pendidikan/edit', [BerkasPendidikanController::class, 'edit'])->name('berkas-pendidikan.edit');
     Route::post('/berkas-pendidikan/update', [BerkasPendidikanController::class, 'update'])->name('berkas-pendidikan.update');
     
-    // Pembayaran
-    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
-    Route::get('/payments/paymentPage', [PaymentController::class, 'paymentPage'])->name('payments.paymentPage');
-    Route::post('/payments/notification', [PaymentController::class, 'notification'])->name('payments.notification');
-
     // Status Pendaftaran
     Route::get('/status-pendaftaran', [RegistrationController::class, 'index'])->name('status-pendaftaran.index');
 

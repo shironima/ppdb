@@ -84,16 +84,6 @@
                                         ['nama' => 'Data Orang Tua', 'status' => $user->calonSiswa->dataOrangTua->status ?? null, 'comment' => $user->calonSiswa->dataOrangTua->comment ?? '-', 'route' => 'data-orang-tua.create', 'route_edit' => 'data-orang-tua.edit', 'route_index' => 'data-orang-tua.index', 'id' => $user->calonSiswa->dataOrangTua->id],
                                         ['nama' => 'Data Rinci', 'status' => $user->calonSiswa->dataRinci->status ?? null, 'comment' => $user->calonSiswa->dataRinci->comment ?? '-', 'route' => 'data-rinci.create', 'route_edit' => 'data-rinci.edit', 'route_index' => 'data-rinci.index', 'id' => $user->calonSiswa->dataRinci->id],
                                         ['nama' => 'Berkas Pendidikan', 'status' => $user->calonSiswa->berkasPendidikan->status ?? null, 'comment' => $user->calonSiswa->berkasPendidikan->comment ?? '-', 'route' => 'berkas-pendidikan.create', 'route_edit' => 'berkas-pendidikan.edit', 'route_index' => 'berkas-pendidikan.index', 'id' => $user->calonSiswa->berkasPendidikan->id],
-                                        [
-                                            'nama' => 'Pembayaran Formulir',
-                                            'status' => ($user->calonSiswa->payments && $user->calonSiswa->payments->where('transaction_status', 'settlement')->count() > 0) ? 'Submitted' : 'Belum Diisi',
-                                            'comment' => ($user->calonSiswa->payments && $user->calonSiswa->payments->count() > 0) ? $user->calonSiswa->payments->first()->comment ?? '-' : '-',
-                                            'route' => 'payments.edit',
-                                            'route_edit' => 'payments.edit',
-                                            'route_index' => 'payments.index',
-                                            'payment' => $user->calonSiswa->payments->first(),
-                                            'id' => $user->calonSiswa->payments->first() ? $user->calonSiswa->payments->first()->id : null,
-                                        ]
                                     ];
 
                                     // Cek apakah semua formulir sudah disubmit
@@ -124,8 +114,6 @@
                                                 <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
                                             @elseif ($data['status'] === 'Updated') 
                                                 <span class="badge bg-info text-light"><i class="bi bi-pencil me-1"></i>Updated</span>
-                                            @elseif (isset($data['payment']) && $data['payment'])
-                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Pembayaran Diterima</span>
                                             @else
                                                 <span class="badge bg-light text-dark"><i class="bi bi-x-circle me-1"></i>Belum Diisi</span>
                                             @endif
@@ -142,8 +130,6 @@
                                                 <span class="text-muted">-</span>  
                                             @elseif ($data['status'] === null)
                                                 <a href="{{ route($data['route']) }}" class="btn btn-primary btn-sm">Lengkapi Sekarang</a>  
-                                            @elseif (!isset($data['payment']) || !$data['payment'])
-                                                <a href="{{ route('payments.paymentPage') }}" class="btn btn-primary btn-sm">Bayar Sekarang</a>  
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -192,7 +178,6 @@
                         <li><strong>Requires Revision:</strong> Formulir perlu diperbaiki, karena terdapat informasi yang kurang atau salah.</li>
                         <li><strong>Verified:</strong> Formulir telah diverifikasi dan diterima oleh admin.</li>
                         <li><strong>Updated:</strong> Formulir telah diperbarui dan menunggu proses verifikasi ulang.</li>
-                        <li><strong>Pembayaran Diterima:</strong> Pembayaran untuk formulir sudah diterima dan diproses.</li>
                         <li><strong>Belum Diisi:</strong> Formulir belum diisi oleh calon siswa, harap segera mengisi untuk melanjutkan proses.</li>
                     </ul>
                     <div class="alert alert-info mt-4">
