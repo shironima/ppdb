@@ -83,7 +83,6 @@ class RegistrationController extends Controller
             return back()->with('already_submitted', 'Anda sudah mengirim pendaftaran sebelumnya.');
         }
 
-        // Tentukan status pendaftaran "submitted" jika tidak ada pembayaran
         $registrationStatus = 'submitted';
 
         try {
@@ -96,7 +95,7 @@ class RegistrationController extends Controller
                 'data_orang_tua_id' => $calonSiswa->dataOrangTua->id,
                 'data_rinci_id' => $calonSiswa->dataRinci->id,
                 'notification_contact_id' => $user->notificationContact->id,
-                'status' => $registrationStatus, // Status default untuk pendaftaran adalah "submitted"
+                'status' => $registrationStatus,
             ]);
 
         // Memicu event RegistrationSubmitted

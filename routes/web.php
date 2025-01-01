@@ -110,9 +110,22 @@ Route::middleware('auth')->group(function () {
 
 
 // Rute untuk Admin
-Route::middleware(['auth', RoleMiddleware::class . ':admin, super_admin'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
     // Dashboard admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // Notifikasi Admin (email dan whatsapp)
+    Route::get('/admin/admin-contact/email', [AdminController::class, 'indexEmail'])->name('admin.admin-contact.email');
+    Route::get('/admin/admin-contact/email/create', [AdminController::class, 'createEmail'])->name('admin.admin-contact.create');
+    Route::post('/admin/admin-contact/email', [AdminController::class, 'storeEmail'])->name('admin.admin-contact.store');
+    Route::put('/admin/admin-contact/email', [AdminController::class, 'updateEmail'])->name('admin.admin-contact.email.update');
+    
+    Route::get('/admin/admin-contact/whatsapp', [AdminController::class, 'indexWhatsapp'])->name('admin.admin-contact.whatsapp');
+    Route::get('/admin/admin-contact/whatsapp/create', [AdminController::class, 'createWhatsapp'])->name('admin.admin-contact.create.whatsapp');
+    Route::post('/admin/admin-contact/whatsapp', [AdminController::class, 'storeWhatsapp'])->name('admin.admin-contact.store.whatsapp');
+    Route::put('/admin/admin-contact/whatsapp', [AdminController::class, 'updateWhatsapp'])->name('admin.admin-contact.whatsapp.update');
+
+    Route::delete('/admin/admin-contact/{id}', [AdminController::class, 'destroy'])->name('admin.admin-contact.destroy');
 
     // Verifikasi Pendaftaran
     Route::get('/admin/verifikasi-pendaftaran', [AdminVerifikasiPendaftaranController::class, 'index'])->name('admin.verifikasi-pendaftaran.index');

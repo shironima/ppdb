@@ -14,8 +14,8 @@ class AdminPPDB extends Model
 
     protected $fillable = [
         'user_id',
-        'nama',
-        'no_hp',
+        'email',
+        'whatsapp',
     ];
 
     // Tentukan relasi dengan model User (One to One)

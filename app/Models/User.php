@@ -110,4 +110,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(NotificationContact::class);
     }
+
+    public function adminPPDB()
+    {
+        return $this->hasOne(AdminPPDB::class, 'user_id');
+    }
 }
