@@ -9,6 +9,7 @@ use App\Models\Registration;
 use App\Models\BerkasPendidikan;
 use App\Enums\EnumPendaftaran;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminVerifikasiBerkasPendidikanController extends Controller
 {
@@ -73,7 +74,8 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
         $berkasPendidikan->raportUrl = $berkasPendidikan->getFileUrl('raport');
         $berkasPendidikan->kartu_keluargaUrl = $berkasPendidikan->getFileUrl('kartu_keluarga');
 
-        return view('admin.kelola-pendaftaran.berkas-pendidikan.show', compact('berkasPendidikan'));
+        // Kirim data berkasPendidikan dan registration ke view
+        return view('admin.kelola-pendaftaran.berkas-pendidikan.show', compact('berkasPendidikan', 'registration'));
     }
 
     /**
@@ -123,30 +125,32 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
-        // Validasi status yang diterima
-        $validStatuses = [
-            EnumPendaftaran::Submitted->value,
-            EnumPendaftaran::RequiresRevision->value,
-            EnumPendaftaran::Updated->value,
-            EnumPendaftaran::Verified->value,
-            EnumPendaftaran::InProgress->value,
-        ];
+        Log::info("Updating status for registration id: $id");
 
+        // Ambil data registration
+        $registration = Registration::with('calonSiswa', 'berkasPendidikan')->findOrFail($id);
+        Log::info('Registration found: ', $registration->toArray());
+
+        // Validasi status yang diperbolehkan
+        $validStatuses = ['Submitted', 'In Progress', 'Requires Revision', 'Verified'];
         if (!in_array($request->status, $validStatuses)) {
             return redirect()->back()->with('error', 'Status tidak valid.');
         }
 
-        // Temukan berkas pendidikan terkait pendaftar
-        $pendaftar = Registration::with('berkasPendidikan')->findOrFail($id);
-        $berkasPendidikan = $pendaftar->berkasPendidikan;
+        // Pastikan data berkasPendidikan ada
+        if (!$registration->berkasPendidikan) {
+            return redirect()->back()->with('error', 'Berkas pendidikan tidak ditemukan.');
+        }
 
-        // Update status berkas pendidikan
+        // Update status berkasPendidikan
+        $berkasPendidikan = $registration->berkasPendidikan;
         if ($berkasPendidikan->status !== $request->status) {
             $berkasPendidikan->update(['status' => $request->status]);
         }
 
-        return redirect()->route('admin.verifikasi-berkas-pendidikan.index')
-            ->with('success', 'Status berkas pendidikan berhasil diperbarui.');
+        // Kirimkan flash message
+        return redirect()->route('admin.verifikasi-berkas-pendidikan.show', $registration->id)
+            ->with('success', 'Status berhasil diperbarui untuk registrasi ' . $registration->calonSiswa->nama_lengkap);
     }
 
     /**
@@ -159,16 +163,17 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
             'komentar' => 'nullable|string|max:1000',
         ]);
 
-        // Temukan berkas pendidikan terkait pendaftar
-        $pendaftar = Registration::findOrFail($id);
-        $berkasPendidikan = $pendaftar->berkasPendidikan;
+        // Temukan registrasi terkait
+        $registration = Registration::findOrFail($id);
+        $berkasPendidikan = $registration->berkasPendidikan;
 
         // Update komentar di berkas pendidikan
         $berkasPendidikan->komentar = $request->komentar;
         $berkasPendidikan->save();
 
-        // Redirect kembali ke halaman show dengan pesan sukses
+        // Menampilkan SweetAlert setelah komentar berhasil diperbarui
         return redirect()->route('admin.verifikasi-berkas-pendidikan.show', $id)
-            ->with('success', 'Komentar berhasil diperbarui');
+            ->with('success', 'Komentar berhasil diperbarui untuk registrasi ' . $registration->calonSiswa->nama_lengkap);
     }
+
 }

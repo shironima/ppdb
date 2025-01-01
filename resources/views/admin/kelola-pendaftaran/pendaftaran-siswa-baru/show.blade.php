@@ -269,3 +269,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+@if(session('success'))
+    <script>
+        const activeTab = localStorage.getItem('activeTab') || 'calonSiswaTab';
+        localStorage.setItem('activeTab', activeTab);
+
+        Swal.fire({
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'Tutup'
+        }).then((result) => {
+            document.getElementById(activeTab)?.classList.add('active');
+            const activeTabContent = document.querySelector(`.tab-pane#${activeTab.split('Tab')[0]}`);
+            if (activeTabContent) {
+                activeTabContent.classList.add('show', 'active');
+            }
+        });
+    </script>
+@endif
+@endpush

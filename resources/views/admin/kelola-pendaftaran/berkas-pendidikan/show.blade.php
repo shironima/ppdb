@@ -40,7 +40,7 @@
                                 <tr><th>Dokumen Ijazah</th>
                                     <td>
                                         @if($berkasPendidikan->ijazahUrl)
-                                            <a href="{{ asset('storage/' . $berkasPendidikan->ijazahUrl) }}" target="_blank">Lihat Ijazah</a>
+                                            <a href="{{ asset($berkasPendidikan->ijazahUrl) }}" target="_blank">Lihat Ijazah</a>
                                         @else
                                             <span class="text-muted">Belum diunggah</span>
                                         @endif
@@ -49,7 +49,7 @@
                                 <tr><th>Dokumen SKHUN</th>
                                     <td>
                                         @if($berkasPendidikan->skhunUrl)
-                                            <a href="{{ asset('storage/' . $berkasPendidikan->skhunUrl) }}" target="_blank">Lihat SKHUN</a>
+                                            <a href="{{ asset($berkasPendidikan->skhunUrl) }}" target="_blank">Lihat SKHUN</a>
                                         @else
                                             <span class="text-muted">Belum diunggah</span>
                                         @endif
@@ -58,7 +58,7 @@
                                 <tr><th>Dokumen Raport</th>
                                     <td>
                                         @if($berkasPendidikan->raportUrl)
-                                            <a href="{{ asset('storage/' . $berkasPendidikan->raportUrl) }}" target="_blank">Lihat Raport</a>
+                                            <a href="{{ asset($berkasPendidikan->raportUrl) }}" target="_blank">Lihat Raport</a>
                                         @else
                                             <span class="text-muted">Belum diunggah</span>
                                         @endif
@@ -67,24 +67,36 @@
                                 <tr><th>Dokumen Kartu Keluarga</th>
                                     <td>
                                         @if($berkasPendidikan->kartu_keluargaUrl)
-                                            <a href="{{ asset('storage/' . $berkasPendidikan->kartu_keluargaUrl) }}" target="_blank">Lihat Kartu Keluarga</a>
+                                            <a href="{{ asset($berkasPendidikan->kartu_keluargaUrl) }}" target="_blank">Lihat Kartu Keluarga</a>
                                         @else
                                             <span class="text-muted">Belum diunggah</span>
                                         @endif
                                     </td>
                                 </tr>
                             </table>
-                            @include('admin.components.update-status', [
-                                'action' => route('admin.verifikasi-berkas-pendidikan.updateStatus', ['id' => $berkasPendidikan->id]),
-                                'statusOptions' => $statusOptions,
-                                'currentStatus' => $berkasPendidikan->status ?? null
-                            ])
+
+                            <!-- Form untuk Update Status -->
+                            <form action="{{ route('admin.verifikasi-berkas-pendidikan.updateStatus', $registration->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status Berkas Pendidikan</label>
+                                    <select class="form-control" name="status" id="status">
+                                        @foreach($statusOptions as $value => $label)
+                                            <option value="{{ $value }}" {{ $berkasPendidikan->status == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Update Status</button>
+                            </form>
                         </div>
 
                         <!-- Komentar -->
                         <div class="tab-pane fade" id="komentar" role="tabpanel">
                             <h6 class="mb-4">Tambahkan Komentar jika perlu memberikan catatan untuk Berkas Pendidikan</h6>
-                            <form action="{{ route('admin.verifikasi-berkas-pendidikan.updateComment', $berkasPendidikan->id) }}" method="POST">
+                            <form action="{{ route('admin.verifikasi-berkas-pendidikan.updateComment', $registration->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
@@ -117,4 +129,29 @@
         </div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses!',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'OK',
+                // Callback setelah SweetAlert ditutup
+                willClose: () => {
+                    // Simpan posisi scroll sebelum SweetAlert
+                    const currentScrollPosition = window.scrollY;
+
+                    // Scroll kembali ke posisi yang sebelumnya
+                    window.scrollTo(0, currentScrollPosition);
+                }
+            });
+        });
+    </script>
+@endif
+
+@endpush

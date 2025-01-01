@@ -124,8 +124,7 @@ class AdminVerifikasiPendaftaranController extends Controller
             default:
                 return redirect()->back()->with('error', 'Jenis data tidak valid.');
         }
-
-        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status berhasil diperbarui untuk registrasi ' . $pendaftar->calonSiswa->nama_lengkap);
     }
 
     public function updateComment(Request $request, $type, $id)
