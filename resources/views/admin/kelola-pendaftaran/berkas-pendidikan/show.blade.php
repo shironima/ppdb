@@ -18,6 +18,7 @@
                             'In Progress' => 'In Progress',
                             'Requires Revision' => 'Requires Revision',
                             'Submitted' => 'Submitted',
+                            'Updated' => 'Updated',
                             'Belum Diisi' => 'Belum Diisi'
                         ];
                     @endphp

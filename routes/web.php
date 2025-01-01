@@ -89,8 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/berkas-pendidikan', [BerkasPendidikanController::class, 'index'])->name('berkas-pendidikan.index');
     Route::get('/berkas-pendidikan/create', [BerkasPendidikanController::class, 'create'])->name('berkas-pendidikan.create');
     Route::post('/berkas-pendidikan/store', [BerkasPendidikanController::class, 'store'])->name('berkas-pendidikan.store');
-    Route::get('/berkas-pendidikan/edit', [BerkasPendidikanController::class, 'edit'])->name('berkas-pendidikan.edit');
-    Route::post('/berkas-pendidikan/update', [BerkasPendidikanController::class, 'update'])->name('berkas-pendidikan.update');
+    Route::get('/berkas-pendidikan/edit/{id}', [BerkasPendidikanController::class, 'edit'])->name('berkas-pendidikan.edit');
+    Route::put('/berkas-pendidikan/update/{id}', [BerkasPendidikanController::class, 'update'])->name('berkas-pendidikan.update');
     
     // Status Pendaftaran
     Route::get('/status-pendaftaran', [RegistrationController::class, 'index'])->name('status-pendaftaran.index');
@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function () {
 
 
 // Rute untuk Admin
-Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':admin, super_admin'])->group(function () {
     // Dashboard admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 

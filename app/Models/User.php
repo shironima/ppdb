@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,7 +33,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -47,11 +46,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Determine if the user is an admin.
+     * Check if the user has a specific role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Determine if the user is an admin
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
@@ -61,7 +71,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isSiswa()
+    public function isSiswa(): bool
     {
         return $this->role === 'siswa';
     }
@@ -90,7 +100,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(DataOrangTua::class, 'user_id');
     }
-    
+
     public function registration()
     {
         return $this->hasOne(Registration::class, 'calon_siswa_id', 'id');

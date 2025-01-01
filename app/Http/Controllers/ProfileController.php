@@ -18,14 +18,14 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // Jika pengguna adalah admin, arahkan ke halaman profile admin
-        if ($user->hasRole('admin')) {
+        // Cek role pengguna dan arahkan ke halaman sesuai
+        if ($user->role === 'admin') {
             return view('profile.admin.edit', ['user' => $user]);
         }
 
-        // Jika pengguna bukan admin (role : siswa), arahkan ke halaman profile biasa
-        return view('profile.edit', [
-            'user' => $request->user(),
+        // Untuk siswa
+        return view('profile.siswa.edit', [
+            'user' => $user,
         ]);
     }
 
@@ -39,7 +39,7 @@ class ProfileController extends Controller
         // Mengisi data user dengan data yang sudah divalidasi
         $user->fill($request->validated());
 
-        // Jika ada perubahan pada email, set email_verified_at menjadi null
+        // Jika email diubah, reset verifikasi email
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
@@ -47,13 +47,10 @@ class ProfileController extends Controller
         // Simpan perubahan
         $user->save();
 
-        // Jika pengguna adalah admin, arahkan ke halaman admin profile setelah update
-        if ($user->hasRole('admin')) {
-            return Redirect::route('profile.admin.edit')->with('status', 'profile-updated');
-        }
-
-        // Jika pengguna bukan admin, arahkan ke halaman profile biasa setelah update
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // Redirect sesuai role pengguna dengan SweetAlert status
+        return Redirect::route(
+            $user->role === 'admin' ? 'admin.profile.edit' : 'siswa.profile.edit'
+        )->with('status', 'profile-updated');
     }
 
     /**
@@ -61,7 +58,6 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        // Validasi password saat menghapus akun
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
@@ -72,10 +68,11 @@ class ProfileController extends Controller
         Auth::logout();
         $user->delete();
 
-        // Invalidate session dan regenerate token untuk logout yang aman
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        // Redirect dengan SweetAlert status
+        return Redirect::to('/')->with('status', 'account-deleted');
     }
+
 }

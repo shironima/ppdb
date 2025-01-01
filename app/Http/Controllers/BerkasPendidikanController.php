@@ -97,4 +97,25 @@ class BerkasPendidikanController extends Controller
             ->with('success', 'Berkas pendidikan berhasil diupload.');
     }
 
+    public function edit($id)
+    {
+        // Ambil data berkas pendidikan berdasarkan ID
+        $berkasPendidikan = BerkasPendidikan::find($id);
+
+        // Pastikan berkas pendidikan ditemukan, jika tidak, redirect dengan pesan error
+        if (!$berkasPendidikan) {
+            return redirect()->route('berkas-pendidikan.index')->with('error', 'Berkas pendidikan tidak ditemukan.');
+        }
+
+        return view('siswa.form-pendaftaran.berkas-pendidikan.edit', compact('berkasPendidikan'));
+    }
+
+    public function update(Request $request, $id){
+        $berkas = BerkasPendidikan::find($id);
+        $berkas->status = 'Updated';
+        $berkas->save();
+
+        return redirect()->route('berkas-pendidikan.index')
+            ->with('success', 'Berkas pendidikan berhasil diperbarui.');
+    }
 }
