@@ -48,8 +48,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Kirim Pendaftaran Saya dan Kirim Perbaikan Data</h5>
                     <ul>
-                        <li>Setelah Anda mengisi semua formulir dengan lengkap, Anda dapat mengirimkan pendaftaran Anda untuk diproses lebih lanjut. Tombol <badge>Kirim Pendaftaran Saya</badge> akan aktif ketika semua formulir telah diisi dengan benar dan informasi kontak lengkap.</li>
-                        <li>Jika ada formulir yang perlu diperbaiki, Anda dapat mengirimkan perbaikan data dengan menekan tombol <badge>Kirim Perbaikan Data</badge>.</li>
+                        <li>Setelah Anda mengisi semua formulir dengan lengkap, Anda dapat mengirimkan pendaftaran Anda untuk diproses lebih lanjut. Tombol <span class="badge bg-success">Kirim Pendaftaran Saya</span> akan aktif ketika semua formulir telah diisi dengan benar dan informasi kontak lengkap.</li>
+                        <li>Jika ada formulir yang perlu diperbaiki, setelah melakukan perbaikan Anda dapat mengirimkan perbaikan data dengan menekan tombol <span class="badge bg-info">Kirim Perbaikan Data</span></li>
                     </ul>
                     <div class="alert alert-info">
                         <strong>Perhatian:</strong> Anda hanya dapat mengirimkan pendaftaran sekali. Pastikan semua data sudah benar sebelum mengirim.

@@ -16,31 +16,50 @@
 <section class="section">
     <div class="row">
         @foreach($berkasPendidikan as $index => $berkas)
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card">
+        <div class="col-lg-12 d-flex mb-4">
+            <!-- Card Utama (Berkas Pendidikan) -->
+            <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Berkas Pendidikan</h5>
                     <p><strong>Ijazah:</strong> <a href="{{ $berkas->getFileUrl('ijazah') }}" target="_blank">Lihat Ijazah</a></p>
                     <p><strong>SKHUN:</strong> <a href="{{ $berkas->getFileUrl('skhun') }}" target="_blank">Lihat SKHUN</a></p>
                     <p><strong>Raport:</strong> <a href="{{ $berkas->getFileUrl('raport') }}" target="_blank">Lihat Raport</a></p>
                     <p><strong>Kartu Keluarga:</strong> <a href="{{ $berkas->getFileUrl('kartu_keluarga') }}" target="_blank">Lihat Kartu Keluarga</a></p>
-                    <p><strong>Status:</strong>
-                        @if ($berkas->status === 'Submitted')
-                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                        @elseif ($berkas->status === 'In Progress')
-                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                        @elseif ($berkas->status === 'Requires Revision')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                        @elseif ($berkas->status === 'Verified')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                        @elseif ($berkas->status === 'Updated')
-                            <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
-                        @endif
-                    </p>
+                </div>
+            </div>
 
-                    @if($berkas->status === 'Requires Revision')
-                        <a href="{{ route('berkas-pendidikan.edit', $berkas->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @endif
+            <!-- Kolom Sebelah (Status dan Komentar) -->
+            <div class="flex-column w-50">
+                <!-- Card Status -->
+                <div class="card status-card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Status</h5>
+                        <p>
+                            @if ($berkas->status === 'Submitted')
+                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                            @elseif ($berkas->status === 'In Progress')
+                                <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                            @elseif ($berkas->status === 'Requires Revision')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                            @elseif ($berkas->status === 'Verified')
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                            @elseif ($berkas->status === 'Updated')
+                                <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
+                            @endif
+                        </p>
+
+                        @if($berkas->status === 'Requires Revision')
+                            <a href="{{ route('berkas-pendidikan.edit', $berkas->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Card Komentar -->
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Komentar</h5>
+                        <p>{{ $berkas->komentar ?? 'Belum ada komentar.' }}</p>
+                    </div>
                 </div>
             </div>
         </div>

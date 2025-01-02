@@ -10,6 +10,8 @@ use App\Mail\SiswaNotificationMail;
 use App\Mail\AdminNotificationMail;
 use Illuminate\Support\Facades\Mail;
 
+use App\Models\AdminPPDB;
+
 
 class SendRegistrationNotification
 {
@@ -34,8 +36,14 @@ class SendRegistrationNotification
             Mail::to($user->notificationContact->email)->send(new SiswaNotificationMail($user));
         }
 
-        // Kirim email ke admin
-        $adminEmail = 'gabrielahensky.dev@gmail.com'; // email admin
-        Mail::to($adminEmail)->send(new AdminNotificationMail($user));
+        // Kirim email ke semua admin
+        $admins = AdminPpdb::all();
+        foreach ($admins as $admin) {
+            // Pastikan email admin ada
+            if ($admin->email) {
+                Mail::to($admin->email)->send(new AdminNotificationMail($user));
+            }
+        }
     }
+
 }

@@ -16,8 +16,9 @@
 <section class="section">
     <div class="row">
         @foreach($dataRinci as $index => $data)
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card">
+        <div class="col-lg-12 d-flex mb-4">
+            <!-- Card Utama (Data Rinci) -->
+            <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Data Rinci Calon Siswa</h5>
                     <p><strong>Tinggi Badan:</strong> {{ $data->tinggi_badan }} cm</p>
@@ -27,21 +28,41 @@
                     <p><strong>Asal Sekolah:</strong> {{ $data->asal_sekolah }}</p>
                     <p><strong>Tahun Lulus:</strong> {{ $data->tahun_lulus }}</p>
                     <p><strong>Alamat Sekolah:</strong> {{ $data->alamat_sekolah_asal }}</p>
-                    <p><strong>Status:</strong>
-                        @if ($data->status === 'Submitted')
-                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                        @elseif ($data->status === 'In Progress')
-                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                        @elseif ($data->status === 'Requires Revision')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                        @elseif ($data->status === 'Verified')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                        @endif
-                    </p>
+                </div>
+            </div>
 
-                    @if($data->status === 'Requires Revision')
-                        <a href="{{ route('data-rinci.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @endif
+            <!-- Kolom Sebelah (Status dan Komentar) -->
+            <div class="flex-column w-50">
+                <!-- Card Status -->
+                <div class="card status-card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Status</h5>
+                        <p>
+                            @if ($data->status === 'Submitted')
+                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                            @elseif ($data->status === 'In Progress')
+                                <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                            @elseif ($data->status === 'Requires Revision')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                            @elseif ($data->status === 'Verified')
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                            @elseif ($siswa->status === 'Updated')
+                                <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
+                            @endif
+                        </p>
+
+                        @if($data->status === 'Requires Revision')
+                            <a href="{{ route('data-rinci.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Card Komentar -->
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Komentar</h5>
+                        <p>{{ $data->komentar ?? 'Belum ada komentar.' }}</p>
+                    </div>
                 </div>
             </div>
         </div>

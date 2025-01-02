@@ -16,8 +16,9 @@
 <section class="section">
     <div class="row">
         @forelse($calonSiswa as $index => $siswa)
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card">
+        <div class="col-lg-12 d-flex mb-4">
+            <!-- Card Utama (Data Diri Calon Siswa) -->
+            <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Data Diri Calon Siswa</h5>
                     <p><strong>Nama Lengkap:</strong> {{ $siswa->nama_lengkap ?? 'N/A' }}</p>
@@ -29,21 +30,41 @@
                     <p><strong>Nomor KK:</strong> {{ ucfirst($siswa->no_kk) ?? 'N/A' }}</p>
                     <p><strong>NIK:</strong> {{ ucfirst($siswa->nik) ?? 'N/A' }}</p>
                     <p><strong>Nomor HP:</strong> {{ $siswa->no_hp ?? 'N/A' }}</p>
-                    <p><strong>Status:</strong>
-                        @if ($siswa->status === 'Submitted')
-                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                        @elseif ($siswa->status === 'In Progress')
-                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                        @elseif ($siswa->status === 'Requires Revision')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                        @elseif ($siswa->status === 'Verified')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                </div>
+            </div>
+
+            <!-- Kolom Sebelah (Status dan Komentar) -->
+            <div class="flex-column w-50">
+                <!-- Card Status -->
+                <div class="card status-card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Status</h5>
+                        <p>
+                            @if ($siswa->status === 'Submitted')
+                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                            @elseif ($siswa->status === 'In Progress')
+                                <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                            @elseif ($siswa->status === 'Requires Revision')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                            @elseif ($siswa->status === 'Verified')
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                            @elseif ($siswa->status === 'Updated')
+                                <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
+                            @endif
+                        </p>
+
+                        @if($siswa->status === 'Requires Revision')
+                            <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         @endif
-                    </p>
-                    
-                    @if($siswa->status === 'Requires Revision')
-                        <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning">Edit</a>
-                    @endif
+                    </div>
+                </div>
+
+                <!-- Card Komentar -->
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Komentar</h5>
+                        <p>{{ $siswa->komentar ?? 'Belum ada komentar.' }}</p>
+                    </div>
                 </div>
             </div>
         </div>

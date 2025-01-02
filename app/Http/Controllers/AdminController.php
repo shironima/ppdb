@@ -88,7 +88,7 @@ class AdminController extends Controller
         }
 
         // Jika data admin ada, tampilkan halaman pengelolaan email
-        return view('admin.admin-ppdb.email.index', compact('admin'));
+        return view('admin.admin-ppdb.whatsapp.index', compact('admin'));
     }
 
     public function updateWhatsapp(Request $request)
@@ -108,6 +108,5 @@ class AdminController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->route('admin.admin-contact.whatsapp')->with('success', 'Nomor WhatsApp berhasil diperbarui.');
     }
-
 
 }

@@ -58,7 +58,7 @@
                                     @case('Submitted')
                                         <span class="badge bg-success">Submitted</span>
                                         @break
-                                    @case('In Verified')
+                                    @case('Verified')
                                         <span class="badge bg-success">Verified</span>
                                         @break
                                     @case('In Progress')
@@ -66,6 +66,9 @@
                                         @break
                                     @case('Requires Revision')
                                         <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @case('Updated')
+                                        <span class="badge bg-info">Updated</span>
                                         @break
                                     @default
                                         <span class="badge bg-secondary">{{ $status }}</span>
@@ -98,7 +101,7 @@
                                     @case('Submitted')
                                         <span class="badge bg-success">Submitted</span>
                                         @break
-                                    @case('In Verified')
+                                    @case('Verified')
                                         <span class="badge bg-success">Verified</span>
                                         @break
                                     @case('In Progress')
@@ -106,6 +109,9 @@
                                         @break
                                     @case('Requires Revision')
                                         <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @case('Updated')
+                                        <span class="badge bg-info">Updated</span>
                                         @break
                                     @default
                                         <span class="badge bg-secondary">{{ $status }}</span>
@@ -138,7 +144,7 @@
                                     @case('Submitted')
                                         <span class="badge bg-success">Submitted</span>
                                         @break
-                                    @case('In Verified')
+                                    @case('Verified')
                                         <span class="badge bg-success">Verified</span>
                                         @break
                                     @case('In Progress')
@@ -146,6 +152,9 @@
                                         @break
                                     @case('Requires Revision')
                                         <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @case('Updated')
+                                        <span class="badge bg-info">Updated</span>
                                         @break
                                     @default
                                         <span class="badge bg-secondary">{{ $status }}</span>
@@ -178,7 +187,7 @@
                                     @case('Submitted')
                                         <span class="badge bg-success">Submitted</span>
                                         @break
-                                    @case('In Verified')
+                                    @case('Verified')
                                         <span class="badge bg-success">Verified</span>
                                         @break
                                     @case('In Progress')
@@ -186,6 +195,9 @@
                                         @break
                                     @case('Requires Revision')
                                         <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @case('Updated')
+                                        <span class="badge bg-info">Updated</span>
                                         @break
                                     @default
                                         <span class="badge bg-secondary">{{ $status }}</span>
@@ -218,7 +230,7 @@
                                     @case('Submitted')
                                         <span class="badge bg-success">Submitted</span>
                                         @break
-                                    @case('In Verified')
+                                    @case('Verified')
                                         <span class="badge bg-success">Verified</span>
                                         @break
                                     @case('In Progress')
@@ -226,6 +238,9 @@
                                         @break
                                     @case('Requires Revision')
                                         <span class="badge bg-warning">Requires Revision</span>
+                                        @break
+                                    @case('Updated')
+                                        <span class="badge bg-info">Updated</span>
                                         @break
                                     @default
                                         <span class="badge bg-secondary">{{ $status }}</span>
@@ -241,9 +256,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </section>
 @endsection

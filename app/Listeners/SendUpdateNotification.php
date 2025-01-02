@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminUpdateNotificationMail;
 use App\Mail\SiswaUpdateNotificationMail;
+use App\Models\AdminPpdb;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Log;
 
@@ -35,9 +36,14 @@ class SendUpdateNotification
             Mail::to($userEmail)->send(new SiswaUpdateNotificationMail($user));
         }
 
-        // Kirim email ke admin
-        $adminEmail = 'gabrielahensky.dev@gmail.com'; // email admin yang mau dikirimi email notifikasi
-        Mail::to($adminEmail)->send(new AdminUpdateNotificationMail($user));
+        // Kirim email ke semua admin
+        $admins = AdminPpdb::all();  // Ambil semua admin
+        foreach ($admins as $admin) {
+            // Pastikan email admin ada
+            if ($admin->email) {
+                Mail::to($admin->email)->send(new AdminUpdateNotificationMail($user));
+            }
+        }
     }
 
 }

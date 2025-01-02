@@ -16,8 +16,9 @@
 <section class="section">
     <div class="row">
         @foreach($alamatCalonSiswa as $index => $alamat)
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card">
+        <div class="col-lg-12 d-flex mb-4">
+            <!-- Card Utama (Alamat) -->
+            <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Alamat Calon Siswa</h5>
                     <p><strong>Alamat:</strong> {{ $alamat->alamat_lengkap }}</p>
@@ -28,21 +29,41 @@
                     <p><strong>Provinsi:</strong> {{ $alamat->provinsi }}</p>
                     <p><strong>Kode Pos:</strong> {{ $alamat->kode_pos }}</p>
                     <p><strong>Tinggal Dengan:</strong> {{ ucfirst($alamat->tinggal_dengan) }}</p>
-                    <p><strong>Status:</strong>
-                        @if ($alamat->status === 'Submitted')
-                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                        @elseif ($alamat->status === 'In Progress')
-                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                        @elseif ($alamat->status === 'Requires Revision')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                        @elseif ($alamat->status === 'Verified')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                        @endif
-                    </p>
+                </div>
+            </div>
 
-                    @if($alamat->status === 'Requires Revision')
-                        <a href="{{ route('alamat.edit', $alamat->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @endif
+            <!-- Kolom Sebelah (Status dan Komentar) -->
+            <div class="flex-column w-50">
+                <!-- Card Status -->
+                <div class="card status-card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Status</h5>
+                        <p>
+                            @if ($alamat->status === 'Submitted')
+                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                            @elseif ($alamat->status === 'In Progress')
+                                <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                            @elseif ($alamat->status === 'Requires Revision')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                            @elseif ($alamat->status === 'Updated')
+                                <span class="badge bg-info text-light"><i class="bi bi-arrow-repeat me-1"></i>Updated</span>
+                            @elseif ($alamat->status === 'Verified')
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                            @endif
+                        </p>
+
+                        @if($alamat->status === 'Requires Revision')
+                            <a href="{{ route('alamat.edit', $alamat->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Card Komentar -->
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Komentar</h5>
+                        <p>{{ $alamat->komentar ?? 'Belum ada komentar.' }}</p>
+                    </div>
                 </div>
             </div>
         </div>

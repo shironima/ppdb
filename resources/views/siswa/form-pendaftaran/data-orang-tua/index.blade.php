@@ -16,8 +16,9 @@
 <section class="section">
     <div class="row">
         @foreach($dataOrangTua as $index => $orangTua)
-        <div class="col-lg-4 col-md-6">
-            <div class="card info-card">
+        <div class="col-lg-12 d-flex mb-4">
+            <!-- Card Utama (Data Orang Tua) -->
+            <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Data Orang Tua</h5>
                     <p><strong>Nama Ayah:</strong> {{ $orangTua->nama_ayah }}</p>
@@ -35,21 +36,41 @@
                     <p><strong>Pekerjaan Ibu:</strong> {{ $orangTua->pekerjaan_ibu }}</p>
                     <p><strong>Penghasilan Ibu:</strong> {{ $orangTua->penghasilan_ibu }}</p>
                     <p><strong>Nomor HP Ibu:</strong> {{ $orangTua->nomor_hp_ibu }}</p>
-                    <p><strong>Status:</strong>
-                        @if ($orangTua->status === 'Submitted')
-                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                        @elseif ($orangTua->status === 'In Progress')
-                            <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                        @elseif ($orangTua->status === 'Requires Revision')
-                            <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                        @elseif ($orangTua->status === 'Verified')
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                        @endif
-                    </p>
+                </div>
+            </div>
 
-                    @if($orangTua->status === 'Requires Revision')
-                        <a href="{{ route('data-orang-tua.edit', $orangTua->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @endif
+            <!-- Kolom Sebelah (Status dan Komentar) -->
+            <div class="flex-column w-50">
+                <!-- Card Status -->
+                <div class="card status-card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Status</h5>
+                        <p>
+                            @if ($orangTua->status === 'Submitted')
+                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
+                            @elseif ($orangTua->status === 'In Progress')
+                                <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
+                            @elseif ($orangTua->status === 'Requires Revision')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
+                            @elseif ($orangTua->status === 'Verified')
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                            @elseif ($siswa->status === 'Updated')
+                                <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
+                            @endif
+                        </p>
+
+                        @if($orangTua->status === 'Requires Revision')
+                            <a href="{{ route('data-orang-tua.edit', $orangTua->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Card Komentar -->
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Komentar</h5>
+                        <p>{{ $orangTua->komentar ?? 'Belum ada komentar.' }}</p>
+                    </div>
                 </div>
             </div>
         </div>
