@@ -8,6 +8,8 @@ use App\Events\RegistrationSubmitted;
 use App\Listeners\SendRegistrationNotification;
 use App\Events\RegistrationUpdated;
 use App\Listeners\SendUpdateNotification;
+use App\Events\RegistrationStatusChanged;
+use App\Listeners\SendStatusChangeNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         RegistrationUpdated::class => [
             SendUpdateNotification::class,
+        ],
+        RegistrationStatusChanged::class => [
+            SendStatusChangeNotification::class,
         ],
     ];
 

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Enums\EnumVerifyRegistration;
 use Illuminate\Support\Facades\Log;
+use App\Events\RegistrationStatusChanged;
+use Illuminate\Support\Facades\Auth;
 
 class AdminPenerimaanCalonSiswaController extends Controller
 {
@@ -79,35 +81,36 @@ class AdminPenerimaanCalonSiswaController extends Controller
      * Memperbarui status dan komentar pada tabel registration.
      */
 
-     public function update(Request $request, $id)
-     {
-         // Validasi input
-         $request->validate([
-             'status' => 'required|in:submitted,updated,verified,accepted',
-             'komentar' => 'nullable|string|max:255',
-         ]);
+    public function update(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'status' => 'required|in:submitted,updated,verified,accepted',
+            'komentar' => 'nullable|string|max:255',
+        ]);
      
-         // Cari pendaftar berdasarkan ID
-         $registration = Registration::find($id);
+        // Cari pendaftar berdasarkan ID
+        $registration = Registration::findOrFail($id);
+
+        $registration = $registration->first();
      
-         // Jika data tidak ditemukan
-         if (!$registration) {
-             return redirect()->back()->withErrors('Data tidak ditemukan.');
-         }
+        // Perbarui status dan komentar
+        $registration->status = $request->status;
+        $registration->komentar = $request->komentar;
+        $updated = $registration->save();
      
-         // Perbarui status dan komentar
-         $registration->status = $request->status;
-         $registration->komentar = $request->komentar;
-         $updated = $registration->save();
+        Log::info('Memicu event untuk pendaftaran ID: ' . $registration->id);
+        // Memicu event setelah status diperbarui
+        event(new RegistrationStatusChanged($registration));
      
-         // Berikan respons berdasarkan hasil
-         if ($updated) {
-             return redirect()->route('verifikasi-pendaftaran.show', $id)
-                 ->with('success', 'Status dan komentar berhasil diperbarui.');
-         } else {
-             return redirect()->back()->withErrors('Gagal memperbarui data.');
-         }
-     }
+        // Berikan respons berdasarkan hasil
+        if ($updated) {
+            return redirect()->route('verifikasi-pendaftaran.show', $id)
+                ->with('success', 'Status dan komentar berhasil diperbarui.');
+        } else {
+            return redirect()->back()->withErrors('Gagal memperbarui data.');
+        }
+    }
        
     /**
      * Menghapus pendaftaran.
