@@ -9,11 +9,11 @@ use App\Http\Controllers\DataOrangTuaController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\DataRinciController;
 use App\Http\Controllers\BerkasPendidikanController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationContactController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AdminVerifikasiPendaftaranController;
 use App\Http\Controllers\AdminVerifikasiBerkasPendidikanController;
+use App\Http\Controllers\AdminPenerimaanCalonSiswaController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\JawabanController;
 use Illuminate\Support\Facades\Route;
@@ -126,6 +126,12 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::put('/admin/admin-contact/whatsapp', [AdminController::class, 'updateWhatsapp'])->name('admin.admin-contact.whatsapp.update');
 
     Route::delete('/admin/admin-contact/{id}', [AdminController::class, 'destroy'])->name('admin.admin-contact.destroy');
+
+    // Verifikasi Penerimaan Calon Siswa
+    Route::get('verifikasi-pendaftaran', [AdminPenerimaanCalonSiswaController::class, 'index'])->name('verifikasi-pendaftaran.index');
+    Route::get('verifikasi-pendaftaran/{id}', [AdminPenerimaanCalonSiswaController::class, 'show'])->name('verifikasi-pendaftaran.show');
+    Route::put('verifikasi-pendaftaran/{id}', [AdminPenerimaanCalonSiswaController::class, 'update'])->name('verifikasi-pendaftaran.update');
+    Route::delete('verifikasi-pendaftaran/{id}', [AdminPenerimaanCalonSiswaController::class, 'destroy'])->name('verifikasi-pendaftaran.destroy');
 
     // Verifikasi Pendaftaran
     Route::get('/admin/verifikasi-pendaftaran', [AdminVerifikasiPendaftaranController::class, 'index'])->name('admin.verifikasi-pendaftaran.index');

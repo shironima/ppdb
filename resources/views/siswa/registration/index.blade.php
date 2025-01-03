@@ -15,11 +15,57 @@
 
 <section class="section">
     <div class="row">
+        <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Status Pendaftaran Umum</h5>
+                
+                <!-- Menampilkan status pendaftaran -->
+                <div class="row mb-6">
+                    <div class="col-lg-4"><strong>Status</strong></div>
+                    <div class="col-lg-8">
+                        @if ($user->calonSiswa->registration->status === 'Submitted')
+                            <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i> Submitted</span>
+                        @elseif ($user->calonSiswa->registration->status === 'Updated')
+                            <span class="badge bg-info text-light"><i class="bi bi-pencil-square me-1"></i> Updated</span>
+                        @elseif ($user->calonSiswa->registration->status === 'Accepted')
+                            <span class="badge bg-success text-light"><i class="bi bi-check-circle me-1"></i> Accepted</span>
+                        @else
+                            <span class="badge bg-secondary text-light"><i class="bi bi-exclamation-circle me-1"></i> Unknown</span>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- Menampilkan komentar admin -->
+                <div class="row mb-6">
+                    <div class="col-lg-4"><strong>Komentar Admin</strong></div>
+                    <div class="col-lg-8">{{ $user->registration->komentar ?? 'Tidak ada komentar' }}</div>
+                </div>
+
+                <!-- Informasi status pendaftaran -->
+                <div class="alert alert-info mt-4">
+                    <strong>Perhatian:</strong> Status pendaftaran Anda akan diperbarui oleh admin setelah semua formulir diverifikasi.
+                </div>
+
+                <!-- Deskripsi status pendaftaran -->
+                <div class="mt-3">
+                    <h6>Deskripsi Status:</h6>
+                    <ul>
+                        <li><span class="badge bg-success">Submitted</span> : Pendaftaran Anda telah terkirim dan menunggu Admin melakukan verifikasi.</li>
+                        <li><span class="badge bg-success">Accepted</span> : Pendaftaran Anda telah terverifikasi dan Anda telah diterima.</li>
+                        <li><span class="badge bg-info">Updated</span> : Pendaftaran Anda telah diperbarui dan menunggu Admin melakukan verifikasi ulang.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
         <!-- Informasi Calon Siswa dan Kontak -->
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Rincian Informasi Calon Siswa</h5>
+                    <h5 class="card-title">Informasi Kontak Calon Siswa</h5>
                     <div class="row mb-3">
                         <div class="col-lg-4"><strong>Nama Calon Siswa</strong></div>
                         <div class="col-lg-8">{{ $user->calonSiswa->nama_lengkap ?? '-' }}</div>

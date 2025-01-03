@@ -24,8 +24,33 @@ class Registration extends Model
         'berkas_pendidikan_id',
         'payments_id',
         'notification_contact_id',
+        'status',
         'komentar',
     ];
+
+    /**
+     * Menggunakan enum untuk status
+     */
+    protected $casts = [
+        'status' => 'string',
+    ];
+
+    const STATUS_SUBMITTED = 'submitted';
+    const STATUS_UPDATED = 'updated';
+    const STATUS_VERIFIED = 'verified';
+    const STATUS_REQUIRES_REVISION = 'requires_revision';
+
+    /**
+     * Mendefinisikan enum untuk status
+     */
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_SUBMITTED => 'Submitted',
+            self::STATUS_UPDATED => 'Updated',
+            self::STATUS_VERIFIED => 'Verified',
+        ];
+    }
 
     protected static function boot()
     {

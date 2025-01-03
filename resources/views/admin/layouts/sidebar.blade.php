@@ -39,6 +39,14 @@
         </a>
     </li>
 
+    <!-- Verifikasi Penerimaan -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('verifikasi-pendaftaran.index') }}">
+            <i class="fas fa-user-check"></i>
+            <span>Penerimaan Calon Siswa</span>
+        </a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

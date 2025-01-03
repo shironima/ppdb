@@ -216,7 +216,7 @@
                                 <tr><th>Berat Badan</th><td>{{ $pendaftar->dataRinci->berat_badan ?? '-' }}</td></tr>
                                 <tr><th>Anak ke</th><td>{{ $pendaftar->dataRinci->anak_ke ?? '-' }}</td></tr>
                                 <tr><th>Jumlah Saudara</th><td>{{ $pendaftar->dataRinci->jumlah_saudara ?? '-' }}</td></tr>
-                                <tr><th>Nama Sekolah Asal</th><td>{{ $pendaftar->dataRinci->nama_sekolah ?? '-' }}</td></tr>
+                                <tr><th>Nama Sekolah Asal</th><td>{{ $pendaftar->dataRinci->asal_sekolah ?? '-' }}</td></tr>
                                 <tr><th>Alamat Sekolah Asal</th><td>{{ $pendaftar->dataRinci->alamat_sekolah_asal ?? '-' }}</td></tr>
                                 <tr><th>Tahun Lulus</th><td>{{ $pendaftar->dataRinci->tahun_lulus ?? '-' }}</td></tr>
                             </table>
