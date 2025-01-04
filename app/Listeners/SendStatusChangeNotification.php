@@ -48,6 +48,7 @@ class SendStatusChangeNotification
         
             $message .= "Status pendaftaran Anda telah berubah menjadi: *{$registration->status}*.\n\n"
                      . "*Komentar*: " . (isset($registration->komentar) ? $registration->komentar : 'Tidak ada komentar dari admin.') . "\n\n"
+                     . "Silahkan cek selengkapnya di halaman dashboard."
                      . "Terima kasih atas perhatian Anda. 😃\n\n"
                      . "_Jangan ragu untuk menghubungi kami jika Anda membutuhkan bantuan lebih lanjut._";
         
