@@ -68,4 +68,9 @@ class CalonSiswa extends Model
         return $this->hasOne(Registration::class);
     }
 
+    public function notificationContact()
+    {
+        return $this->hasOne(NotificationContact::class);
+    }
+
 }

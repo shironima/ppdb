@@ -19,6 +19,14 @@
         <div class="card-body">
             <h5 class="card-title">Unggah Berkas Pendidikan Anda</h5>
 
+            <!-- Tampilkan Pesan Sukses jika ada -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Form untuk unggah berkas -->
             <form action="{{ route('berkas-pendidikan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 

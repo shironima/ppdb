@@ -18,8 +18,12 @@ class RegistrationController extends Controller
 {
     public function index()
     {
-        // Ambil data calon siswa terkait dengan user yang login
-        $calonSiswa = auth()->user()->calonSiswa;
+        $calonSiswa = Auth::user()->calonSiswa;
+
+        // Jika calon siswa belum ada data, redirect untuk mengisi data
+        if (!$calonSiswa) {
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
 
         // Ambil data lengkap user dan relasi calon siswa
         $user = Auth::user()->load([
@@ -32,23 +36,25 @@ class RegistrationController extends Controller
 
         // Tentukan status untuk setiap formulir
         $formulir = [
-            $user->calonSiswa->status ?? null,
-            $user->calonSiswa->alamat->status ?? null,
-            $user->calonSiswa->dataOrangTua->status ?? null,
-            $user->calonSiswa->dataRinci->status ?? null,
-            $user->calonSiswa->berkasPendidikan->status ?? null,
+            $user->calonSiswa && $user->calonSiswa->alamat ? $user->calonSiswa->alamat->status : 'Belum Diisi',
+            $user->calonSiswa && $user->calonSiswa->dataOrangTua ? $user->calonSiswa->dataOrangTua->status : 'Belum Diisi',
+            $user->calonSiswa && $user->calonSiswa->dataRinci ? $user->calonSiswa->dataRinci->status : 'Belum Diisi',
+            $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? $user->calonSiswa->berkasPendidikan->status : 'Belum Diisi',
         ];
+
+        // Cek apakah ada formulir yang sudah diupdate
+        $hasUpdated = collect($formulir)->contains('Updated');
 
         // Cek jika semua formulir sudah disubmit
         $allFormSubmitted = collect($formulir)->every(fn($status) => $status === 'Submitted');
 
-        // Cek apakah notificationContact ada dan memiliki email dan whatsapp
-        $isContactComplete = $user->notificationContact 
-            && !empty($user->notificationContact->email) 
+        // Cek apakah notificationContact sudah lengkap (email dan whatsapp)
+        $isContactComplete = $user->notificationContact
+            && !empty($user->notificationContact->email)
             && !empty($user->notificationContact->whatsapp);
 
         // Kirim data ke view
-        return view('siswa.registration.index', compact('user', 'allFormSubmitted', 'isContactComplete', 'calonSiswa'));
+        return view('siswa.registration.index', compact('user', 'formulir', 'allFormSubmitted', 'isContactComplete', 'hasUpdated', 'calonSiswa'));
     }
 
     public function submit()
@@ -98,10 +104,10 @@ class RegistrationController extends Controller
                 'status' => $registrationStatus,
             ]);
 
-        // Memicu event RegistrationSubmitted
-        event(new RegistrationSubmitted($registration));
+            // Memicu event RegistrationSubmitted
+            event(new RegistrationSubmitted($registration));
 
-        return back()->with('success', 'Pendaftaran berhasil dikirim!');
+            return back()->with('success', 'Pendaftaran berhasil dikirim!');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

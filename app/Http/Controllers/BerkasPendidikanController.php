@@ -5,29 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CalonSiswa;
 use App\Models\BerkasPendidikan;
-use App\Helpers\GoogleDriveHelper;
+use App\Helpers\StorageHelper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class BerkasPendidikanController extends Controller
 {
     public function index()
     {
-        // Ambil data calon siswa yang sedang login
         $calonSiswa = Auth::user()->calonSiswa;
 
         if (!$calonSiswa) {
             return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
-        $berkasPendidikan = auth()->user()->calonSiswa->berkasPendidikan()->get();
+        $berkasPendidikan = $calonSiswa->berkasPendidikan()->get();
 
-        // Mengambil URL file dari Google Drive
+        // Mengambil URL file dari storage lokal
         foreach ($berkasPendidikan as $berkas) {
-            $berkas->ijazahUrl = $berkas->getFileUrl('ijazah');
-            $berkas->skhunUrl = $berkas->getFileUrl('skhun');
-            $berkas->raportUrl = $berkas->getFileUrl('raport');
-            $berkas->kartu_keluargaUrl = $berkas->getFileUrl('kartu_keluarga');
+            // Menggunakan metode getFileUrl dari model untuk mendapatkan URL file
+            $berkas->ijazahUrl = $berkas->ijazah ? $berkas->getFileUrl('ijazah') : null;
+            $berkas->skhunUrl = $berkas->skhun ? $berkas->getFileUrl('skhun') : null;
+            $berkas->raportUrl = $berkas->raport ? $berkas->getFileUrl('raport') : null;
+            $berkas->kartu_keluargaUrl = $berkas->kartu_keluarga ? $berkas->getFileUrl('kartu_keluarga') : null;
         }
 
         return view('siswa.form-pendaftaran.berkas-pendidikan.index', compact('berkasPendidikan'));
@@ -35,58 +37,49 @@ class BerkasPendidikanController extends Controller
 
     public function create()
     {
+        $calonSiswa = Auth::user()->calonSiswa;
+
+        if (!$calonSiswa) {
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
+
         return view('siswa.form-pendaftaran.berkas-pendidikan.create');
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        // Validasi input
+        $validator = Validator::make($request->all(), [
             'ijazah' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
             'skhun' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
             'raport' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
             'kartu_keluarga' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $calonSiswa = CalonSiswa::where('user_id', auth()->id())->first();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $calonSiswa = Auth::user()->calonSiswa;
 
         if (!$calonSiswa) {
             return redirect()->route('calon-siswa.create')
                 ->with('warning', 'Silakan isi form data diri terlebih dahulu!');
         }
 
-        // Sanitize nama_lengkap untuk dijadikan nama folder
+        // Sanitize nama_lengkap untuk folder
         $folderName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $calonSiswa->nama_lengkap);
 
-        // Path folder di Google Drive
-        $baseFolder = 'ppdb';
-        $googleFolderPath = $baseFolder . '/' . $folderName;
+        $berkas = BerkasPendidikan::firstOrNew(['calon_siswa_id' => $calonSiswa->id]);
 
-        // Pastikan folder sudah ada
-        $googleDisk = Storage::disk('google');
-        if (!$googleDisk->exists($googleFolderPath)) {
-            $googleDisk->makeDirectory($googleFolderPath);
-        }
-
-        // Simpan file dengan path yang benar
-        $files = [
-            'ijazah' => 'ijazah.pdf',
-            'skhun' => 'skhun.pdf',
-            'raport' => 'raport.pdf',
-            'kartu_keluarga' => 'kartu_keluarga.pdf',
-        ];
-
-        $berkas = new BerkasPendidikan();
-        $berkas->user_id = auth()->id();
-        $berkas->calon_siswa_id = $calonSiswa->id;
-
-        foreach ($files as $field => $fileName) {
+        // Upload dan simpan path file dengan helper
+        foreach (['ijazah', 'skhun', 'raport', 'kartu_keluarga'] as $field) {
             if ($request->hasFile($field)) {
-                $filePath = $request->file($field)->storeAs(
-                    $googleFolderPath,
-                    $fileName,
-                    ['disk' => 'google']
-                );
+                $filePath = StorageHelper::storeFile($request->file($field), "ppdb/$folderName", "$field." . $request->file($field)->getClientOriginalExtension());
                 $berkas->$field = $filePath;
+
+                // Log file path untuk debugging
+                Log::info("File $field disimpan di: $filePath");
             }
         }
 
@@ -99,10 +92,8 @@ class BerkasPendidikanController extends Controller
 
     public function edit($id)
     {
-        // Ambil data berkas pendidikan berdasarkan ID
         $berkasPendidikan = BerkasPendidikan::find($id);
 
-        // Pastikan berkas pendidikan ditemukan, jika tidak, redirect dengan pesan error
         if (!$berkasPendidikan) {
             return redirect()->route('berkas-pendidikan.index')->with('error', 'Berkas pendidikan tidak ditemukan.');
         }
@@ -110,9 +101,26 @@ class BerkasPendidikanController extends Controller
         return view('siswa.form-pendaftaran.berkas-pendidikan.edit', compact('berkasPendidikan'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $berkas = BerkasPendidikan::find($id);
+
+        if (!$berkas) {
+            return redirect()->route('berkas-pendidikan.index')
+                ->with('error', 'Berkas pendidikan tidak ditemukan.');
+        }
+
+        // Perbarui status
         $berkas->status = 'Updated';
+
+        // Update file jika ada yang baru diunggah
+        foreach (['ijazah', 'skhun', 'raport', 'kartu_keluarga'] as $field) {
+            if ($request->hasFile($field)) {
+                $filePath = StorageHelper::storeFile($request->file($field), "ppdb/{$berkas->calonSiswa->nama_lengkap}", "$field." . $request->file($field)->getClientOriginalExtension());
+                $berkas->$field = $filePath;
+            }
+        }
+
         $berkas->save();
 
         return redirect()->route('berkas-pendidikan.index')

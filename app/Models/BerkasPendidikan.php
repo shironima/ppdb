@@ -23,8 +23,7 @@ class BerkasPendidikan extends Model
 
     public function getFileUrl($field)
     {
-        // Mengembalikan URL dari file yang ada di Google Drive
-        return Storage::disk('google')->url($this->$field);
+        return Storage::disk('public')->url($this->$field);
     }
     
     public function calonSiswa()

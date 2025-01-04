@@ -31,10 +31,10 @@ class AlamatController extends Controller
     public function edit($id)
     {
         // Mendapatkan calon siswa yang sedang login
-        $calonSiswa = auth()->user()->calonSiswa;
+        $calonSiswa = Auth::user()->calonSiswa;
 
         if (!$calonSiswa) {
-            return redirect()->route('data-diri.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
         $alamat = $calonSiswa->alamat->find($id);

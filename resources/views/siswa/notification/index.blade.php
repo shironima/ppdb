@@ -23,19 +23,19 @@
         </div>
 
         <!-- Menampilkan Kontak -->
-        @foreach($notificationContacts as $contact)
+        @if($notificationContact)
         <div class="col-lg-4 col-md-6">
             <div class="card info-card">
                 <div class="card-body">
                     <h5 class="card-title">Kontak Notifikasi</h5>
-                    <p><strong>Email:</strong> {{ $contact->email ?? 'N/A' }}</p>
-                    <p><strong>WhatsApp:</strong> {{ $contact->whatsapp ?? 'N/A' }}</p>
-                    
+                    <p><strong>Email:</strong> {{ $notificationContact->email ?? 'N/A' }}</p>
+                    <p><strong>WhatsApp:</strong> {{ $notificationContact->whatsapp ?? 'N/A' }}</p>
+
                     <hr>
                     <!-- Edit Button -->
-                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $contact->id }}">Edit</button>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                     <!-- Delete Button -->
-                    <form action="{{ route('notification.destroy', $contact->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('notification.destroy', $notificationContact->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
@@ -45,25 +45,25 @@
         </div>
 
         <!-- Modal Edit Kontak -->
-        <div class="modal fade" id="editModal{{ $contact->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $contact->id }}" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel{{ $contact->id }}">Edit Kontak Notifikasi</h5>
+                        <h5 class="modal-title" id="editModalLabel">Edit Kontak Notifikasi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('notification.update', $contact->id) }}" method="POST">
+                        <form action="{{ route('notification.update', $notificationContact->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ $contact->email }}" required>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ $notificationContact->email }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="whatsapp" class="form-label">WhatsApp</label>
-                                <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ $contact->whatsapp }}" required>
+                                <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ $notificationContact->whatsapp }}" required>
                             </div>
 
                             <div class="modal-footer">
@@ -76,10 +76,8 @@
             </div>
         </div>
 
-        @endforeach
-
+        @else
         <!-- Jika tidak ada data -->
-        @if($notificationContacts->isEmpty())
         <div class="col-12">
             <div class="alert alert-warning" role="alert">
                 Belum ada data kontak notifikasi. <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Tambah Kontak Notifikasi</a>

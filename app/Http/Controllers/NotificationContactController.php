@@ -10,9 +10,17 @@ use App\Models\NotificationContact;
 class NotificationContactController extends Controller
 {
     public function index()
-    {
-        $notificationContacts = NotificationContact::all();
-        return view('siswa.notification.index', compact('notificationContacts'));
+    {   
+        $calonSiswa = Auth::user()->calonSiswa;
+
+        if (!$calonSiswa) {
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
+
+        // Mengambil kontak notifikasi yang berelasi dengan calon siswa
+        $notificationContact = $calonSiswa->notificationContact;
+
+        return view('siswa.notification.index', compact('notificationContact'));
     }
 
     public function store(Request $request)
