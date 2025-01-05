@@ -1,6 +1,6 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
-        <!-- Welcome / Landing Page -->
+        <!-- Home / Landing Page -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('/') }}">
                 <i class="bi bi-house"></i>
@@ -23,7 +23,7 @@
                 <span>Informasi PPDB</span>
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="info-ppdb-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="info-ppdb-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('siswa.informasi-ppdb.info-pendaftaran') }}">
                         <i class="bi bi-circle"></i>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('siswa.informasi-ppdb.biaya-pendidikan')}} ">
+                    <a href="{{ route('siswa.informasi-ppdb.biaya-pendidikan') }}">
                         <i class="bi bi-circle"></i>
                         <span>Biaya Pendidikan</span>
                     </a>
@@ -50,10 +50,11 @@
                 </li>
             </ul>
         </li>
-        
+
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <!-- Formulir Pendaftaran -->
         <li class="nav-heading">
             Formulir Pendaftaran
         </li>
@@ -101,6 +102,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <!-- Pendaftaran Saya -->
         <li class="nav-heading">
             Pendaftaran Saya
         </li>
@@ -122,3 +124,72 @@
         </li>
     </ul>
 </aside>
+
+<!-- Style Update for Sidebar -->
+<style>
+    /* Sidebar styles */
+    .sidebar {
+        background-color: #f8f9fa;
+        padding: 20px;
+        height: 100vh;
+    }
+
+    .sidebar .nav-link {
+        font-size: 14px;
+        color: #495057;
+        padding: 10px 20px;
+        text-align: left;
+    }
+
+    .sidebar .nav-link:hover {
+        background-color: #e9ecef;
+        color: #007bff;
+    }
+
+    .sidebar .nav-item.active .nav-link {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .sidebar .nav-heading {
+        font-size: 16px;
+        font-weight: bold;
+        color: #6c757d;
+        margin-top: 20px;
+    }
+
+    /* Media Query: Make sidebar responsive */
+    @media (max-width: 768px) {
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease-in-out;
+            z-index: 1050;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar .nav-link {
+            font-size: 12px;
+        }
+
+        .sidebar .nav-heading {
+            font-size: 14px;
+        }
+    }
+
+    /* Style for the collapse button */
+    .sidebar .nav-content {
+        padding-left: 20px;
+    }
+</style>
+
+<script>
+    // To handle the active state for mobile view
+    document.querySelector('.toggle-sidebar-btn').addEventListener('click', function () {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+</script>

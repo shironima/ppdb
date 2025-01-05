@@ -1,14 +1,17 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
+        <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
-            <img src="{{ asset('images/logo.png') }}" alt="">
-            <span class="d-none d-lg-block">PPDB</span>
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid">
+            <span class="d-none d-lg-block ms-2">PPDB</span>
         </a>
+        <!-- Sidebar Toggle Button -->
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
+            <!-- Profile Dropdown -->
             <li class="nav-item dropdown pe-3">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src="{{ asset('images/profile.png') }}" alt="Profile" class="rounded-circle">
@@ -19,18 +22,14 @@
                         <h6>{{ Auth::user()->name }}</h6>
                         <span>Calon Siswa</span>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('siswa.profile.edit') }}">
                             <i class="bi bi-person"></i>
                             <span>Profil</span>
                         </a>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bi bi-box-arrow-right"></i>
@@ -45,3 +44,44 @@
         </ul>
     </nav>
 </header>
+
+<!-- Style Update for Topbar -->
+<style>
+    /* Make sure the header content is aligned and has good spacing */
+    .header {
+        background-color: #fff;
+        padding: 10px 20px;
+        z-index: 1050;
+    }
+
+    /* Mobile View: Profile image is smaller, and name is hidden */
+    @media (max-width: 767px) {
+        .nav-profile img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .nav-profile span {
+            display: none;
+        }
+    }
+
+    /* Desktop View: Profile image is slightly bigger, and name is shown */
+    @media (min-width: 768px) {
+        .nav-profile img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-profile span {
+            display: inline-block;
+        }
+    }
+
+    /* Ensure toggle button for sidebar is visible and aligned */
+    .toggle-sidebar-btn {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #333;
+    }
+</style>
