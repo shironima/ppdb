@@ -43,9 +43,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     // Rute profile untuk pengguna (siswa atau admin)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('siswa.profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('siswa.profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('siswa.profile.destroy');
 
     // Informasi PPDB
     Route::view('/info-ppdb/alur-pendaftaran', 'siswa.informasi-ppdb.alur-pendaftaran')->name('siswa.informasi-ppdb.alur-pendaftaran');
