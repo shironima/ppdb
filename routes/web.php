@@ -34,15 +34,15 @@ Route::get('/biaya-pendidikan', function () {
     return view('nav-page.biayapendidikan');
 })->name('nav-page.biayapendidikan');
 
-// Dashboard untuk calon siswa
-Route::get('/dashboard', function () {
-    return view('siswa.dashboard');
-})->middleware('verified','auth')->name('dashboard');
-
 // Rute untuk pengguna yang sudah login
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':siswa'])->group(function () {
 
-    // Rute profile untuk pengguna (siswa atau admin)
+    // Dashboard untuk calon siswa
+    Route::get('/dashboard', function () {
+        return view('siswa.dashboard');
+    })->name('dashboard');
+
+    // Rute profile untuk pengguna (siswa)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('siswa.profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('siswa.profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('siswa.profile.destroy');
