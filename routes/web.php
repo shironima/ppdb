@@ -112,7 +112,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':siswa'])->group(function ()
 // Rute untuk Admin
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
     // Dashboard admin
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Notifikasi Admin (email dan whatsapp)
     Route::get('/admin/admin-contact/email', [AdminController::class, 'indexEmail'])->name('admin.admin-contact.email');

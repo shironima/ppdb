@@ -8,11 +8,39 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\AdminPPDB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Registration;
 
 class AdminController extends Controller
 {
-    public function index(){
-        return view('admin.dashboard');
+    public function dashboard()
+    {
+        // Ambil nama admin yang sedang login
+        $admin = Auth::user(); // Asumsikan data admin ada di tabel users dengan kolom name
+
+        // Mengambil data total pendaftar
+        $totalPendaftar = Registration::count();
+
+        // Mengambil data pendaftar yang perlu revisi (berkas pendidikan dan formulir pendidikan)
+        $pendaftarRevisi = Registration::where(function($query) {
+            // Status revisi pada berkas pendidikan
+            $query->whereHas('berkasPendidikan', function($query) {
+                $query->where('status', 'requires_revision');
+            })
+            // Status revisi pada formulir pendidikan
+            ->orWhereHas('calonSiswa', function($query) {
+                $query->where('status', 'requires_revision');  // Contoh jika ada status di tabel calon siswa
+            });
+        })->count();
+
+        // Mengambil data pendaftar yang diterima
+        $pendaftarDiterima = Registration::where('status', 'accepted')->count();
+
+        // Mengambil data pendaftar yang diperbarui (status 'updated')
+        $pendaftarUpdated = Registration::where('status', 'updated')->count();
+
+        // Mengirimkan data ke view
+        return view('admin.dashboard', compact('totalPendaftar', 'pendaftarRevisi', 'pendaftarDiterima', 'pendaftarUpdated', 'admin'));
     }
 
     public function indexEmail()
