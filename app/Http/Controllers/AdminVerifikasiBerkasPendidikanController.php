@@ -175,5 +175,4 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
         return redirect()->route('admin.verifikasi-berkas-pendidikan.show', $id)
             ->with('success', 'Komentar berhasil diperbarui untuk registrasi ' . $registration->calonSiswa->nama_lengkap);
     }
-
 }
