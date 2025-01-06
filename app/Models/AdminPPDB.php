@@ -9,7 +9,6 @@ class AdminPPDB extends Model
 {
     use HasFactory;
 
-    // Tentukan nama tabel jika tidak mengikuti konvensi Laravel
     protected $table = 'admin_ppdb';
 
     protected $fillable = [
