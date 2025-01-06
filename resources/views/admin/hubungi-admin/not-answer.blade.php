@@ -6,10 +6,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="my-4">Semua Pertanyaan</h1>
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Semua Pertanyaan</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Pertanyaan Belum Dijawab</h6>
                 </div>
                 <div class="card-body">
                     @if($isEmpty)
