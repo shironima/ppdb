@@ -44,6 +44,15 @@ class ProfileController extends Controller
             $user->email_verified_at = null;
         }
 
+        // Memeriksa apakah ada perubahan password
+        if ($request->has('password') && !empty($request->password)) {
+            // Pastikan password baru di-hash
+            $user->password = bcrypt($request->password);
+        }
+
+        // Debugging: Tampilkan data yang telah divalidasi untuk memastikan semuanya benar
+        //dd($user->getAttributes());  // Menampilkan semua atribut user sebelum disimpan
+
         // Simpan perubahan
         $user->save();
 
