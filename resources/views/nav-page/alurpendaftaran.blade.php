@@ -30,8 +30,8 @@
                     ],
                     [
                         'number' => '4',
-                        'title' => 'Bayar Biaya Pendaftaran',
-                        'description' => 'Lakukan pembayaran biaya pendaftaran melalui rekening yang tersedia.'
+                        'title' => 'Kirim Pendaftaran',
+                        'description' => 'Isi semua formulir dan upload berkas yang dibutuhkan, lalu kirim pendaftaran.'
                     ],
                     [
                         'number' => '5',

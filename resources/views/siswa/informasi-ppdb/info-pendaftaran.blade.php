@@ -64,6 +64,7 @@
                                     <ul>
                                         <li>Scan Ijazah atau Surat Keterangan Lulus</li>
                                         <li>Scan Kartu Keluarga</li>
+                                        <li>Surat Keterangan Hasil Ujian Nasional (SKHUN)</li>
                                         <li>Scan Raport Semester 1 sampai 5</li>
                                     </ul>
                                 </div>
@@ -89,20 +90,6 @@
                             </div>
                         </div>
 
-                        <!-- Biaya Pendaftaran -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingBiaya">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBiaya" aria-expanded="false" aria-controls="collapseBiaya">
-                                    Biaya Pendaftaran
-                                </button>
-                            </h2>
-                            <div id="collapseBiaya" class="accordion-collapse collapse" aria-labelledby="headingBiaya" data-bs-parent="#ppdbAccordion">
-                                <div class="accordion-body">
-                                    <span class="badge bg-warning text-dark">Rp 150.000,-</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Kontak -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingKontak">
@@ -112,8 +99,8 @@
                             </h2>
                             <div id="collapseKontak" class="accordion-collapse collapse" aria-labelledby="headingKontak" data-bs-parent="#ppdbAccordion">
                                 <div class="accordion-body">
-                                    Hubungi kami melalui <a href="https://wa.me/6285159932501" class="text-decoration-none">WhatsApp</a> atau email: 
-                                    <a href="mailto:info.ppdb@smabona.sch.id" class="text-decoration-none">info.ppdb@smabona.sch.id</a>.
+                                    Hubungi kami melalui <a href="https://wa.me/6282241182732" class="text-decoration-none">WhatsApp</a> atau email: 
+                                    <a href="mailto:gabrielahensky.dev@gmail.com" class="text-decoration-none">info.ppdb@smabona.sch.id</a>.
                                 </div>
                             </div>
                         </div>

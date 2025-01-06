@@ -90,12 +90,15 @@ class AdminPenerimaanCalonSiswaController extends Controller
         ]);
      
         // Cari pendaftar berdasarkan ID
-        $registration = Registration::findOrFail($id);
+        $registration = Registration::find($id);
      
         // Perbarui status dan komentar
         $registration->status = $request->status;
         $registration->komentar = $request->komentar;
         $updated = $registration->save();
+
+        // Log data untuk debugging
+        // Log::info('Registration data:', ['registration' => $registration]);
 
         // Memicu event setelah status diperbarui
         event(new RegistrationStatusChanged($registration));

@@ -70,12 +70,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingLangkah4">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLangkah4" aria-expanded="false" aria-controls="collapseLangkah4">
-                                    Langkah 4: Bayar Biaya Pendaftaran
+                                    Langkah 4: Kirim Pendaftaran
                                 </button>
                             </h2>
                             <div id="collapseLangkah4" class="accordion-collapse collapse" aria-labelledby="headingLangkah4" data-bs-parent="#alurAccordion">
                                 <div class="accordion-body">
-                                    Lakukan pembayaran biaya pendaftaran melalui rekening yang tersedia.
+                                    Pastikan semua form sudah berstatus <span class="badge bg-primary">Submitted</span> agar pendaftaran anda terkirim. 
                                 </div>
                             </div>
                         </div>

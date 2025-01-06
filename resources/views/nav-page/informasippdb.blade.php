@@ -29,9 +29,10 @@
                         <li class="list-group-item">
                             <h6 class="mb-1 fw-bold">Persyaratan Berkas</h6>
                             <ul class="ms-4">
-                                <li>Scan Ijazah / Surat Keterangan Lulus</li>
-                                <li>Scan Kartu Keluarga</li>
-                                <li>Scan Raport Semester 1-5</li>
+                                <li>Ijazah / Surat Keterangan Lulus</li>
+                                <li>Kartu Keluarga</li>
+                                <li>Surat Keterangan Hasil Ujian Nasional (SKHUN)</li>
+                                <li>Raport Semester 1-5</li>
                             </ul>
                         </li>
                         <li class="list-group-item">
@@ -44,19 +45,15 @@
                             </ul>
                         </li>
                         <li class="list-group-item">
-                            <h6 class="mb-1 fw-bold">Biaya Pendaftaran</h6>
-                            <p class="mb-0"><span class="badge bg-warning text-dark">Rp 150.000,-</span></p>
-                        </li>
-                        <li class="list-group-item">
                             <h6 class="mb-1 fw-bold">Kontak Panitia</h6>
-                            <p class="mb-0">Hubungi kami melalui <a href="https://wa.me/6285159932501" class="text-decoration-none">WhatsApp</a>.</p>
+                            <p class="mb-0">Hubungi kami melalui <a href="https://wa.me/6282241182732" class="text-decoration-none">WhatsApp</a>.</p>
                         </li>
                     </ul>
 
                     <div class="alert alert-info text-center">
                         Untuk informasi lebih lanjut, kunjungi 
                         <a href="/" class="text-decoration-none fw-bold">halaman utama</a> atau hubungi kami melalui email: 
-                        <a href="mailto:info.ppdb@smabona.sch.id" class="text-decoration-none fw-bold">info.ppdb@smabona.sch.id</a>.
+                        <a href="mailto:gabrielahensky.dev@gmail.com" class="text-decoration-none fw-bold">info.ppdb@smabona.sch.id</a>.
                     </div>
                 </div>
             </div>
