@@ -60,26 +60,31 @@ class BerkasPendidikanController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // Dapatkan calon siswa dari user login
         $calonSiswa = Auth::user()->calonSiswa;
 
         if (!$calonSiswa) {
-            return redirect()->route('calon-siswa.create')
-                ->with('warning', 'Silakan isi form data diri terlebih dahulu!');
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan isi form data diri terlebih dahulu!');
         }
 
-        // Sanitize nama_lengkap untuk folder
         $folderName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $calonSiswa->nama_lengkap);
 
-        $berkas = BerkasPendidikan::firstOrNew(['calon_siswa_id' => $calonSiswa->id]);
+        $berkas = BerkasPendidikan::firstOrNew([
+            'calon_siswa_id' => $calonSiswa->id
+        ]);
 
-        // Upload dan simpan path file dengan helper
+        // Tambahkan user_id
+        $berkas->user_id = Auth::id();
+
+        // Simpan file menggunakan helper
         foreach (['ijazah', 'skhun', 'raport', 'kartu_keluarga'] as $field) {
             if ($request->hasFile($field)) {
-                $filePath = StorageHelper::storeFile($request->file($field), "ppdb/$folderName", "$field." . $request->file($field)->getClientOriginalExtension());
+                $filePath = StorageHelper::storeFile(
+                    $request->file($field), 
+                    "ppdb/$folderName", 
+                    "$field." . $request->file($field)->getClientOriginalExtension()
+                );
                 $berkas->$field = $filePath;
-
-                // Log file path untuk debugging
-                Log::info("File $field disimpan di: $filePath");
             }
         }
 
