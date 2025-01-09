@@ -16,7 +16,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         // Ambil nama admin yang sedang login
-        $admin = Auth::user(); // Asumsikan data admin ada di tabel users dengan kolom name
+        $admin = Auth::user();
 
         // Mengambil data total pendaftar
         $totalPendaftar = Registration::count();

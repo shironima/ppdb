@@ -64,6 +64,7 @@
                             <div class="mb-3">
                                 <label for="whatsapp" class="form-label">WhatsApp</label>
                                 <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ $notificationContact->whatsapp }}" required>
+                                <small class="form-text text-muted">Gunakan format <strong>62xxxx</strong> untuk nomor WhatsApp Anda, bukan diawali dengan <strong>08</strong>.</small>
                             </div>
 
                             <div class="modal-footer">
@@ -106,6 +107,7 @@
                     <div class="mb-3">
                         <label for="whatsapp" class="form-label">WhatsApp</label>
                         <input type="text" class="form-control" id="whatsapp" name="whatsapp" required>
+                        <small class="form-text text-muted">Gunakan format <strong>62xxxx</strong> untuk nomor WhatsApp Anda, bukan diawali dengan <strong>08</strong>.</small>
                     </div>
 
                     <div class="modal-footer">

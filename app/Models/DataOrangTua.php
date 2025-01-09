@@ -44,9 +44,4 @@ class DataOrangTua extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function registration()
-    {
-        return $this->belongsTo(Registration::class);
-    }
 }

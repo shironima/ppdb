@@ -12,7 +12,7 @@ class CalonSiswaController extends Controller
     // Menampilkan data calon siswa yang terkait dengan user yang login
     public function index()
     {
-        $calonSiswa = Auth::user()->calonSiswa()->get();
+        $calonSiswa = Auth::user()->calonSiswa()->first();
 
         if (!$calonSiswa) {
             return view('siswa.form-pendaftaran.data-diri.index', ['calonSiswa' => null]);
@@ -95,6 +95,7 @@ class CalonSiswaController extends Controller
 
         // Tambahkan user_id ke data yang divalidasi
         $validatedData['user_id'] = auth()->id();
+        $validatedData['status'] = 'Submitted';
 
         // Simpan data ke database
         CalonSiswa::create($validatedData);

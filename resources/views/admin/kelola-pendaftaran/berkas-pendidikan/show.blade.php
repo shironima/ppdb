@@ -19,7 +19,7 @@
                             'Requires Revision' => 'Requires Revision',
                             'Submitted' => 'Submitted',
                             'Updated' => 'Updated',
-                            'Belum Diisi' => 'Belum Diisi'
+                            'Belum Diisi' => 'Belum Diisi',
                         ];
                     @endphp
 

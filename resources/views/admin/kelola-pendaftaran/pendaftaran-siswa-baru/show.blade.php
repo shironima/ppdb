@@ -17,6 +17,7 @@
                             'Verified' => 'Verified',
                             'In Progress' => 'In Progress',
                             'Requires Revision' => 'Requires Revision',
+                            'Updated' => 'Updated',
                             'Submitted' => 'Submitted',
                             'Belum Diisi' => 'Belum Diisi'
                         ];

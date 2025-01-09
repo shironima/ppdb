@@ -76,7 +76,5 @@
                 </div>
             </div>
         </div>
-
-        <!-- Other Content for Dashboard -->
     </div>
 @endsection

@@ -94,7 +94,7 @@ class AdminVerifikasiPendaftaranController extends Controller
         ])->findOrFail($id);
 
         // Cek apakah status request valid
-        $validStatuses = ['Submitted', 'In Progress', 'Requires Revision', 'Verified'];
+        $validStatuses = ['Submitted', 'In Progress', 'Requires Revision', 'Verified', 'Updated'];
         if (!in_array($request->status, $validStatuses)) {
             return redirect()->back()->with('error', 'Status tidak valid.');
         }
