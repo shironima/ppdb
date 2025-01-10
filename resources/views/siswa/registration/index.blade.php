@@ -16,53 +16,64 @@
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Status Pendaftaran Umum</h5>
-                
-                <!-- Menampilkan status pendaftaran -->
-                <div class="row mb-6">
-                    <div class="col-lg-4"><strong>Status</strong></div>
-                    <div class="col-lg-8">
-                        @if (Auth::user()->calonSiswa->registration)
-                            @if (Auth::user()->calonSiswa->registration->status === 'Submitted')
-                                <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i> Submitted</span>
-                            @elseif (Auth::user()->calonSiswa->registration->status === 'Updated')
-                                <span class="badge bg-info text-light"><i class="bi bi-pencil-square me-1"></i> Updated</span>
-                            @elseif (Auth::user()->calonSiswa->registration->status === 'Accepted')
-                                <span class="badge bg-success text-light"><i class="bi bi-check-circle me-1"></i> Accepted</span>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Status Pendaftaran Umum</h5>
+                    <!-- Menampilkan Nomor Registrasi -->
+                    <div class="row mb-6">
+                        <div class="col-lg-4"><strong>Nomor Registrasi</strong></div>
+                        <div class="col-lg-8">
+                            @if (Auth::user()->calonSiswa->registration)
+                                {{ Auth::user()->calonSiswa->registration->id }}
                             @else
-                                <span class="badge bg-secondary text-light"><i class="bi bi-exclamation-circle me-1"></i> Unknown</span>
+                                <span class="text-muted">Belum ada nomor registrasi</span>
                             @endif
-                        @else
-                            <span class="badge bg-warning text-light"><i class="bi bi-exclamation-circle me-1"></i> Belum Submit Pendaftaran</span>
-                        @endif
+                        </div>
                     </div>
-                </div>
+                    
+                    <!-- Menampilkan status pendaftaran -->
+                    <div class="row mb-6">
+                        <div class="col-lg-4"><strong>Status</strong></div>
+                        <div class="col-lg-8">
+                            @if (Auth::user()->calonSiswa->registration)
+                                @if (Auth::user()->calonSiswa->registration->status === 'Submitted')
+                                    <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i> Submitted</span>
+                                @elseif (Auth::user()->calonSiswa->registration->status === 'Updated')
+                                    <span class="badge bg-info text-light"><i class="bi bi-pencil-square me-1"></i> Updated</span>
+                                @elseif (Auth::user()->calonSiswa->registration->status === 'Accepted')
+                                    <span class="badge bg-success text-light"><i class="bi bi-check-circle me-1"></i> Accepted</span>
+                                @else
+                                    <span class="badge bg-secondary text-light"><i class="bi bi-exclamation-circle me-1"></i> Unknown</span>
+                                @endif
+                            @else
+                                <span class="badge bg-warning text-light"><i class="bi bi-exclamation-circle me-1"></i> Belum Submit Pendaftaran</span>
+                            @endif
+                        </div>
+                    </div>
 
-                <!-- Menampilkan komentar admin -->
-                <div class="row mb-6">
-                    <div class="col-lg-4"><strong>Komentar Admin</strong></div>
-                    <div class="col-lg-8">{{ $user->registration->komentar ?? 'Tidak ada komentar' }}</div>
-                </div>
+                    <!-- Menampilkan komentar admin -->
+                    <div class="row mb-6">
+                        <div class="col-lg-4"><strong>Komentar Admin</strong></div>
+                        <div class="col-lg-8">{{ $user->registration->komentar ?? 'Tidak ada komentar' }}</div>
+                    </div>
 
-                <!-- Informasi status pendaftaran -->
-                <div class="alert alert-info mt-4">
-                    <strong>Perhatian:</strong> Status pendaftaran Anda akan diperbarui oleh admin setelah semua formulir diverifikasi.
-                </div>
+                    <!-- Informasi status pendaftaran -->
+                    <div class="alert alert-info mt-4">
+                        <strong>Perhatian:</strong> Status pendaftaran Anda akan diperbarui oleh admin setelah semua formulir diverifikasi.
+                    </div>
 
-                <!-- Deskripsi status pendaftaran -->
-                <div class="mt-3">
-                    <h6>Deskripsi Status:</h6>
-                    <ul>
-                        <li><span class="badge bg-success">Submitted</span> : Pendaftaran Anda telah terkirim dan menunggu Admin melakukan verifikasi.</li>
-                        <li><span class="badge bg-success">Accepted</span> : Pendaftaran Anda telah terverifikasi dan Anda telah diterima.</li>
-                        <li><span class="badge bg-info">Updated</span> : Pendaftaran Anda telah diperbarui dan menunggu Admin melakukan verifikasi ulang.</li>
-                    </ul>
+                    <!-- Deskripsi status pendaftaran -->
+                    <div class="mt-3">
+                        <h6>Deskripsi Status:</h6>
+                        <ul>
+                            <li><span class="badge bg-success">Submitted</span> : Pendaftaran Anda telah terkirim dan menunggu Admin melakukan verifikasi.</li>
+                            <li><span class="badge bg-success">Accepted</span> : Pendaftaran Anda telah terverifikasi dan Anda telah diterima.</li>
+                            <li><span class="badge bg-info">Updated</span> : Pendaftaran Anda telah diperbarui dan menunggu Admin melakukan verifikasi ulang.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <!-- Informasi Calon Siswa dan Kontak -->
         <div class="col-lg-6">
@@ -91,7 +102,7 @@
             </div>
         </div>
 
-        <!-- Card untuk Kirim Pendaftaran Saya -->
+        <!-- Card untuk Informasi Kirim Pendaftaran Saya -->
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
@@ -110,7 +121,7 @@
 
     <div class="row">
         <!-- Status Pendaftaran Saya -->
-        <div class="col-lg-7">
+        <div class="col-lg-9">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Status Pendaftaran Saya</h5>
@@ -121,18 +132,18 @@
                                     <th>No</th>
                                     <th>Nama Formulir</th>
                                     <th>Status</th>
-                                    <th>Komentar</th> <!-- Kolom Komentar ditambahkan -->
+                                    <th>Komentar</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @php
                                 $formulir = [
-                                    ['nama' => 'Data Diri', 'status' => $user->calonSiswa ? ($user->calonSiswa->status ?? 'belum diisi') : 'belum diisi', 'comment' => $user->calonSiswa ? ($user->calonSiswa->comment ?? '-') : '-', 'route' => 'calon-siswa.create', 'route_edit' => 'calon-siswa.edit', 'route_index' => 'calon-siswa.index', 'id' => $user->calonSiswa ? $user->calonSiswa->id : null],
-                                    ['nama' => 'Alamat', 'status' => $user->calonSiswa && $user->calonSiswa->alamat ? ($user->calonSiswa->alamat->status ?? 'belum diisi') : 'belum diisi', 'comment' => $user->calonSiswa && $user->calonSiswa->alamat ? ($user->calonSiswa->alamat->comment ?? '-') : '-', 'route' => 'alamat.create', 'route_edit' => 'alamat.edit', 'route_index' => 'alamat.index', 'id' => $user->calonSiswa && $user->calonSiswa->alamat ? $user->calonSiswa->alamat->id : null],
-                                    ['nama' => 'Data Orang Tua', 'status' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? ($user->calonSiswa->dataOrangTua->status ?? 'belum diisi') : 'belum diisi', 'comment' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? ($user->calonSiswa->dataOrangTua->comment ?? '-') : '-', 'route' => 'data-orang-tua.create', 'route_edit' => 'data-orang-tua.edit', 'route_index' => 'data-orang-tua.index', 'id' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? $user->calonSiswa->dataOrangTua->id : null],
-                                    ['nama' => 'Data Rinci', 'status' => $user->calonSiswa && $user->calonSiswa->dataRinci ? ($user->calonSiswa->dataRinci->status ?? 'belum diisi') : 'belum diisi', 'comment' => $user->calonSiswa && $user->calonSiswa->dataRinci ? ($user->calonSiswa->dataRinci->comment ?? '-') : '-', 'route' => 'data-rinci.create', 'route_edit' => 'data-rinci.edit', 'route_index' => 'data-rinci.index', 'id' => $user->calonSiswa && $user->calonSiswa->dataRinci ? $user->calonSiswa->dataRinci->id : null],
-                                    ['nama' => 'Berkas Pendidikan', 'status' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? ($user->calonSiswa->berkasPendidikan->status ?? 'belum diisi') : 'belum diisi', 'comment' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? ($user->calonSiswa->berkasPendidikan->comment ?? '-') : '-', 'route' => 'berkas-pendidikan.create', 'route_edit' => 'berkas-pendidikan.edit', 'route_index' => 'berkas-pendidikan.index', 'id' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? $user->calonSiswa->berkasPendidikan->id : null],
+                                    ['nama' => 'Data Diri', 'status' => $user->calonSiswa ? ($user->calonSiswa->status ?? 'belum diisi') : 'belum diisi', 'komentar' => $user->calonSiswa ? ($user->calonSiswa->komentar ?? '-') : '-', 'route' => 'calon-siswa.create', 'route_edit' => 'calon-siswa.edit', 'route_index' => 'calon-siswa.index', 'id' => $user->calonSiswa ? $user->calonSiswa->id : null],
+                                    ['nama' => 'Alamat', 'status' => $user->calonSiswa && $user->calonSiswa->alamat ? ($user->calonSiswa->alamat->status ?? 'belum diisi') : 'belum diisi', 'komentar' => $user->calonSiswa && $user->calonSiswa->alamat ? ($user->calonSiswa->alamat->komentar ?? '-') : '-', 'route' => 'alamat.create', 'route_edit' => 'alamat.edit', 'route_index' => 'alamat.index', 'id' => $user->calonSiswa && $user->calonSiswa->alamat ? $user->calonSiswa->alamat->id : null],
+                                    ['nama' => 'Data Orang Tua', 'status' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? ($user->calonSiswa->dataOrangTua->status ?? 'belum diisi') : 'belum diisi', 'komentar' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? ($user->calonSiswa->dataOrangTua->komentar ?? '-') : '-', 'route' => 'data-orang-tua.create', 'route_edit' => 'data-orang-tua.edit', 'route_index' => 'data-orang-tua.index', 'id' => $user->calonSiswa && $user->calonSiswa->dataOrangTua ? $user->calonSiswa->dataOrangTua->id : null],
+                                    ['nama' => 'Data Rinci', 'status' => $user->calonSiswa && $user->calonSiswa->dataRinci ? ($user->calonSiswa->dataRinci->status ?? 'belum diisi') : 'belum diisi', 'komentar' => $user->calonSiswa && $user->calonSiswa->dataRinci ? ($user->calonSiswa->dataRinci->komentar ?? '-') : '-', 'route' => 'data-rinci.create', 'route_edit' => 'data-rinci.edit', 'route_index' => 'data-rinci.index', 'id' => $user->calonSiswa && $user->calonSiswa->dataRinci ? $user->calonSiswa->dataRinci->id : null],
+                                    ['nama' => 'Berkas Pendidikan', 'status' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? ($user->calonSiswa->berkasPendidikan->status ?? 'belum diisi') : 'belum diisi', 'komentar' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? ($user->calonSiswa->berkasPendidikan->komentar ?? '-') : '-', 'route' => 'berkas-pendidikan.create', 'route_edit' => 'berkas-pendidikan.edit', 'route_index' => 'berkas-pendidikan.index', 'id' => $user->calonSiswa && $user->calonSiswa->berkasPendidikan ? $user->calonSiswa->berkasPendidikan->id : null],
                                 ];
                             @endphp
                             @foreach($formulir as $key => $data)
@@ -154,7 +165,7 @@
                                             <span class="badge bg-light text-dark"><i class="bi bi-x-circle me-1"></i> Belum Diisi</span>
                                         @endif
                                     </td>
-                                    <td>{{ $data['comment'] }}</td>
+                                    <td>{{ $data['komentar'] }}</td>
                                     <td>
                                         @if ($data['id'] === null)
                                             <!-- Tombol untuk mengarahkan ke halaman create jika data belum diisi -->
@@ -202,7 +213,7 @@
         </div>
 
         <!-- Keterangan Status Pendaftaran -->
-        <div class="col-lg-5">
+        <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Keterangan Status Pendaftaran</h5>

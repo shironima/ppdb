@@ -15,7 +15,7 @@ class CalonSiswaController extends Controller
         $calonSiswa = Auth::user()->calonSiswa()->first();
 
         if (!$calonSiswa) {
-            return view('siswa.form-pendaftaran.data-diri.index', ['calonSiswa' => null]);
+            return redirect()->route('calon-siswa.create');
         }
 
         return view('siswa.form-pendaftaran.data-diri.index', compact('calonSiswa'));

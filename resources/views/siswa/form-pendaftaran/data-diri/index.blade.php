@@ -15,21 +15,21 @@
 
 <section class="section">
     <div class="row">
-        @forelse($calonSiswa as $index => $siswa)
+        @if($calonSiswa)
         <div class="col-lg-12 d-flex mb-4">
             <!-- Card Utama (Data Diri Calon Siswa) -->
             <div class="card info-card flex-grow-1 me-3">
                 <div class="card-body">
                     <h5 class="card-title">Data Diri Calon Siswa</h5>
-                    <p><strong>Nama Lengkap:</strong> {{ $siswa->nama_lengkap ?? 'N/A' }}</p>
-                    <p><strong>Tempat Lahir:</strong> {{ $siswa->tempat_lahir ?? 'N/A' }}</p>
-                    <p><strong>Tanggal Lahir:</strong> {{ isset($siswa->tanggal_lahir) ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('d M Y') : 'N/A' }}</p>
-                    <p><strong>Jenis Kelamin:</strong> {{ ucfirst($siswa->jenis_kelamin) ?? 'N/A' }}</p>
-                    <p><strong>Agama:</strong> {{ ucfirst($siswa->agama) ?? 'N/A' }}</p>
-                    <p><strong>NISN:</strong> {{ ucfirst($siswa->nisn) ?? 'N/A' }}</p>
-                    <p><strong>Nomor KK:</strong> {{ ucfirst($siswa->no_kk) ?? 'N/A' }}</p>
-                    <p><strong>NIK:</strong> {{ ucfirst($siswa->nik) ?? 'N/A' }}</p>
-                    <p><strong>Nomor HP:</strong> {{ $siswa->no_hp ?? 'N/A' }}</p>
+                    <p><strong>Nama Lengkap:</strong> {{ $calonSiswa->nama_lengkap ?? 'N/A' }}</p>
+                    <p><strong>Tempat Lahir:</strong> {{ $calonSiswa->tempat_lahir ?? 'N/A' }}</p>
+                    <p><strong>Tanggal Lahir:</strong> {{ isset($calonSiswa->tanggal_lahir) ? \Carbon\Carbon::parse($calonSiswa->tanggal_lahir)->format('d M Y') : 'N/A' }}</p>
+                    <p><strong>Jenis Kelamin:</strong> {{ $calonSiswa->jenis_kelamin ?? 'N/A' }}</p>
+                    <p><strong>Agama:</strong> {{ $calonSiswa->agama ?? 'N/A' }}</p>
+                    <p><strong>NISN:</strong> {{ $calonSiswa->nisn ?? 'N/A' }}</p>
+                    <p><strong>Nomor KK:</strong> {{ $calonSiswa->no_kk ?? 'N/A' }}</p>
+                    <p><strong>NIK:</strong> {{ $calonSiswa->nik ?? 'N/A' }}</p>
+                    <p><strong>Nomor HP:</strong> {{ $calonSiswa->no_hp ?? 'N/A' }}</p>
                 </div>
             </div>
 
@@ -40,21 +40,21 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Status</h5>
                         <p>
-                            @if ($siswa->status === 'Submitted')
+                            @if ($calonSiswa->status === 'Submitted')
                                 <span class="badge bg-primary text-light"><i class="bi bi-check-circle me-1"></i>Submitted</span>
-                            @elseif ($siswa->status === 'In Progress')
+                            @elseif ($calonSiswa->status === 'In Progress')
                                 <span class="badge bg-secondary text-light"><i class="bi bi-info-circle me-1"></i>In Progress</span>
-                            @elseif ($siswa->status === 'Requires Revision')
+                            @elseif ($calonSiswa->status === 'Requires Revision')
                                 <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
-                            @elseif ($siswa->status === 'Verified')
+                            @elseif ($calonSiswa->status === 'Updated')
+                                <span class="badge bg-info text-light"><i class="bi bi-arrow-repeat me-1"></i>Updated</span>
+                            @elseif ($calonSiswa->status === 'Verified')
                                 <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                            @elseif ($siswa->status === 'Updated')
-                                <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
                             @endif
                         </p>
 
-                        @if($siswa->status === 'Requires Revision')
-                            <a href="{{ route('calon-siswa.edit', $siswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @if($calonSiswa->status === 'Requires Revision')
+                            <a href="{{ route('calon-siswa.edit', $calonSiswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         @endif
                     </div>
                 </div>
@@ -63,18 +63,18 @@
                 <div class="card comment-card">
                     <div class="card-body">
                         <h5 class="card-title">Komentar</h5>
-                        <p>{{ $siswa->komentar ?? 'Belum ada komentar.' }}</p>
+                        <p>{{ $calonSiswa->komentar ?? 'Belum ada komentar.' }}</p>
                     </div>
                 </div>
             </div>
         </div>
-        @empty
+        @else
         <div class="col-12">
             <div class="alert alert-warning" role="alert">
                 Belum ada data calon siswa. <a href="{{ route('calon-siswa.create') }}" class="btn btn-primary btn-sm">Lengkapi Data Diri</a>
             </div>
         </div>
-        @endforelse
+        @endif
     </div>
 </section>
 @endsection

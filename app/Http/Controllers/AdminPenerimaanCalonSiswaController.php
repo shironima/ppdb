@@ -102,7 +102,6 @@ class AdminPenerimaanCalonSiswaController extends Controller
 
         // Memicu event setelah status diperbarui
         event(new RegistrationStatusChanged($registration));
-     
         // Berikan respons berdasarkan hasil
         if ($updated) {
             return redirect()->route('verifikasi-pendaftaran.show', $id)

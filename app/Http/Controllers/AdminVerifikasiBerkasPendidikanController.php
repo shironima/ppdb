@@ -68,11 +68,12 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
         // Ambil data berkas pendidikan
         $berkasPendidikan = $registration->berkasPendidikan;
 
-        // Menyertakan URL file dari Google Drive jika ada
-        $berkasPendidikan->ijazahUrl = $berkasPendidikan->getFileUrl('ijazah');
-        $berkasPendidikan->skhunUrl = $berkasPendidikan->getFileUrl('skhun');
-        $berkasPendidikan->raportUrl = $berkasPendidikan->getFileUrl('raport');
-        $berkasPendidikan->kartu_keluargaUrl = $berkasPendidikan->getFileUrl('kartu_keluarga');
+        // Penyimpanan Lokal
+        $berkasPendidikan->ijazahUrl = $berkasPendidikan->ijazah ? Storage::disk('public')->url($berkasPendidikan->ijazah) : null;
+        $berkasPendidikan->skhunUrl = $berkasPendidikan->skhun ? Storage::disk('public')->url($berkasPendidikan->skhun) : null;
+        $berkasPendidikan->raportUrl = $berkasPendidikan->raport ? Storage::disk('public')->url($berkasPendidikan->raport) : null;
+        $berkasPendidikan->kartu_keluargaUrl = $berkasPendidikan->kartu_keluarga ? Storage::disk('public')->url($berkasPendidikan->kartu_keluarga) : null;
+
 
         // Kirim data berkasPendidikan dan registration ke view
         return view('admin.kelola-pendaftaran.berkas-pendidikan.show', compact('berkasPendidikan', 'registration'));
@@ -104,14 +105,30 @@ class AdminVerifikasiBerkasPendidikanController extends Controller
      */
     public function destroy($id)
     {
-        // Temukan berkas pendidikan berdasarkan ID
-        $berkasPendidikan = BerkasPendidikan::findOrFail($id);
-        
-        // Hapus file dari penyimpanan (Google Drive)
-        Storage::disk('google')->delete($berkasPendidikan->ijazahUrl);
-        Storage::disk('google')->delete($berkasPendidikan->skhunUrl);
-        Storage::disk('google')->delete($berkasPendidikan->raportUrl);
-        Storage::disk('google')->delete($berkasPendidikan->kartu_keluargaUrl);
+        // Temukan registration berdasarkan ID
+        $registration = Registration::with('calonSiswa','berkasPendidikan')->findOrFail($id);
+
+        // Ambil berkas pendidikan yang terkait dengan registration
+        $berkasPendidikan = $registration->berkasPendidikan;
+
+        // Pastikan berkas pendidikan ditemukan
+        if (!$berkasPendidikan) {
+            return response()->json(['message' => 'Berkas pendidikan tidak ditemukan.'], 404);
+        }
+
+        // Hapus file dari penyimpanan lokal jika ada
+        if (Storage::exists($berkasPendidikan->ijazah)) {
+            Storage::delete($berkasPendidikan->ijazah);
+        }
+        if (Storage::exists($berkasPendidikan->skhun)) {
+            Storage::delete($berkasPendidikan->skhun);
+        }
+        if (Storage::exists($berkasPendidikan->raport)) {
+            Storage::delete($berkasPendidikan->raport);
+        }
+        if (Storage::exists($berkasPendidikan->kartu_keluarga)) {
+            Storage::delete($berkasPendidikan->kartu_keluarga);
+        }
 
         // Hapus data berkas pendidikan dari database
         $berkasPendidikan->delete();

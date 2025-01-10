@@ -46,7 +46,7 @@
                                 <span class="badge bg-warning text-dark"><i class="bi bi-info-triangle me-1"></i>Requires Revision</span>
                             @elseif ($data->status === 'Verified')
                                 <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
-                            @elseif ($siswa->status === 'Updated')
+                            @elseif ($data->status === 'Updated')
                                 <span class="badge bg-info text-dark"><i class="bi bi-pencil me-1"></i>Updated</span>
                             @endif
                         </p>
