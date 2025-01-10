@@ -92,6 +92,11 @@ class AdminPenerimaanCalonSiswaController extends Controller
         // Cari pendaftar berdasarkan ID
         $registration = Registration::find($id);
      
+        // Pastikan $registration adalah objek, bukan koleksi
+        if (!$registration instanceof Registration) {
+            return redirect()->back()->withErrors('Pendaftaran tidak ditemukan.');
+        }
+        
         // Perbarui status dan komentar
         $registration->status = $request->status;
         $registration->komentar = $request->komentar;
