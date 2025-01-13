@@ -127,7 +127,7 @@ class KelolaAkunController extends Controller
 
     public function updateAkunSiswa(Request $request, $id)
     {
-        $siswas = User::findOrFail($id);
+        $siswa = User::findOrFail($id);
 
         // Validasi data untuk update
         $request->validate([
@@ -137,20 +137,32 @@ class KelolaAkunController extends Controller
         ]);
 
         // Update data
-        $siswas->update([
+        $siswa->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $siswas->password,
+            'password' => $request->password ? Hash::make($request->password) : $siswa->password,
         ]);
 
-        return response()->json(['success' => 'Akun admin berhasil diperbarui.']);
+        return response()->json(['success' => 'Akun siswa berhasil diperbarui.']);
     }
 
     public function destroyAkunSiswa($id)
     {
-        $siswas = User::findOrFail($id);
-        $siswas->delete();
-
-        return response()->json(['message' => 'Akun siswa berhasil dihapus.']);
+        try {
+            Log::info('Menerima permintaan delete untuk ID: ' . $id);
+    
+            // Cari user dengan role siswa
+            $siswa = User::where('role', 'siswa')->findOrFail($id);
+            Log::info('Data siswa ditemukan: ' . json_encode($siswa));
+    
+            // Hapus data siswa (otomatis menghapus data terkait melalui event deleting)
+            $siswa->delete();
+    
+            Log::info('Data siswa dan semua data terkait berhasil dihapus.');
+            return response()->json(['success' => true, 'message' => 'Akun siswa dan data terkait berhasil dihapus.']);
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus akun siswa: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menghapus akun siswa. ' . $e->getMessage()], 500);
+        }
     }
 }

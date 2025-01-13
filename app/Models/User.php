@@ -76,6 +76,22 @@ class User extends Authenticatable
         return $this->role === 'siswa';
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            // Hapus relasi terkait
+            $user->calonSiswa()->delete();
+            $user->alamat()->delete();
+            $user->dataRinci()->delete();
+            $user->dataOrangTua()->delete();
+            $user->registration()->delete();
+            $user->notificationContact()->delete();
+            $user->adminPPDB()->delete();
+        });
+    }
+
     /**
      * Get the calon siswa associated with the user.
      *

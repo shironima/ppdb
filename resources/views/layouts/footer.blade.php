@@ -26,14 +26,19 @@
             </div>
 
             <!-- Peta Lokasi -->
-            <div class="col-md-4 text-center">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d988.6388859657467!2d111.52550052847441!3d-7.623241999522524!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79bef9ce12dc2f%3A0xb678c432c23e698d!2sSMA%20ST%20Bonaventura!5e0!3m2!1sid!2sid!4v1733850621480!5m2!1sid!2sid" width="500" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="col-12 col-md-4 mb-3 text-center">
+                <!-- Google Map -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d988.6388859657467!2d111.52550052847441!3d-7.623241999522524!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79bef9ce12dc2f%3A0xb678c432c23e698d!2sSMA%20ST%20Bonaventura!5e0!3m2!1sid!2sid!4v1733850621480!5m2!1sid!2sid" 
+                class="w-100" style="height: 250px; border: 0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
 
         <!-- Copyright -->
         <div class="text-center mt-4">
-            <p class="mb-0">© 2024 SMAK Santo Bonaventura. All Rights Reserved.</p>
+            <p class="mb-0">&copy; {{ date('Y') }} SMAK Santo Bonaventura. All Rights Reserved.</p>
         </div>
     </div>
 </footer>
+
+<!-- Optional Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
