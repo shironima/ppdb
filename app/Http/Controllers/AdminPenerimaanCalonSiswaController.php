@@ -121,9 +121,21 @@ class AdminPenerimaanCalonSiswaController extends Controller
      */
     public function destroy($id)
     {
-        $registration = Registration::findOrFail($id);
-        $registration->delete();
+        try {
+            Log::info('Menerima permintaan delete untuk RegistrationID: ' . $id);
 
-        return response()->json(['message' => 'Pendaftaran berhasil dihapus.']);
+            // Cari user dengan role siswa
+            $registration = Registration::findOrFail($id);
+            Log::info('Data Registrasi ditemukan: ' . json_encode($registration));
+
+            // Hapus data registrasi siswa (otomatis menghapus data terkait melalui event deleting)
+            $registration->delete();
+
+            Log::info('Data registrasi siswa dan semua data terkait berhasil dihapus.');
+            return response()->json(['success' => true, 'message' => 'Registrasi siswa dan data terkait berhasil dihapus.']);
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus Registrasi siswa: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menghapus Registrasi siswa. ' . $e->getMessage()], 500);
+        }
     }
 }

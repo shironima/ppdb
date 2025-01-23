@@ -43,6 +43,9 @@
 @endsection
 
 @push('scripts')
+<!-- Tambahkan Library SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 $(document).ready(function() {
     var table = $('#pendaftarTable').DataTable({
@@ -95,23 +98,46 @@ $(document).ready(function() {
         table.ajax.reload();  // Memuat ulang data dengan status baru
     });
 
-    // Konfirmasi penghapusan data pendaftar
+    // SweetAlert untuk Konfirmasi Hapus
     $('#pendaftarTable').on('click', '.deleteBtn', function() {
         var id = $(this).data('id');
         var name = $(this).data('name');
-        if (confirm('Apakah Anda yakin ingin menghapus pendaftaran ' + name + '?')) {
-            $.ajax({
-                url: '/verifikasi-pendaftaran/' + id,
-                type: 'DELETE',
-                success: function(result) {
-                    table.ajax.reload();
-                    alert('Pendaftaran berhasil dihapus.');
-                },
-                error: function() {
-                    alert('Terjadi kesalahan saat menghapus data.');
-                }
-            });
-        }
+
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: `Data pendaftaran ${name} akan dihapus secara permanen!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/verifikasi-pendaftaran/' + id,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}' // Kirim token CSRF
+                    },
+                    success: function(result) {
+                        table.ajax.reload(); // Reload data di tabel
+                        Swal.fire(
+                            'Dihapus!',
+                            'Data pendaftaran berhasil dihapus.',
+                            'success'
+                        );
+                    },
+                    error: function(xhr) {
+                        Swal.fire(
+                            'Gagal!',
+                            'Terjadi kesalahan saat menghapus data.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
     });
 });
 </script>

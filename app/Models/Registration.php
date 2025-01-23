@@ -22,7 +22,6 @@ class Registration extends Model
         'data_orang_tua_id',
         'data_rinci_id',
         'berkas_pendidikan_id',
-        'payments_id',
         'notification_contact_id',
         'status',
         'komentar',
@@ -61,6 +60,31 @@ class Registration extends Model
             if (!$model->id) {
                 $model->id = (string) Str::uuid();
             }
+        });
+
+        static::deleting(function ($registration) {
+            // Hapus relasi terkait, kecuali notification_contact
+            if ($registration->calonSiswa) {
+                $registration->calonSiswa->delete();
+            }
+
+            if ($registration->alamat) {
+                $registration->alamat->delete();
+            }
+
+            if ($registration->dataRinci) {
+                $registration->dataRinci->delete();
+            }
+
+            if ($registration->dataOrangTua) {
+                $registration->dataOrangTua->delete();
+            }
+
+            if ($registration->berkasPendidikan) {
+                $registration->berkasPendidikan->delete();
+            }
+
+            // Abaikan penghapusan notificationContact
         });
     }
 
