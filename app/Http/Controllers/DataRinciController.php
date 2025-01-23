@@ -24,6 +24,12 @@ class DataRinciController extends Controller
 
     public function create()
     {
+        $calonSiswa = auth()->user()->calonSiswa;
+
+        if (!$calonSiswa) {
+            return redirect()->route('calon-siswa.create')->with('warning', 'Silakan lengkapi data diri terlebih dahulu.');
+        }
+        
         return view('siswa.form-pendaftaran.data-rinci.create');
     }
 
